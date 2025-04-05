@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { LoginViewModel } from '../viewmodels/LoginViewModel'
 import { FaUser, FaLock } from 'react-icons/fa'
-import RegisterModal from '../components/RegisterModal'
+import RegisterModal from '../../../components/RegisterModal'
 
 const LoginPage = () => {
   const { email, password, setEmail, setPassword, onLogin } = LoginViewModel()

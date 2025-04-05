@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './index.css'
-import LoginPage from './pages/LoginPage'
+import LoginPage from './features/auth/pages/LoginPage'
 
 function App() {
   return <LoginPage />

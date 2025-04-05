@@ -1,5 +1,5 @@
 // src/components/RegisterModal.jsx
-import { RegisterViewModel } from '../viewmodels/RegisterViewModel'
+import { RegisterViewModel } from '../features/auth/viewmodels/RegisterViewModel'
 import { IoClose } from 'react-icons/io5'
 
 const RegisterModal = ({ onClose }) => {
