@@ -1,3 +1,13 @@
+/**
+ * Genanvendelig knapkomponent.
+ *
+ * @component
+ * @param {Object} props - Komponentens props
+ * @param {string} props.label - Tekst der vises inde i knappen
+ * @param {function} props.onClick - Funktion der kaldes ved klik på knappen
+ * @param {string} [props.type="button"] - HTML-knappens type (f.eks. "submit" eller "button")
+ * @returns {JSX.Element} En stiliseret knap
+ */
 const Button = ({ label, onClick, type = "button" }) => {
     return (
       <button
@@ -7,7 +17,8 @@ const Button = ({ label, onClick, type = "button" }) => {
       >
         {label}
       </button>
-    )
-  }
+    );
+  };
   
-  export default Button
+  export default Button;
+  

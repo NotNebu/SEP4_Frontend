@@ -1,7 +1,17 @@
-
 import { useState } from 'react'
 
+/**
+ * ViewModel til registrering af nye brugere.
+ * Håndterer formularens tilstand, ændringer og API-kald til backend.
+ *
+ * @returns {{
+ *   form: Object,
+ *   handleChange: function,
+ *   onRegister: function
+ * }} Formularens tilstand og funktioner til brug i en registreringsformular
+ */
 export const RegisterViewModel = () => {
+  // Initial formular-state
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -16,10 +26,21 @@ export const RegisterViewModel = () => {
     birthday: '',
   })
 
+  /**
+   * Opdaterer formularens tilstand ved ændring i et felt.
+   *
+   * @param {string} field - Navnet på feltet der opdateres
+   * @param {string} value - Ny værdi for feltet
+   */
   const handleChange = (field, value) => {
     setForm({ ...form, [field]: value })
   }
 
+  /**
+   * Sender registreringsanmodning til backend efter validering.
+   * Validerer at adgangskoder matcher, og sender derefter POST-anmodning.
+   * Viser alert ved succes eller fejl.
+   */
   const onRegister = async () => {
     if (form.password !== form.confirmPassword) {
       alert("Passwords matcher ikke!")
@@ -47,7 +68,7 @@ export const RegisterViewModel = () => {
     } catch (error) {
       console.error("Register error:", error)
     }
-  }  
+  }
 
   return { form, handleChange, onRegister }
 }
