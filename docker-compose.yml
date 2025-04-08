@@ -1,0 +1,15 @@
+version: "3.8"  # Angiver versionen af docker-compose-formatet
+
+services:
+  growheat-frontend:
+    image: notnebu/growheat-frontend:latest  # Docker image hentet fra Docker Hub
+    container_name: growheat-frontend        # Navnet på containeren
+    ports:
+      - "3000:80"                            # Gør frontend tilgængelig på localhost:3000 → containerens port 80
+    networks:
+      - SEP4_NETWORK                         # Tilføj containeren til et eksisterende Docker-netværk
+    restart: unless-stopped                  # Genstart containeren automatisk, medmindre den stoppes manuelt
+
+networks:
+  SEP4_NETWORK:
+    external: true                           # Bruger et eksternt netværk, delt mellem flere microservices
