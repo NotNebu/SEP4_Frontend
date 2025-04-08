@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  growheat-frontend:
+    image: notnebu/growheat-frontend:latest
+    container_name: growheat-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - SEP4_NETWORK
+    restart: unless-stopped
+
+networks:
+  SEP4_NETWORK:
+    external: true
