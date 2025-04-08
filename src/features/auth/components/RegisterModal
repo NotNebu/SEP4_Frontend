@@ -1,4 +1,3 @@
-// src/components/RegisterModal.jsx
 import { RegisterViewModel } from '../features/auth/viewmodels/RegisterViewModel'
 import { IoClose } from 'react-icons/io5'
 
