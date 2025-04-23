@@ -1,5 +1,5 @@
 import React from "react";
-import FlexBetween from "./FlexBetween";
+import FlexBetween from "@Presentation/Layout/FlexBetween";
 
 const BoxHeader = ({ title, subtitle, sideText }) => {
   return (

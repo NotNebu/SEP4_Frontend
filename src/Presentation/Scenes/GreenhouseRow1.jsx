@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
-import DashboardBox from '../features/auth/components/DashboardBox';
-import BoxHeader from '../features/auth/components/BoxHeader';
-import { GreenhouseViewModel } from '../features/auth/viewmodels/GreenhouseViewModel';
-
-
+import DashboardBox from "@Presentation/Components/DashboardBox";
+import BoxHeader from "@Presentation/Layout/BoxHeader";
+import { GreenhouseViewModel } from "@Application/ViewModels/GreenhouseViewModel";
 
 const GreenhouseRow1 = () => {
   const { temperatureData, humidityData, soilData } = GreenhouseViewModel();
