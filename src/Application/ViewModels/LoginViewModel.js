@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useAuth } from '../context/AuthContext' 
+import { useState } from 'react';
+import { useAuth } from '@Shared/Context/AuthContext';
 
 /**
  * ViewModel for login-funktionalitet.

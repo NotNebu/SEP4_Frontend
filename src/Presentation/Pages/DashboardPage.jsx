@@ -1,9 +1,9 @@
 import React from "react";
-import GreenhouseRow1 from "../../../scenes/GreenhouseRow1"; // Row 1 with charts
-import GreenhouseRow2 from "../../../scenes/GreenhouseRow2"; // Row 2 with sensor table
-import FlexBetween from "../components/FlexBetween"; // Import your FlexBetween component
-import Navbar from "../components/Navbar"; // Import Navbar
-import Footer from "../components/Footer"; // Import Footer
+import GreenhouseRow1 from "@Presentation/Scenes/GreenhouseRow1";
+import GreenhouseRow2 from "@Presentation/Scenes/GreenhouseRow2";
+import FlexBetween from "@Presentation/Layout/FlexBetween";
+import Navbar from "@Presentation/Components/Navbar";
+import Footer from "@Presentation/Layout/Footer";
 
 const DashboardPage = () => {
   return (

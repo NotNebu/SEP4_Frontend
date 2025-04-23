@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import DashboardBox from '../features/auth/components/DashboardBox';
-import BoxHeader from '../features/auth/components/BoxHeader';
-import SensorTable from '../features/auth/components/SensorTable';  // Import Sensor Table
+import DashboardBox from '@Presentation/Components/DashboardBox';
+import BoxHeader from '@Presentation/Layout/BoxHeader';
+import SensorTable from '@Presentation/Tables/SensorTable';
 
 const GreenhouseRow2 = () => {
   // Dummy sensor data for the table (You can replace this with real data from your viewmodel later)

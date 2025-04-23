@@ -1,11 +1,7 @@
-import { useState } from 'react'
-import { LoginViewModel } from '../viewmodels/LoginViewModel'
-import { FaUser, FaLock } from 'react-icons/fa'
-
-import RegisterModal from "../components/RegisterModal.js";
-
-
-
+import { useState } from 'react';
+import { LoginViewModel } from '@Application/ViewModels/LoginViewModel';
+import { FaUser, FaLock } from 'react-icons/fa';
+import RegisterModal from '@Presentation/Modals/RegisterModal';
 
 
 /**
