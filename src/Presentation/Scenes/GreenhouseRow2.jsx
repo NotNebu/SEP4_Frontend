@@ -12,21 +12,21 @@ import SensorTable from '@Presentation/Tables/SensorTable';
  */
 
 const GreenhouseRow2 = () => {
-  // Dummy sensor data for tabllen (rigtig data fra viewmodel senere)
+  // Dummy sensor data for tabellen (rigtig data fra viewmodel senere)
   const sensorData = useMemo(() => [
     { id: 1, sensor: 'Temperature', value: '22°C', lastUpdate: '2025-04-08 12:30' },
     { id: 2, sensor: 'Humidity', value: '60%', lastUpdate: '2025-04-08 12:31' },
     { id: 3, sensor: 'Soil Moisture', value: '40%', lastUpdate: '2025-04-08 12:32' },
     { id: 4, sensor: 'CO2 Level', value: '300 ppm', lastUpdate: '2025-04-08 12:33' },
     { id: 5, sensor: 'Light', value: '500 lux', lastUpdate: '2025-04-08 12:34' }
-  ], []);  //Brug real-time data eller API calls her
+  ], []);  //Brug real-time data eller API kald her
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <DashboardBox>
         <BoxHeader
-          title="Recent Sensor Updates"
-          subtitle="Real-time sensor updates"
+          title="Seneste Sensoropdateringer"
+          subtitle="Real-time sensor opdateringer"
         />
         <SensorTable sensorData={sensorData} /> 
       </DashboardBox>

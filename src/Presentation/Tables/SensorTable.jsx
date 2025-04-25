@@ -11,17 +11,17 @@ import React from "react";
 const SensorTable = ({ sensorData }) => {
   return (
     <div className="bg-gray-900 text-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Recent Sensor Updates</h2>
+      <h2 className="text-xl font-semibold mb-4">Seneste Sensoropdateringer</h2>
 
-      {/* Table view: sensor tabel for større skærme*/}
+      {/* Tabelvisning: sensor tabel for større skærme*/}
       <div className="hidden sm:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700">
                 <th className="py-2 px-3">Sensor</th>
-                <th className="py-2 px-3">Value</th>
-                <th className="py-2 px-3">Last Update</th>
+                <th className="py-2 px-3">Værdi</th>
+                <th className="py-2 px-3">Sidste Opdatering</th>
               </tr>
             </thead>
             <tbody>
@@ -40,14 +40,14 @@ const SensorTable = ({ sensorData }) => {
         </div>
       </div>
 
-      {/* Stacked list view: sensor tabel for mobile */}
+      {/* Stakket listevisning: sensor tabel for mobil*/}
       <div className="sm:hidden">
         <div className="space-y-4 mt-6">
           {sensorData.map((entry, index) => (
             <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-md">
               <div className="font-semibold text-sm">Sensor: {entry.sensor}</div>
-              <div className="text-sm">Value: {entry.value}</div>
-              <div className="text-sm">Last Update: {entry.lastUpdate}</div>
+              <div className="text-sm">Værdi: {entry.value}</div>
+              <div className="text-sm">Sidste Opdatering: {entry.lastUpdate}</div>
             </div>
           ))}
         </div>
