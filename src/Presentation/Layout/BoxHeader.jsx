@@ -1,6 +1,7 @@
 import React from "react";
 import FlexBetween from "@Presentation/Layout/FlexBetween";
 
+// Header for the box component, used to show title, subtitle, and additional side text
 const BoxHeader = ({ title, subtitle, sideText }) => {
   return (
     <FlexBetween className="mb-4">

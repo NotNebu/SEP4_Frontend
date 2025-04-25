@@ -1,14 +1,41 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 import DashboardBox from "@Presentation/Components/DashboardBox";
 import BoxHeader from "@Presentation/Layout/BoxHeader";
 import { GreenhouseViewModel } from "@Application/ViewModels/GreenhouseViewModel";
 
+/**
+ * GreenhouseRow1 viser data for én sensor (f.eks. temperatur).
+ * Den viser sensorens data på en enkel måde.
+ *
+ * @param {Object} data - Sensor data for én måling (f.eks. temperatur).
+ * @returns {JSX.Element}
+ */
+
 const GreenhouseRow1 = () => {
-  const { temperatureData, humidityData, soilData } = GreenhouseViewModel();
+  const { temperatureData, humidityData, soilData, status } = GreenhouseViewModel();
+
+  // Visuel indicator for system status
+  const renderStatusIndicator = () => {
+    switch (status) {
+      case "loading":
+        return <span className="text-yellow-500 text-lg sm:text-xl">Loading...</span>;
+      case "error":
+        return <span className="text-red-500 text-lg sm:text-xl">Error fetching data!</span>;
+      case "success":
+        return <span className="text-green-500 text-lg sm:text-xl">Data Loaded</span>;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* System Status Indicator */}
+      <div className="col-span-1 sm:col-span-2 lg:col-span-3 mb-4 flex justify-center items-center">
+        {renderStatusIndicator()}
+      </div>
+
       {/* Temperatur */}
       <DashboardBox>
         <BoxHeader

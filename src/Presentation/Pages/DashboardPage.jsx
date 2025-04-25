@@ -5,6 +5,14 @@ import FlexBetween from "@Presentation/Layout/FlexBetween";
 import Navbar from "@Presentation/Components/Navbar";
 import Footer from "@Presentation/Layout/Footer";
 
+/**
+ * Dashboard komponenten viser det overordnede kontrolpanel for brugeren.
+ * Her kan brugeren se sensordata, såsom temperatur, luftfugtighed, lysniveau og jordfugtighed i realtid.
+ * Derudover kan dashboardet vise grafer, statistikker og forskellige informationsrækker.
+ *
+ * @returns {JSX.Element}
+ */
+
 const DashboardPage = () => {
   return (
     <div className="dark:bg-gray-900 dark:text-white min-h-screen flex flex-col">

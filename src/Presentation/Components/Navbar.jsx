@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+/**
+ * Navbar-komponenten giver navigationsmuligheder for brugeren.
+ * Indeholder links til Dashboard, Forsøg, og login/logout funktionalitet.
+ *
+ * @returns {JSX.Element}
+ */
+
 const Navbar = () => {
   const [selected, setSelected] = useState("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

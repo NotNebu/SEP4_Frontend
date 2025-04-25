@@ -1,3 +1,8 @@
+/**
+ * Footer komponenten for applikationen.
+ * Denne komponent viser bunden af siden, og indeholder copyright information samt links til 
+ * privatlivspolitik og servicevilkår.*/
+
 const Footer = () => {
     return (
       <footer className="bg-gray-800 text-white py-6 dark:bg-gray-900">
