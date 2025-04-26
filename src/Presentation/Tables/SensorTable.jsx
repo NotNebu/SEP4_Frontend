@@ -13,7 +13,7 @@ const SensorTable = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((entry, index) => (
+          {data?.map((entry, index) => (
             <tr
               key={index}
               className="border-b border-gray-800 hover:bg-gray-800 transition"
