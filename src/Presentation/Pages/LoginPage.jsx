@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { LoginViewModel } from '@Application/ViewModels/LoginViewModel';
 import { FaUser, FaLock } from 'react-icons/fa';
-import RegisterModal from '@Presentation/Modals/RegisterModal';
-
+import RegisterModal from '@Presentation/Modals/RegisterModal.jsx';
 
 /**
  * LoginPage-komponenten viser loginformularen og styrer registreringsmodalen.

@@ -1,6 +1,10 @@
 import React from "react";
 
 const SensorTable = ({ data }) => {
+  if (!data) {
+    return <p className="text-white">Indlæser sensor-data...</p>;
+  }
+
   return (
     <div className="bg-gray-900 text-white p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">Recent Sensor Updates</h2>
