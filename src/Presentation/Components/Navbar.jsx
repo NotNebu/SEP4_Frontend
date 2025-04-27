@@ -27,7 +27,7 @@ const Navbar = () => {
             <svg className="h-8 w-8 text-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path fill="currentColor" d="M12 2L2 7h3v6h3V9h2v4h3V7h3L12 2z" />
             </svg>
-            <span className="text-xl font-bold">SEP4</span>
+            <span className="text-xl font-bold">GroWheat</span>
           </div>
 
           {/* Desktop nav links */}

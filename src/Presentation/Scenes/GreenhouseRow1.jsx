@@ -1,29 +1,50 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 import DashboardBox from "@Presentation/Components/DashboardBox";
 import BoxHeader from "@Presentation/Layout/BoxHeader";
 import { GreenhouseViewModel } from "@Application/ViewModels/GreenhouseViewModel";
 
 /**
- * GreenhouseRow1 viser data for én sensor (f.eks. temperatur).
- * Den viser sensorens data på en enkel måde.
+ * GreenhouseRow1 viser data for drivhussensorer såsom temperatur, luftfugtighed og afstand 
  *
- * @param {Object} data - Sensor data for én måling (f.eks. temperatur).
  * @returns {JSX.Element}
  */
 
 const GreenhouseRow1 = () => {
-  const { temperatureData, humidityData, soilData, status } = GreenhouseViewModel();
+  const { temperatureData, humidityData, distanceData, status } = GreenhouseViewModel();
 
-  // Visuel indicator for system status
+  // Dummy temperatur data 
+  const temperatureDataWithTime = useMemo(() => [
+    { time: '08:00', temperature: 15 },
+    { time: '10:00', temperature: 23 },
+    { time: '12:00', temperature: 24 },
+    { time: '14:00', temperature: 37 }, 
+  ], []);
+
+  // Dummy luftfugtighed data
+  const humidityDataWithTime = useMemo(() => [
+    { time: '08:00', humidity: 55 },
+    { time: '10:00', humidity: 62 },
+    { time: '12:00', humidity: 64 },
+    { time: '14:00', humidity: 70 }, 
+  ], []);
+
+  // Dummy afstandsdata 
+  const distanceDataWithTime = useMemo(() => [
+    { time: '08:00', distance: 6 },
+    { time: '10:00', distance: 16 },
+    { time: '12:00', distance: 17 },
+    { time: '14:00', distance: 18 }, 
+  ], []);
+
   const renderStatusIndicator = () => {
     switch (status) {
       case "loading":
-        return <span className="text-yellow-500 text-lg sm:text-xl">Loading...</span>;
+        return <span className="text-yellow-500 text-lg sm:text-xl">Indlæser data...</span>;
       case "error":
-        return <span className="text-red-500 text-lg sm:text-xl">Error fetching data!</span>;
+        return <span className="text-red-500 text-lg sm:text-xl">Fejl ved hentning af data!</span>;
       case "success":
-        return <span className="text-green-500 text-lg sm:text-xl">Data Loaded</span>;
+        return <span className="text-green-500 text-lg sm:text-xl">Data hentet</span>;
       default:
         return null;
     }
@@ -44,12 +65,12 @@ const GreenhouseRow1 = () => {
           sideText="Aktuel: 24°C"
         />
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={temperatureData}>
+          <LineChart data={temperatureDataWithTime}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
+            <XAxis dataKey="time" interval={0} />
             <YAxis unit="°C" />
             <Tooltip />
-            <Line type="monotone" dataKey="temperature" stroke="#ff7300" />
+            <Line type="monotone" dataKey="temperature" stroke="#ff7300" dot={{ r: 3 }} activeDot={{ r: 5 }} />
           </LineChart>
         </ResponsiveContainer>
       </DashboardBox>
@@ -62,30 +83,30 @@ const GreenhouseRow1 = () => {
           sideText="Aktuel: 51%"
         />
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={humidityData}>
+          <LineChart data={humidityDataWithTime}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis unit="%" />
+            <XAxis dataKey="time" interval={0} />
+            <YAxis unit="%" domain={[0, 100]} />
             <Tooltip />
-            <Line type="monotone" dataKey="humidity" stroke="#00bcd4" />
+            <Line type="monotone" dataKey="humidity" stroke="#00bcd4" dot={{ r: 3 }} activeDot={{ r: 5 }} />
           </LineChart>
         </ResponsiveContainer>
       </DashboardBox>
 
-      {/* Jordfugtighed */}
+      {/* Distance */}
       <DashboardBox>
         <BoxHeader
-          title="Jordfugtighed"
-          subtitle="Sensor A1"
-          sideText="Aktuel: 37%"
+          title="Afstand"
+          subtitle="Vandstandsmåling"
+          sideText="Aktuel: 15 cm"
         />
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={soilData}>
+          <LineChart data={distanceDataWithTime}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis unit="%" />
+            <XAxis dataKey="time" interval={0} />
+            <YAxis unit="cm" domain={[0, 100]} />
             <Tooltip />
-            <Line type="monotone" dataKey="soil" stroke="#4caf50" />
+            <Line type="monotone" dataKey="distance" stroke="#8e24aa" dot={{ r: 3 }} activeDot={{ r: 5 }} />
           </LineChart>
         </ResponsiveContainer>
       </DashboardBox>
