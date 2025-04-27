@@ -54,6 +54,15 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+
+            {/* Prediction Page Link (Correctly placed) */}
+            <Link
+              to="/prediction-form"
+              onClick={() => setSelected("prediction-form")}
+              className={`hover:text-orange-500 transition-colors ${selected === "prediction-form" ? "text-orange-500 font-medium" : "text-gray-300"}`}
+            >
+              Prediction
+            </Link>
           </div>
 
           {/* Login/Logout */}
@@ -81,7 +90,7 @@ const Navbar = () => {
         <div className="sm:hidden px-4 pt-2 pb-4 bg-gray-800 dark:bg-gray-900">
           <Link
             to="/"
-            onClick={() => setSelected("dashboard")}
+            onClick={() => { setSelected("dashboard"); setIsMobileMenuOpen(false); }}
             className={`block py-2 ${selected === "dashboard" ? "text-orange-500" : "text-gray-300"}`}
           >
             Dashboard
@@ -98,6 +107,16 @@ const Navbar = () => {
               <Link to="/forsog2" onClick={() => setIsDropdownOpen(false)} className="block py-1 text-sm text-gray-300 hover:text-orange-500">Forsøg 2</Link>
             </div>
           )}
+
+          {/* Mobile Prediction Link */}
+          <Link
+            to="/prediction-form"
+            onClick={() => { setSelected("prediction-form"); setIsMobileMenuOpen(false); }}
+            className={`block py-2 ${selected === "prediction-form" ? "text-orange-500" : "text-gray-300"}`}
+          >
+            Prediction
+          </Link>
+
           {isLoggedIn ? (
             <button onClick={handleLogout} className="block py-2 text-gray-300 hover:text-orange-500">Log ud</button>
           ) : (
