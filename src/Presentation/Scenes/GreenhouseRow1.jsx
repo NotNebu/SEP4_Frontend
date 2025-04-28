@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 import DashboardBox from "@Presentation/Components/DashboardBox";
 import BoxHeader from "@Presentation/Layout/BoxHeader";
@@ -12,31 +12,7 @@ import { GreenhouseViewModel } from "@Application/ViewModels/GreenhouseViewModel
 
 const GreenhouseRow1 = () => {
   const { temperatureData, humidityData, distanceData, status } = GreenhouseViewModel();
-
-  // Dummy temperatur data 
-  const temperatureDataWithTime = useMemo(() => [
-    { time: '08:00', temperature: 15 },
-    { time: '10:00', temperature: 23 },
-    { time: '12:00', temperature: 24 },
-    { time: '14:00', temperature: 37 }, 
-  ], []);
-
-  // Dummy luftfugtighed data
-  const humidityDataWithTime = useMemo(() => [
-    { time: '08:00', humidity: 55 },
-    { time: '10:00', humidity: 62 },
-    { time: '12:00', humidity: 64 },
-    { time: '14:00', humidity: 70 }, 
-  ], []);
-
-  // Dummy afstandsdata 
-  const distanceDataWithTime = useMemo(() => [
-    { time: '08:00', distance: 6 },
-    { time: '10:00', distance: 16 },
-    { time: '12:00', distance: 17 },
-    { time: '14:00', distance: 18 }, 
-  ], []);
-
+  {/*Status Indicator */}
   const renderStatusIndicator = () => {
     switch (status) {
       case "loading":
@@ -52,22 +28,18 @@ const GreenhouseRow1 = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {/* System Status Indicator */}
+      {/* System Status */}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3 mb-4 flex justify-center items-center">
         {renderStatusIndicator()}
       </div>
 
       {/* Temperatur */}
       <DashboardBox>
-        <BoxHeader
-          title="Temperatur"
-          subtitle="Udendørs vs Indendørs"
-          sideText="Aktuel: 24°C"
-        />
+        <BoxHeader title="Temperatur" subtitle="Udendørs vs Indendørs" sideText="Live Data" />
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={temperatureDataWithTime}>
+          <LineChart data={temperatureData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" interval={0} />
+            <XAxis dataKey="time" />
             <YAxis unit="°C" />
             <Tooltip />
             <Line type="monotone" dataKey="temperature" stroke="#ff7300" dot={{ r: 3 }} activeDot={{ r: 5 }} />
@@ -77,15 +49,11 @@ const GreenhouseRow1 = () => {
 
       {/* Luftfugtighed */}
       <DashboardBox>
-        <BoxHeader
-          title="Luftfugtighed"
-          subtitle="Dagsudvikling"
-          sideText="Aktuel: 51%"
-        />
+        <BoxHeader title="Luftfugtighed" subtitle="Dagsudvikling" sideText="Live Data" />
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={humidityDataWithTime}>
+          <LineChart data={humidityData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" interval={0} />
+            <XAxis dataKey="time" />
             <YAxis unit="%" domain={[0, 100]} />
             <Tooltip />
             <Line type="monotone" dataKey="humidity" stroke="#00bcd4" dot={{ r: 3 }} activeDot={{ r: 5 }} />
@@ -93,18 +61,14 @@ const GreenhouseRow1 = () => {
         </ResponsiveContainer>
       </DashboardBox>
 
-      {/* Distance */}
+      {/* Afstand */}
       <DashboardBox>
-        <BoxHeader
-          title="Afstand"
-          subtitle="Vandstandsmåling"
-          sideText="Aktuel: 15 cm"
-        />
+        <BoxHeader title="Afstand" subtitle="Vandstandsmåling" sideText="Live Data" />
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={distanceDataWithTime}>
+          <LineChart data={distanceData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" interval={0} />
-            <YAxis unit="cm" domain={[0, 100]} />
+            <XAxis dataKey="time" />
+            <YAxis unit="cm" />
             <Tooltip />
             <Line type="monotone" dataKey="distance" stroke="#8e24aa" dot={{ r: 3 }} activeDot={{ r: 5 }} />
           </LineChart>
