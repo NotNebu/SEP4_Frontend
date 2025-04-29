@@ -24,48 +24,58 @@ export const GreenhouseViewModel = () => {
 
   const fetchData = async () => {
     setStatus("loading");
-    setStatusCode(null);  // Nulstil statuskode ved hver anmodning
-
+    setStatusCode(null);
+  
     try {
-      const response = await fetch("http://localhost:5107/api/mal/sensors"); // <-- API Gateway URL og path fra malcontroller, ændre hvis nødvendigt når du kan teste 
-
-      // Gem statuskoden
-      setStatusCode(response.status);
-
-      if (response.ok) {
-        const apiData = await response.json();
-
-        // Mappér de rigtige datafelter fra sensor-data
-        setTemperatureData(apiData.map(entry => ({
+      // Hent sensordata
+      const sensorRes = await fetch("http://localhost:5107/api/mal/sensors");
+      setStatusCode(sensorRes.status);
+  
+      if (sensorRes.ok) {
+        const sensorData = await sensorRes.json();
+  
+        setTemperatureData(sensorData.map(entry => ({
           time: entry.timestamp,
           temperature: entry.air_temperature,
         })));
-
-        setHumidityData(apiData.map(entry => ({
+  
+        setHumidityData(sensorData.map(entry => ({
           time: entry.timestamp,
           humidity: entry.air_humidity,
         })));
-
-        setSoilData(apiData.map(entry => ({
+  
+        setSoilData(sensorData.map(entry => ({
           time: entry.timestamp,
           soil: entry.soil_moisture,
         })));
-
-        setDistanceData(apiData.map(entry => ({
+  
+        setDistanceData(sensorData.map(entry => ({
           time: entry.timestamp,
           distance: entry.distance_to_height,
         })));
-
-        setStatus("success");
       } else {
-        handleErrorStatus(response.status);
+        handleErrorStatus(sensorRes.status);
       }
+  
+      // Hent træningsresultat + eksperimenter
+      const trainRes = await fetch("http://localhost:5107/api/mal/train-model");
+  
+      if (trainRes.ok) {
+        const trainData = await trainRes.json();
+        setTrainMessage(trainData.message);
+        setExperiments(trainData.data);
+      } else {
+        console.warn("Fejl ved train-model:", trainRes.status);
+      }
+  
+      setStatus("success");
+  
     } catch (error) {
       console.error("Fejl ved hentning af data:", error);
       setStatus("error");
-      setStatusCode(500);  // Angiv en passende fejlkode
+      setStatusCode(500);
     }
-  };
+  };  
 
   // Håndter fejlstatuskoder
   const handleErrorStatus = (code) => {
