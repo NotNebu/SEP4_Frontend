@@ -5,6 +5,7 @@ import TestPage from "@Presentation/Pages/TestPage";
 import PredictionFormPage from '@Presentation/Pages/PredictionFormPage.jsx';
 import Navbar from "@Presentation/Components/Navbar";
 import LoginPage from "@Presentation/Pages/LoginPage";
+import ProfilePage from "./Presentation/Pages/ProfilePage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/prediction-form" element={<PredictionFormPage />} />
         </Routes>
