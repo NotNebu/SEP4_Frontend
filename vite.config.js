@@ -14,4 +14,10 @@ export default defineConfig({
       '@Shared': path.resolve(__dirname, './src/Shared'),
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./vitest.setup.js'],
+    include: ["Tests/**/*.test.{jsx,js,tsx,ts}"],
+  },  
 })
