@@ -28,7 +28,7 @@ export const GreenhouseViewModel = () => {
   
     try {
       // Hent sensordata
-      const sensorRes = await fetch("http://localhost:5107/api/mal/sensors");
+      const sensorRes = await fetch("https://localhost:5107/api/mal/sensors");
       setStatusCode(sensorRes.status);
   
       if (sensorRes.ok) {
@@ -58,7 +58,7 @@ export const GreenhouseViewModel = () => {
       }
   
       // Hent træningsresultat + eksperimenter
-      const trainRes = await fetch("http://localhost:5107/api/mal/train-model");
+      const trainRes = await fetch("https://localhost:5107/api/mal/train-model");
   
       if (trainRes.ok) {
         const trainData = await trainRes.json();

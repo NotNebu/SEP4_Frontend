@@ -11,30 +11,35 @@ export const AuthProvider = ({ children }) => {
    */
   const refreshUser = async () => {
     try {
-      const response = await fetch("http://localhost:5107/api/auth/me", {
+      const response = await fetch("https://localhost:5107/api/auth/me", {
         method: "GET",
-        credentials: "include", 
+        credentials: "include",
       });
-
+  
+      console.log("Response status:", response.status); 
+  
       if (response.ok) {
         const data = await response.json();
+        console.log("Bruger data:", data); 
         setUser(data);
       } else {
+        const errorText = await response.text();
+        console.warn("Fejl ved /me:", errorText);
         setUser(null);
       }
     } catch (err) {
-      console.error("Fejl ved hent af brugerinfo:", err);
+      console.error("Exception i refreshUser:", err);
       setUser(null);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   /**
    * Logger brugeren ud ved at rydde JWT-cookien på serveren
    */
   const logout = async () => {
-    await fetch("http://localhost:5107/api/auth/logout", {
+    await fetch("https://localhost:5107/api/auth/logout", {
       method: "POST",
       credentials: "include",
     });

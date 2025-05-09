@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5107/api/auth";
+const BASE_URL = "https://localhost:5107/api/auth";
 
 /**
  * Logger en bruger ind med email og password.

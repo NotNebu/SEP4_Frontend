@@ -16,7 +16,7 @@ export const usePredictionFormViewModel = () => {
 
   const submitForm = async () => {
     try {
-      const response = await fetch('http://localhost:5107/api/prediction', {
+      const response = await fetch('https://localhost:5107/api/prediction', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

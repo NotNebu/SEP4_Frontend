@@ -1,9 +1,18 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import fs from 'fs'
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    https: {
+      pfx: fs.readFileSync('./localhost.p12'),
+      passphrase: 'changeit',
+    },
+    port: 3000,
+    origin: 'https://localhost:3000',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
