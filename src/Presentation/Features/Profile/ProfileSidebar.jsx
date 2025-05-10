@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ChangePasswordModal from "@Presentation/Modals/ChangePasswordModal";  
+import ChangePasswordModal from "@/Presentation/Features/Profile/ChangePasswordModal";  
 
 export default function ProfileSidebar({ onSave }) {
   const [showModal, setShowModal] = useState(false);

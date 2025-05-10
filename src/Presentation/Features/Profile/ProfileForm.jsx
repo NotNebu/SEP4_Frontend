@@ -1,4 +1,4 @@
-import Input from "./Input";
+import Input from "../../Components/Input";
 import React from "react";
 
 export default function ProfileForm({ profile, onChange }) {

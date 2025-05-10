@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LoginViewModel } from '@Application/ViewModels/LoginViewModel';
+import { LoginViewModel } from '@/Presentation/Features/Login/useLoginViewModel';
 import { FaUser, FaLock } from 'react-icons/fa';
 import RegisterModal from '@Presentation/Modals/RegisterModal.jsx';
 

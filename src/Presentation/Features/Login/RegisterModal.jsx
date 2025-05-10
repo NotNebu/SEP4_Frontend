@@ -1,4 +1,4 @@
-import { RegisterViewModel } from '@Application/ViewModels/RegisterViewModel';
+import { RegisterViewModel } from '@/Presentation/Features/Login/useRegisterViewModel';
 import { IoClose } from 'react-icons/io5';
 
 /**

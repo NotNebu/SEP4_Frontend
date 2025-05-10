@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ExperimentsModal from "../Modals/ExperimentsModal";
+import ExperimentsModal from "./ExperimentsModal";
 
 export default function ExperimentsSidebar() {
   const [showModal, setShowModal] = useState(false);
