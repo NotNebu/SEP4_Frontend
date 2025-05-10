@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useExperimentsViewModel } from "@Presentation/ViewModels/useExperimentsViewModel";
+import { useExperimentsViewModel } from "@Presentation/Features/Experiments/useExperimentsViewModel";
 import ExperimentCard from "@/Presentation/Features/Experiments/ExperimentCard";
 import DownloadDropdown from "@/Presentation/Features/Experiments/DownloadDropdown";
 import ImportSection from "@/Presentation/Features/Experiments/Import";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as AuthService from "@Infrastructure/Services/auth"; 
+import * as AuthService from "@Infrastructure/API/auth"; 
 
 export const useAuthViewModel = () => {
   const [user, setUser] = useState(null);

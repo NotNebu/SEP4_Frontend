@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useAuthViewModel } from "@Presentation/ViewModels/useAuthViewModel";
+import { useAuthViewModel } from "@Presentation/Features/Login/useAuthViewModel";
 
 const AuthContext = createContext();
 

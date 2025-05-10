@@ -2,7 +2,7 @@ import { useAuth } from "@Shared/Context/AuthContext";
 import ProfileForm from "@/Presentation/Features/Profile/ProfileForm";
 import ProfileSidebar from "@/Presentation/Features/Profile/ProfileSidebar";
 import ExperimentsSidebar from "@/Presentation/Features/Experiments/ExperimentsSidebar";
-import { useProfileViewModel } from "@Presentation/ViewModels/useProfileViewModel";
+import { useProfileViewModel } from "@Presentation/Features/Profile/useProfileViewModel";
 
 export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();

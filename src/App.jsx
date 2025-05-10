@@ -4,7 +4,7 @@ import DashboardPage from '@Presentation/Pages/DashboardPage.jsx';
 import TestPage from "@Presentation/Pages/TestPage";
 import PredictionFormPage from '@Presentation/Pages/PredictionFormPage.jsx';
 import Navbar from "@Presentation/Components/Navbar";
-import LoginPage from "@Presentation/Pages/LoginPage";
+import LoginPage from "@Presentation/Features/Login/LoginPage";
 import ProfilePage from "./Presentation/Features/Profile/ProfilePage";
 import ErrorPage from "@Presentation/Pages/ErrorPage";
 
