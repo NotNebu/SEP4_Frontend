@@ -1,103 +1,109 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
- * ViewModel for at hente og håndtere drivhusdata.
- * Henter data og håndterer status (loading, error, success) samt statuskode.
+ * ViewModel til at hente og håndtere drivhusdata.
  *
+ * @param {Function} navigate - React Router navigate-funktion til redirect ved fejl
  * @returns {{
  *   temperatureData: Array,
  *   humidityData: Array,
  *   soilData: Array,
+ *   distanceData: Array,
  *   fetchData: Function,
  *   status: String,
- *   statusCode: Number,
- *   distanceData: Array,
+ *   statusCode: Number
  * }}
  */
-export const GreenhouseViewModel = () => {
+export const GreenhouseViewModel = (navigate) => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
   const [soilData, setSoilData] = useState([]);
   const [distanceData, setDistanceData] = useState([]);
   const [status, setStatus] = useState("loading");
-  const [statusCode, setStatusCode] = useState(null);  // Tilføjet statuskode state
+  const [statusCode, setStatusCode] = useState(null);
 
   const fetchData = async () => {
     setStatus("loading");
     setStatusCode(null);
-  
+
     try {
       // Hent sensordata
-      const sensorRes = await fetch("http://localhost:5107/api/mal/sensors");
+      const sensorRes = await fetch("https://localhost:5107/api/mal/sensors", {
+        credentials: "include",
+      });
       setStatusCode(sensorRes.status);
-  
-      if (sensorRes.ok) {
-        const sensorData = await sensorRes.json();
-  
-        setTemperatureData(sensorData.map(entry => ({
+
+      if (!sensorRes.ok) {
+        navigate("/error", {
+          state: {
+            code: sensorRes.status,
+            message:
+              sensorRes.status === 404
+                ? "Vi kunne ikke finde den ønskede anmodning."
+                : "En teknisk fejl opstod ved hentning af sensordata.",
+          },
+        });
+        return;
+      }
+
+      const sensorData = await sensorRes.json();
+
+      setTemperatureData(
+        sensorData.map((entry) => ({
           time: entry.timestamp,
           temperature: entry.air_temperature,
-        })));
-  
-        setHumidityData(sensorData.map(entry => ({
+        }))
+      );
+
+      setHumidityData(
+        sensorData.map((entry) => ({
           time: entry.timestamp,
           humidity: entry.air_humidity,
-        })));
-  
-        setSoilData(sensorData.map(entry => ({
+        }))
+      );
+
+      setSoilData(
+        sensorData.map((entry) => ({
           time: entry.timestamp,
           soil: entry.soil_moisture,
-        })));
-  
-        setDistanceData(sensorData.map(entry => ({
+        }))
+      );
+
+      setDistanceData(
+        sensorData.map((entry) => ({
           time: entry.timestamp,
           distance: entry.distance_to_height,
-        })));
-      } else {
-        handleErrorStatus(sensorRes.status);
+        }))
+      );
+
+      // Hent træningsresultater og eksperimenter
+      const trainRes = await fetch("https://localhost:5107/api/mal/train-model", {
+        credentials: "include",
+      });
+
+      if (!trainRes.ok) {
+        navigate("/error", {
+          state: {
+            code: trainRes.status,
+            message: "Fejl under hentning af træningsresultater.",
+          },
+        });
+        return;
       }
-  
-      // Hent træningsresultat + eksperimenter
-      const trainRes = await fetch("http://localhost:5107/api/mal/train-model");
-  
-      if (trainRes.ok) {
-        const trainData = await trainRes.json();
-        setTrainMessage(trainData.message);
-        setExperiments(trainData.data);
-      } else {
-        console.warn("Fejl ved train-model:", trainRes.status);
-      }
-  
+
+      const trainData = await trainRes.json();
+      setTrainMessage(trainData.message);
+      setExperiments(trainData.data);
+
       setStatus("success");
-  
     } catch (error) {
       console.error("Fejl ved hentning af data:", error);
-      setStatus("error");
-      setStatusCode(500);
-    }
-  };  
-
-  // Håndter fejlstatuskoder
-  const handleErrorStatus = (code) => {
-    switch (code) {
-      case 200:
-        setStatus("success");
-        break;
-      case 201:
-        setStatus("created"); 
-        break;
-      case 400:
-        setStatus("badRequest");
-        break;
-      case 404:
-        setStatus("notFound");
-        break;
-      case 500:
-        setStatus("serverError");
-        break;
-      default:
-        setStatus("error");
-        break;
+      navigate("/error", {
+        state: {
+          code: 500,
+          message: "Uventet netværksfejl eller serverfejl.",
+        },
+      });
     }
   };
 
@@ -112,6 +118,6 @@ export const GreenhouseViewModel = () => {
     distanceData,
     fetchData,
     status,
-    statusCode,  // Returner dataen, statuscode osv
+    statusCode,
   };
 };
