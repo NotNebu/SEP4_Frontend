@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { LoginViewModel } from '@/Presentation/Features/Login/useLoginViewModel';
 import { FaUser, FaLock } from 'react-icons/fa';
 import RegisterModal from '@Presentation/Features/Login/RegisterModal.jsx';
+import { useAuth } from '@Shared/Context/AuthContext.jsx';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * LoginPage-komponenten viser loginformularen og styrer registreringsmodalen.
@@ -18,6 +21,15 @@ const LoginPage = () => {
 
   // Lokal state til styring af visning af registreringsmodal
   const [showRegister, setShowRegister] = useState(false)
+
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/profile");
+    }
+  }, [user]);
 
   return (
     <div className="relative min-h-screen overflow-hidden flex items-center justify-center px-4 bg-black">

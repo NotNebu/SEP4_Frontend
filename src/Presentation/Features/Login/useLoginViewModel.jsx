@@ -8,29 +8,26 @@ export const LoginViewModel = () => {
   const navigate = useNavigate();
   const { refreshUser } = useAuth(); 
 
-  const onLogin = async () => {
-    try {
-      const response = await fetch("https://localhost:5107/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+ const onLogin = async () => {
+  try {
+    const response = await fetch("https://localhost:5107/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    });
 
-      if (!response.ok) {
-        const err = await response.text();
-        alert(`Login fejlede: ${err}`);
-        return;
-      }
-
-      await refreshUser(); 
-      console.log("Login successful");
-      navigate("/profile");
-
-    } catch (error) {
-      console.error("Login error:", error);
+    if (!response.ok) {
+      const err = await response.text();
+      alert(`Login fejlede: ${err}`);
+      return;
     }
-  };
+
+    await refreshUser(); 
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+};
 
   return {
     email,
