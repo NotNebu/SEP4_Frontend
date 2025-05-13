@@ -37,17 +37,11 @@ const RegisterModal = ({ onClose }) => {
           className="space-y-4"
         >
           {[
-            { label: 'First Name', field: 'firstName' },
-            { label: 'Last Name', field: 'lastName' },
             { label: 'Username', field: 'username' },
             { label: 'Email', field: 'email' },
             { label: 'Password', field: 'password', type: 'password' },
             { label: 'Confirm Password', field: 'confirmPassword', type: 'password' },
-            { label: 'Street', field: 'street' },
-            { label: 'House Number', field: 'houseNumber' },
-            { label: 'City', field: 'city' },
-            { label: 'Country', field: 'country' },
-            { label: 'Birthday', field: 'birthday', type: 'date' }
+  
           ].map(({ label, field, type = 'text' }) => (
             <div key={field} className="flex flex-col space-y-1">
               <label htmlFor={field} className="text-sm text-gray-200">
