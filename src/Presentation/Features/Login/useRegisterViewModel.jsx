@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 /**
  * ViewModel til registrering af nye brugere.
@@ -11,20 +11,13 @@ import { useState } from 'react'
  * }} Formularens tilstand og funktioner til brug i en registreringsformular
  */
 export const RegisterViewModel = () => {
-  // Initial formular-state
+  // Initial formular-state (kun nødvendige felter)
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
-    street: '',
-    houseNumber: '',
-    city: '',
-    country: '',
-    birthday: '',
-  })
+  });
 
   /**
    * Opdaterer formularens tilstand ved ændring i et felt.
@@ -33,8 +26,8 @@ export const RegisterViewModel = () => {
    * @param {string} value - Ny værdi for feltet
    */
   const handleChange = (field, value) => {
-    setForm({ ...form, [field]: value })
-  }
+    setForm({ ...form, [field]: value });
+  };
 
   /**
    * Sender registreringsanmodning til backend efter validering.
@@ -42,11 +35,12 @@ export const RegisterViewModel = () => {
    * Viser alert ved succes eller fejl.
    */
   const onRegister = async () => {
+    // Tjekker at password og confirmPassword matcher
     if (form.password !== form.confirmPassword) {
-      alert("Passwords matcher ikke!")
-      return
+      alert("Passwords matcher ikke!");
+      return;
     }
-  
+
     try {
       const response = await fetch("https://localhost:5107/api/auth/register", {
         method: "POST",
@@ -55,20 +49,22 @@ export const RegisterViewModel = () => {
           email: form.email,
           password: form.password,
           username: form.username,
-        })
-      })
-  
-      if (!response.ok) {
-        const err = await response.text()
-        alert(`Registrering fejlede: ${err}`)
-        return
-      }
-  
-      alert("Bruger oprettet")
-    } catch (error) {
-      console.error("Register error:", error)
-    }
-  }
+        }),
+      });
 
-  return { form, handleChange, onRegister }
-}
+      // Håndterer fejl ved registrering
+      if (!response.ok) {
+        const err = await response.text();
+        alert(`Registrering fejlede: ${err}`);
+        return;
+      }
+
+      // Succesfuld registrering
+      alert("Bruger oprettet");
+    } catch (error) {
+      console.error("Register error:", error);
+    }
+  };
+
+  return { form, handleChange, onRegister };
+};
