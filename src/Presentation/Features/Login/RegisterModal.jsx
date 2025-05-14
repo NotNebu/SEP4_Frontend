@@ -3,16 +3,15 @@ import { IoClose } from 'react-icons/io5';
 
 /**
  * Modal-komponent til registrering af ny bruger.
- *
- * Indeholder en formular med dynamisk genererede felter og understøtter lukning via `onClose`.
+ * Indeholder en forenklet formular med kun username, email, og password.
  *
  * @component
  * @param {Object} props - Komponentens props
  * @param {function} props.onClose - Funktion som lukker modalvinduet
- * @returns {JSX.Element} Registreringsmodal med formularfelter
+ * @returns {JSX.Element} Registreringsmodal med de nødvendige formularfelter
  */
 const RegisterModal = ({ onClose }) => {
-  const { form, handleChange, onRegister } = RegisterViewModel()
+  const { form, handleChange, onRegister } = RegisterViewModel();
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
@@ -31,8 +30,8 @@ const RegisterModal = ({ onClose }) => {
         {/* Registreringsformular */}
         <form
           onSubmit={(e) => {
-            e.preventDefault()
-            onRegister()
+            e.preventDefault();
+            onRegister();
           }}
           className="space-y-4"
         >
@@ -41,7 +40,6 @@ const RegisterModal = ({ onClose }) => {
             { label: 'Email', field: 'email' },
             { label: 'Password', field: 'password', type: 'password' },
             { label: 'Confirm Password', field: 'confirmPassword', type: 'password' },
-  
           ].map(({ label, field, type = 'text' }) => (
             <div key={field} className="flex flex-col space-y-1">
               <label htmlFor={field} className="text-sm text-gray-200">
@@ -67,7 +65,7 @@ const RegisterModal = ({ onClose }) => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RegisterModal
+export default RegisterModal;
