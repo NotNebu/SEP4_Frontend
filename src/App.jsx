@@ -9,7 +9,7 @@ import {
 
 import DashboardPage from "@Presentation/Pages/DashboardPage.jsx";
 import TestPage from "@Presentation/Pages/TestPage";
-import PredictionFormPage from "@Presentation/Pages/PredictionFormPage.jsx";
+import PredictionFormPage from "@/Presentation/Features/Prediction/PredictionFormPage.jsx";
 import Navbar from "@Presentation/Components/Navbar";
 import LoginPage from "@Presentation/Features/Login/LoginPage";
 import ProfilePage from "./Presentation/Features/Profile/ProfilePage";

@@ -35,61 +35,25 @@ const RegisterModal = ({ onClose }) => {
           }}
           className="space-y-4"
         >
-          {/* Username */}
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="username" className="text-sm text-gray-200">
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              value={form.username}
-              onChange={(e) => handleChange('username', e.target.value)}
-              className="w-full px-4 py-2 rounded-md bg-white/10 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Email */}
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="email" className="text-sm text-gray-200">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={form.email}
-              onChange={(e) => handleChange('email', e.target.value)}
-              className="w-full px-4 py-2 rounded-md bg-white/10 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Password */}
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="password" className="text-sm text-gray-200">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={form.password}
-              onChange={(e) => handleChange('password', e.target.value)}
-              className="w-full px-4 py-2 rounded-md bg-white/10 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Confirm Password */}
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="confirmPassword" className="text-sm text-gray-200">
-              Confirm Password
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={form.confirmPassword}
-              onChange={(e) => handleChange('confirmPassword', e.target.value)}
-              className="w-full px-4 py-2 rounded-md bg-white/10 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+          {[
+            { label: 'Username', field: 'username' },
+            { label: 'Email', field: 'email' },
+            { label: 'Password', field: 'password', type: 'password' },
+            { label: 'Confirm Password', field: 'confirmPassword', type: 'password' },
+          ].map(({ label, field, type = 'text' }) => (
+            <div key={field} className="flex flex-col space-y-1">
+              <label htmlFor={field} className="text-sm text-gray-200">
+                {label}
+              </label>
+              <input
+                id={field}
+                type={type}
+                value={form[field]}
+                onChange={(e) => handleChange(field, e.target.value)}
+                className={`w-full px-4 py-2 rounded-md bg-white/10 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${type === 'date' ? 'text-gray-200' : ''}`}
+              />
+            </div>
+          ))}
 
           {/* Submit-knap */}
           <button
