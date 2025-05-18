@@ -28,22 +28,9 @@ dist-ssr/
 *.sln
 *.sw?
 
-# Certifikater og nøgler (FØLSOMT)
-nginx/certs/localhost.crt
-nginx/certs/localhost.key
-localhost.p12
-
 # Test-output
 coverage/
 *.test.js.snap
-
-# Certifikater og nøgler
-nginx/certs/localhost.key
-nginx/certs/localhost.crt
-localhost.p12
-
-# Ignorer alt i certs-mappen
-nginx/certs/*
 
 # Docker/CI
 docker-compose.override.yml
