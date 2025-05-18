@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import SensorFilterPanel from "@/Presentation/Components/Dashboard/SensorFilterPanel";
 import DashboardGraph from "@/Presentation/Components/Dashboard/DashboardGraph";
-import SensorTableWrapper from "@/Presentation/Components/Dashboard/SensorTableWrapper";
+import SensorPredictionTableWrapper from "@/Presentation/Components/Dashboard/SensorPredictionTableWrapper";
 import Footer from "@/Presentation/Layout/Footer/Footer";
 import PageHeader from "@/Presentation/Layout/Headers/PageHeader";
+import SensorVsPredictionChart from "../Components/Dashboard/SensorVsPredictionChart";
 
 /**
  * DashboardPage – Viser sensor-data med filtrering, grafer og seneste målinger.
@@ -38,7 +39,8 @@ export default function DashboardPage() {
           {/* Højre kolonne: Grafer og tabelvisning */}
           <div className="w-full xl:w-4/5 space-y-10">
             <DashboardGraph filters={filters} chartType={chartType} />
-            <SensorTableWrapper />
+            <SensorPredictionTableWrapper />
+            <SensorVsPredictionChart />
           </div>
         </div>
       </div>
