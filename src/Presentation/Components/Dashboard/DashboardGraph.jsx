@@ -54,12 +54,6 @@ export default function DashboardPage({ filters, chartType }) {
   // Filtrér valgte sensorer baseret på brugerens filtervalg
   const selected = filters.sensors.map((sensor) => sensorMap[sensor]);
 
-  // Justér kolonner responsivt baseret på antal valgte sensorer
-  const columnClass =
-    selected.length === 1 ? "grid-cols-1"
-    : selected.length === 2 ? "grid-cols-1 sm:grid-cols-2"
-    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
-
   // Vælg komponenttype baseret på valgt graf-type
   const ChartComponent =
     chartType === "line" ? LineChart :
@@ -85,7 +79,7 @@ export default function DashboardPage({ filters, chartType }) {
   }
 
   return (
-    <div className={`grid gap-6 ${columnClass}`}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-6">
       {selected.map((sensor) => (
         <div
           key={sensor.key}
