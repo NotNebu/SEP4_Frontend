@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import Navbar from '@/Presentation/Components/Navbar';
+import Navbar from '@/Presentation/Layout/Navbar';
 
 describe('Navbar component', () => {
   // Wrapper for at give router context

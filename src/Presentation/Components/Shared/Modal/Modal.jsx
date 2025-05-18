@@ -1,0 +1,29 @@
+/**
+ * Modal – Genanvendelig komponent til at vise indhold i et overlay.
+ * Vises kun, når `isOpen` er true. Lukkes via `onClose`.
+ */
+export default function Modal({ isOpen, onClose, children }) {
+  if (!isOpen) return null;
+
+  return (
+    // Baggrund og centreret modalvindue
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-2 sm:p-4">
+      <div
+        className="relative bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-y-auto
+                   w-full max-h-[95vh] max-w-5xl sm:p-6 p-4"
+      >
+        {/* Luk-knap i øverste højre hjørne */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-red-400 text-xl z-10"
+          aria-label="Luk"
+        >
+          ✖
+        </button>
+
+        {/* Indhold vises her */}
+        <div className="mt-6">{children}</div>
+      </div>
+    </div>
+  );
+}

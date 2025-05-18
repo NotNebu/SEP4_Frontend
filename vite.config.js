@@ -3,11 +3,12 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import fs from 'fs'
 
+
 export default defineConfig({
   plugins: [react()],
   server: {
     https: {
-      pfx: fs.readFileSync('./localhost.p12'),
+      pfx: fs.readFileSync('./nginx/certs/localhost.key'),
       passphrase: 'changeit',
     },
     port: 3000,
@@ -22,6 +23,9 @@ export default defineConfig({
       '@Infrastructure': path.resolve(__dirname, './src/Infrastructure'),
       '@Shared': path.resolve(__dirname, './src/Shared'),
     },
+  },
+  build: {
+    sourcemap: true,
   },
   test: {
     environment: 'jsdom',

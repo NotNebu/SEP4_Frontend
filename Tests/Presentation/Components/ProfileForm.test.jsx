@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ProfileForm from '@/Presentation/Features/Profile/ProfileForm';
+import ProfileForm from '@/Presentation/Components/Profile/ProfileForm';
 
 describe('ProfileForm component', () => {
   // Tester at alle labels vises i DOM

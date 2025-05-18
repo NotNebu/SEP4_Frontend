@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import ProfileSidebar from '@/Presentation/Features/Profile/ProfileSidebar';
+import ProfileSidebar from '@/Presentation/Components/Profile/ProfileSidebar';
 import React from 'react';
 
 // Mock ChangePasswordModal for at fokusere på sidebar-test
