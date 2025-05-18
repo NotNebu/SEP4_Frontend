@@ -1,36 +1,50 @@
-import React from "react";
-import GreenhouseRow1 from "@Presentation/Scenes/GreenhouseRow1";
-import GreenhouseRow2 from "@Presentation/Scenes/GreenhouseRow2";
-import FlexBetween from "@Presentation/Layout/FlexBetween";
-import Footer from "@Presentation/Layout/Footer";
+import React, { useState } from "react";
+import SensorFilterPanel from "@/Presentation/Components/Dashboard/SensorFilterPanel";
+import DashboardGraph from "@/Presentation/Components/Dashboard/DashboardGraph";
+import SensorTableWrapper from "@/Presentation/Components/Dashboard/SensorTableWrapper";
+import Footer from "@/Presentation/Layout/Footer/Footer";
+import PageHeader from "@/Presentation/Layout/Headers/PageHeader";
 
 /**
- * Dashboard komponenten viser det overordnede kontrolpanel for brugeren.
- * Her kan brugeren se sensordata, såsom temperatur, luftfugtighed, lysniveau og jordfugtighed i realtid.
- * Derudover kan dashboardet vise grafer, statistikker og forskellige informationsrækker.
- *
- * @returns {JSX.Element}
+ * DashboardPage – Viser sensor-data med filtrering, grafer og seneste målinger.
+ * Brugeren kan vælge sensorer, tidsperiode og diagramtype.
  */
+export default function DashboardPage() {
+  const [filters, setFilters] = useState({
+    sensors: ["temperature", "humidity"],
+    range: "6h",
+    refresh: false,
+  });
 
-const DashboardPage = () => {
+  const [chartType, setChartType] = useState("line");
+
   return (
-    <div className="dark:bg-gray-900 dark:text-white min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col dark:bg-gray-900 dark:text-white">
+      <div className="px-4 py-8 max-w-screen-2xl mx-auto w-full space-y-10 flex-grow">
+        <PageHeader title="Dashboard" />
 
-      <h1 className="text-3xl font-bold my-6 px-6 py-8">Dashboard</h1>
+        {/* Sektion: Filter og graf/table visning */}
+        <div className="flex flex-col xl:flex-row gap-6">
 
-      <div className="px-6 py-8">
-        <GreenhouseRow1 />
+          {/* Venstre kolonne: Filtreringspanel */}
+          <div className="w-full xl:w-1/5">
+            <SensorFilterPanel
+              filters={filters}
+              setFilters={setFilters}
+              availableSensors={["temperature", "humidity", "soil", "distance"]}
+            />
+          </div>
+
+          {/* Højre kolonne: Grafer og tabelvisning */}
+          <div className="w-full xl:w-4/5 space-y-10">
+            <DashboardGraph filters={filters} chartType={chartType} />
+            <SensorTableWrapper />
+          </div>
+        </div>
       </div>
 
-      <div className="px-6 py-8">
-        <FlexBetween>
-          <GreenhouseRow2 />
-        </FlexBetween>
-      </div>
-      
+      {/* Footer nederst */}
       <Footer />
     </div>
   );
-};
-
-export default DashboardPage;
+}

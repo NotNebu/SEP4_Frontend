@@ -2,6 +2,8 @@ const navigate = useNavigate();
 
 try {
   const res = await fetch("...");
+
+  // Hvis svaret ikke er OK (fx 404, 500 osv.)
   if (!res.ok) {
     navigate("/error", {
       state: {
@@ -14,6 +16,7 @@ try {
     });
   }
 } catch (err) {
+  // Netværksfejl, timeouts eller ukendte serverfejl
   navigate("/error", {
     state: {
       code: 500,

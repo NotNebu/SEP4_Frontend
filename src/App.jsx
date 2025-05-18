@@ -8,13 +8,13 @@ import {
 } from "react-router-dom";
 
 import DashboardPage from "@Presentation/Pages/DashboardPage.jsx";
-import TestPage from "@Presentation/Pages/TestPage";
-import PredictionFormPage from "@/Presentation/Features/Prediction/PredictionFormPage.jsx";
-import Navbar from "@Presentation/Components/Navbar";
-import LoginPage from "@Presentation/Features/Login/LoginPage";
-import ProfilePage from "./Presentation/Features/Profile/ProfilePage";
+import PredictionFormPage from "@/Presentation/Pages/PredictionFormPage.jsx";
+import Navbar from "@/Presentation/Layout/Navbar/Navbar.jsx";
+import LoginPage from "@/Presentation/Pages/LoginPage";
+import ProfilePage from "./Presentation/Pages/ProfilePage";
 import ErrorPage from "@Presentation/Pages/ErrorPage";
 import { useAuth } from "@Shared/Context/AuthContext.jsx";
+import CreateExperimentPage from "./Presentation/Pages/CreateExperimentPage";
 
 
 function ProtectedRoute({ children }) {
@@ -61,18 +61,18 @@ function App() {
             }
           />
           <Route
-            path="/test"
-            element={
-              <ProtectedRoute>
-                <TestPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/prediction-form"
             element={
               <ProtectedRoute>
                 <PredictionFormPage />
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/create-experiment"
+            element={
+              <ProtectedRoute>
+                <CreateExperimentPage />
               </ProtectedRoute>
             }
           />
