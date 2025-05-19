@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { fetchSensorData } from "@/Application/Services/SensorService";
+import { fetchSensorData } from "@/Application/Services/DashboardService";
 
 /**
  * DashboardViewModel – Henter og formatterer sensordata til visning i dashboardet.
