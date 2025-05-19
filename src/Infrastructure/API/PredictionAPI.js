@@ -1,7 +1,7 @@
 const BASE_URL = "https://localhost:5107/api/sensor";
 
 /**
- * Sender sensorbaserede input til backend for at få en ML-forudsigelse.
+ * Sender data til API'et for at få en forudsigelse baseret på sensordata.
  */
 export const submitPrediction = async (payload) => {
   const response = await fetch(`${BASE_URL}/predict`, {

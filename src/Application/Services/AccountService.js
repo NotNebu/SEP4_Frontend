@@ -1,9 +1,8 @@
 import * as AccountAPI from "@/Infrastructure/API/AccountAPI";
 
 /**
- * Kalder infrastrukturen for at ændre brugerens kodeord.
- * Eventuel validering, business logic, logging osv. kan lægges her.
+ * Kalder API'et for at ændre kodeord – uden at ændre navn eller logik.
  */
-export const changeUserPassword = async (formData) => {
-  return await AccountAPI.changePassword(formData);
+export const changePassword = async (data) => {
+  return await AccountAPI.changePassword(data);
 };

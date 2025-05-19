@@ -1,17 +1,29 @@
 import * as ExperimentAPI from "@/Infrastructure/API/ExperimentAPI";
 
-export const getUserExperiments = async () => {
+/**
+ * Henter brugerens eksperimenter.
+ */
+export const getMyExperiments = async () => {
   return await ExperimentAPI.getMyExperiments();
 };
 
-export const removeExperiment = async (id) => {
-  await ExperimentAPI.deleteExperiment(id);
+/**
+ * Sletter et eksperiment.
+ */
+export const deleteExperiment = async (id) => {
+  return await ExperimentAPI.deleteExperiment(id);
 };
 
-export const submitExperiment = async (experiment) => {
-  return await ExperimentAPI.createExperiment(experiment);
+/**
+ * Opretter et nyt eksperiment.
+ */
+export const createExperiment = async (payload) => {
+  return await ExperimentAPI.createExperiment(payload);
 };
 
-export const saveSensorExperiment = async (title, dataArray) => {
+/**
+ * Gemmer sensorbaseret eksperiment (fx fra dashboard).
+ */
+export const saveFetchedExperiment = async (title, dataArray) => {
   return await ExperimentAPI.saveFetchedExperiment(title, dataArray);
 };

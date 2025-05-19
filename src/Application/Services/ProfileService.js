@@ -1,15 +1,15 @@
 import * as ProfileAPI from "@/Infrastructure/API/ProfileAPI";
 
 /**
- * Henter brugerens profil (uden fetch-logik).
+ * Henter brugerens profil.
  */
-export const getProfile = async () => {
+export const fetchUserProfile = async () => {
   return await ProfileAPI.fetchUserProfile();
 };
 
 /**
- * Gemmer brugerens opdaterede profil.
+ * Opdaterer brugerens profil.
  */
-export const saveProfile = async (profileData) => {
-  return await ProfileAPI.updateUserProfile(profileData);
+export const updateUserProfile = async (profile) => {
+  return await ProfileAPI.updateUserProfile(profile);
 };

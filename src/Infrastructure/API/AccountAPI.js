@@ -2,7 +2,6 @@ const BASE_URL = "https://localhost:5107/api/account";
 
 /**
  * Sender en anmodning til API'et for at ændre brugerens kodeord.
- * Dette er et lav-niveau netværkskald og skal derfor ligge i Infrastructure.
  */
 export const changePassword = async ({ oldPassword, newPassword }) => {
   const response = await fetch(`${BASE_URL}/change-password`, {

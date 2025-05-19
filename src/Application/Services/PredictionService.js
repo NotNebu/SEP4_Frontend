@@ -1,9 +1,8 @@
 import * as PredictionAPI from "@/Infrastructure/API/PredictionAPI";
 
 /**
- * Kald prediction-API med input og returner resultat.
- * Her kan man senere tilføje validering, mapping, fallback, caching osv.
+ * Kalder PredictionAPI for at få en forudsigelse.
  */
-export const requestPrediction = async (sensorInput) => {
-  return await PredictionAPI.submitPrediction(sensorInput);
+export const submitPrediction = async (payload) => {
+  return await PredictionAPI.submitPrediction(payload);
 };

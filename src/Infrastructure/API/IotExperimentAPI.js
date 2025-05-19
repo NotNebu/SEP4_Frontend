@@ -58,9 +58,8 @@ export const exportIotCsv = async (experimentId, startDate, endDate) => {
   const response = await fetch(`${BASE_URL}/${experimentId}/export/csv?${params.toString()}`, {
     credentials: "include",
   });
-
   if (!response.ok) throw new Error(await response.text() || "Kunne ikke eksportere CSV.");
-  return await response.text(); // CSV returneres som tekst
+  return await response.text();
 };
 
 export const exportIotJson = async (experimentId, startDate, endDate) => {
@@ -71,7 +70,6 @@ export const exportIotJson = async (experimentId, startDate, endDate) => {
   const response = await fetch(`${BASE_URL}/${experimentId}/export/json?${params.toString()}`, {
     credentials: "include",
   });
-
   if (!response.ok) throw new Error(await response.text() || "Kunne ikke eksportere JSON.");
   return await response.json();
 };
