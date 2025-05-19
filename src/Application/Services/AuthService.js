@@ -1,34 +1,19 @@
-// --- REGISTRERING ---
-// Sender brugerens oplysninger til API'et for at oprette en ny konto
-export const registerUser = async ({ email, password, username }) => {
-  const response = await fetch("https://localhost:5107/api/auth/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, username }),
-  });
+import * as AuthAPI from "@/Infrastructure/API/AuthAPI";
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(err || "Registrering fejlede.");
-  }
-
-  return await response.text();
+export const loginUser = async ({ email, password }) => {
+  const user = await AuthAPI.login(email, password);
+  return user; // evt. tilføj localStorage eller context her
 };
 
-// --- LOGIN ---
-// Logger brugeren ind og modtager JWT via cookie
-export const loginUser = async ({ email, password }) => {
-  const response = await fetch("https://localhost:5107/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-    credentials: "include",
-  });
+export const registerUser = async ({ email, password, username }) => {
+  const result = await AuthAPI.register(email, password, username);
+  return result;
+};
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(err || "Login fejlede.");
-  }
+export const fetchCurrentUser = async () => {
+  return await AuthAPI.getMe();
+};
 
-  return true;
+export const logoutUser = async () => {
+  return await AuthAPI.logout();
 };

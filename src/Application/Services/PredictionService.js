@@ -1,18 +1,9 @@
-// Sender data til API'et for at få en forudsigelse baseret på sensordata
-export const submitPrediction = async (payload) => {
-  const response = await fetch("https://localhost:5107/api/sensor/predict", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(payload),
-  });
+import * as PredictionAPI from "@/Infrastructure/API/PredictionAPI";
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Forudsigelse fejlede.");
-  }
-
-  return await response.text();
+/**
+ * Kald prediction-API med input og returner resultat.
+ * Her kan man senere tilføje validering, mapping, fallback, caching osv.
+ */
+export const requestPrediction = async (sensorInput) => {
+  return await PredictionAPI.submitPrediction(sensorInput);
 };
