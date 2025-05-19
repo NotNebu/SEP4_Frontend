@@ -1,3 +1,8 @@
+/* Importerer Tailwinds grundlæggende styles (normalize, box-sizing, fonts osv.) */
 @tailwind base;
+
+/* Importerer eventuelle komponent-klasser (fx knapper, formularer) */
 @tailwind components;
+
+/* Importerer alle utility-klasser (margin, padding, flex, bg, text, osv.) */
 @tailwind utilities;
