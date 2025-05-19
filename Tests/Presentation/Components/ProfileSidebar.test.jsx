@@ -13,7 +13,7 @@ describe('ProfileSidebar component', () => {
     render(<ProfileSidebar />);
     expect(screen.getByText('Profil')).toBeInTheDocument();
     expect(screen.getByText('Upload billede')).toBeInTheDocument();
-    expect(screen.getByText('Ændre password')).toBeInTheDocument();
+    expect(screen.getByText('Ændre kodeord')).toBeInTheDocument();
     expect(screen.getByText('Gem ændringer')).toBeInTheDocument();
   });
 
@@ -21,7 +21,7 @@ describe('ProfileSidebar component', () => {
   test('opens modal when "Ændre password" is clicked', () => {
     render(<ProfileSidebar />);
     expect(screen.queryByText('Modal er åben')).not.toBeInTheDocument();
-    const button = screen.getByText('Ændre password');
+    const button = screen.getByText('Ændre kodeord');
     fireEvent.click(button);
     expect(screen.getByText('Modal er åben')).toBeInTheDocument();
   });

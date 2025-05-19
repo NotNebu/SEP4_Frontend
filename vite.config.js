@@ -16,12 +16,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@Core': path.resolve(__dirname, './src/Core'),
-      '@Application': path.resolve(__dirname, './src/Application'),
-      '@Presentation': path.resolve(__dirname, './src/Presentation'),
-      '@Infrastructure': path.resolve(__dirname, './src/Infrastructure'),
-      '@Shared': path.resolve(__dirname, './src/Shared'),
+      '@': path.resolve(__dirname, 'src'),
+      '@Core': path.resolve(__dirname, 'src/Core'),
+      '@Application': path.resolve(__dirname, 'src/Application'),
+      '@Presentation': path.resolve(__dirname, 'src/Presentation'),
+      '@Infrastructure': path.resolve(__dirname, 'src/Infrastructure'),
+      '@Shared': path.resolve(__dirname, 'src/Shared'),
     },
   },
   build: {
