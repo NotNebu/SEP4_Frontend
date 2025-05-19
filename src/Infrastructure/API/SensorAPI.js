@@ -1,6 +1,10 @@
-// Henter sensordata fra API'et
+const BASE_URL = "https://localhost:5107/api/sensor";
+
+/**
+ * Henter sensordata fra backend-API'et.
+ */
 export const fetchSensorData = async () => {
-  const response = await fetch("https://localhost:5107/api/sensor", {
+  const response = await fetch(BASE_URL, {
     credentials: "include",
   });
 
