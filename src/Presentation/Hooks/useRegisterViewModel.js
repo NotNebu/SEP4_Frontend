@@ -4,7 +4,7 @@ import { registerUser } from "@/Application/Services/AuthService";
 /**
  * RegisterViewModel – Håndterer state og validering for registreringsformularen.
  */
-export const RegisterViewModel = () => {
+export const RegisterViewModel = (onSuccess) => {
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -32,6 +32,9 @@ export const RegisterViewModel = () => {
       });
 
       alert("Bruger oprettet");
+      if (typeof onSuccess === "function") {
+        onSuccess(); // Til at luk modal
+      }
     } catch (error) {
       alert(error.message);
     }

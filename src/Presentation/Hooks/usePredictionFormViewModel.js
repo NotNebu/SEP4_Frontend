@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { submitPrediction } from '@/Application/Services/PredictionService';
+import { submitPrediction, savePrediction } from '@/Application/Services/PredictionService';
+import { useAuth } from '@Shared/Context/AuthContext';
 
-// Konfiguration for hver modeltype med tilhørende formularfelter og metadata
+// Konfiguration for hver ML-model
 const modelConfigs = {
   logistic: {
     fields: [
@@ -31,27 +32,32 @@ const modelConfigs = {
   }
 };
 
-/**
- * useSingleModel – Hook til håndtering af formular, forudsigelse og resultat for én ML-model.
- */
-const useSingleModel = ({ fields, modelKey, fileName, type }) => {
+// Hook til én enkelt model
+const useSingleModel = ({ fields, modelKey, fileName, type, onAfterSubmit }) => {
   const [formData, setFormData] = useState({});
   const [result, setResult] = useState(null);
+  const { user } = useAuth();
 
-  // Håndter ændring af felt
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // Ryd formular og resultat
   const handleClear = () => {
     setFormData({});
     setResult(null);
   };
 
-  // Send forudsigelses-request
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const sunlight = formData.Sunlight_Hours ?? formData.sunlight_hours;
+    const temp = formData.Temperature ?? formData.temperature;
+    const humidity = formData.Humidity ?? formData.humidity;
+
+    if (sunlight > 24) return alert("Maksimalt antal soltimer er 24.");
+    if (temp > 50) return alert("Temperaturen må ikke overstige 50°C.");
+    if (humidity > 50 || humidity < 10) return alert("Fugtighed skal være mellem 10 og 50.");
+
     const payload = {
       TypeofModel: type,
       [modelKey]: fileName,
@@ -60,7 +66,18 @@ const useSingleModel = ({ fields, modelKey, fileName, type }) => {
 
     try {
       const response = await submitPrediction(payload);
-      setResult(typeof response === 'string' ? JSON.parse(response) : response);
+      const parsed = typeof response === 'string' ? JSON.parse(response) : response;
+      setResult(parsed);
+
+      await savePrediction({
+        model: type,
+        fileName,
+        input: formData,
+        result: parsed,
+      });
+
+      onAfterSubmit?.(); //  opdatere forudsigelseslisten
+
     } catch (err) {
       alert(`Forudsigelse fejlede: ${err.message}`);
     }
@@ -76,10 +93,15 @@ const useSingleModel = ({ fields, modelKey, fileName, type }) => {
   };
 };
 
-/**
- * usePredictionFormViewModel – Returnerer hooks for begge understøttede modeller.
- */
-export const usePredictionFormViewModel = () => ({
-  logistic: useSingleModel(modelConfigs.logistic),
-  rfc: useSingleModel(modelConfigs.rfc)
-});
+// ViewModel hook til alle modeller
+export const usePredictionFormViewModel = () => {
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleRefresh = () => setRefreshTrigger(prev => prev + 1);
+
+  return {
+    logistic: useSingleModel({ ...modelConfigs.logistic, onAfterSubmit: handleRefresh }),
+    rfc: useSingleModel({ ...modelConfigs.rfc, onAfterSubmit: handleRefresh }),
+    refreshTrigger
+  };
+};

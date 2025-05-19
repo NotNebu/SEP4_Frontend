@@ -4,21 +4,19 @@ import PredictionForm from '@/Presentation/Components/Predictions/PredictionForm
 import PageHeader from '@/Presentation/Layout/Headers/PageHeader';
 import TwoColumnGrid from '@/Presentation/Layout/TwoColumnGrid';
 import Footer from "@/Presentation/Layout/Footer/Footer";
+import PredictionHistoryML from '@/Presentation/Components/Predictions/PredictionHistoryML'; 
+import { useAuthViewModel } from "@/Presentation/Hooks/useAuthViewModel";
 
-/**
- * PredictionFormPage – Viser formularer til to forskellige ML-modeller (Logistic og RFC)
- * Brugeren kan indtaste data og få resultater vist direkte.
- */
 const PredictionFormPage = () => {
-  const { logistic, rfc } = usePredictionFormViewModel();
-
+  const { logistic, rfc, refreshTrigger } = usePredictionFormViewModel();
+  const { user } = useAuthViewModel();
+  const userId = user?.userId;
+    
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-      {/* Indhold */}
       <main className="flex-grow p-8 max-w-7xl mx-auto w-full">
         <PageHeader title="Forudsigelser" />
 
-        {/* Formularer i to kolonner */}
         <TwoColumnGrid>
           <PredictionForm
             modelName="Logistic"
@@ -40,9 +38,10 @@ const PredictionFormPage = () => {
             onClear={rfc.handleClear}
           />
         </TwoColumnGrid>
+          
+        <PredictionHistoryML userId={userId} refreshTrigger={refreshTrigger} />
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
