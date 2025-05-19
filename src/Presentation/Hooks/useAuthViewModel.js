@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as AuthService from "@/Infrastructure/API/AuthAPI";
+import * as AuthService from "@Infrastructure/API/auth";
 
 /**
  * useAuthViewModel – Håndterer brugerens autentificeringstilstand (login-status).

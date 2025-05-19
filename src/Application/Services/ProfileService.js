@@ -1,15 +1,21 @@
-import * as ProfileAPI from "@/Infrastructure/API/ProfileAPI";
-
-/**
- * Henter brugerens profil.
- */
+// Henter den aktuelle brugers profiloplysninger
 export const fetchUserProfile = async () => {
-  return await ProfileAPI.fetchUserProfile();
+  const res = await fetch("https://localhost:5107/api/account/me", {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Kunne ikke hente brugerprofil.");
+  return await res.json();
 };
 
-/**
- * Opdaterer brugerens profil.
- */
+// Opdaterer brugerens profil med nye oplysninger
 export const updateUserProfile = async (profile) => {
-  return await ProfileAPI.updateUserProfile(profile);
+  const res = await fetch("https://localhost:5107/api/account", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(profile),
+  });
+
+  if (!res.ok) throw new Error("Kunne ikke opdatere brugerprofilen.");
 };

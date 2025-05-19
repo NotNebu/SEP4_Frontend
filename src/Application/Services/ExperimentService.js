@@ -1,29 +1,50 @@
-import * as ExperimentAPI from "@/Infrastructure/API/ExperimentAPI";
-
-/**
- * Henter brugerens eksperimenter.
- */
+// Henter brugerens egne eksperimenter
 export const getMyExperiments = async () => {
-  return await ExperimentAPI.getMyExperiments();
+  const response = await fetch("https://localhost:5107/api/experiment/my-experiments", {
+    credentials: "include",
+  });
+
+  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente eksperimenter.");
+  return await response.json();
 };
 
-/**
- * Sletter et eksperiment.
- */
+// Sletter et eksperiment baseret på ID
 export const deleteExperiment = async (id) => {
-  return await ExperimentAPI.deleteExperiment(id);
+  const response = await fetch(`https://localhost:5107/api/experiment/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) throw new Error(await response.text() || "Kunne ikke slette eksperimentet.");
 };
 
-/**
- * Opretter et nyt eksperiment.
- */
+// Opretter et nyt eksperiment med brugerens input
 export const createExperiment = async (payload) => {
-  return await ExperimentAPI.createExperiment(payload);
+  const response = await fetch("https://localhost:5107/api/experiment", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) throw new Error(await response.text() || "Kunne ikke oprette eksperimentet.");
+  return await response.json();
 };
 
-/**
- * Gemmer sensorbaseret eksperiment (fx fra dashboard).
- */
+// Gemmer sensorbaseret eksperiment direkte fra fetch-data
 export const saveFetchedExperiment = async (title, dataArray) => {
-  return await ExperimentAPI.saveFetchedExperiment(title, dataArray);
+  const payload = {
+    title,
+    dataJson: dataArray,
+  };
+
+  const response = await fetch("https://localhost:5107/api/experiment", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) throw new Error(await response.text() || "Kunne ikke gemme eksperimentet.");
+  return await response.json();
 };
