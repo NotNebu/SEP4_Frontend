@@ -32,6 +32,6 @@ export const exportIotCsv = async (experimentId, startDate, endDate) => {
   return await IotAPI.exportIotCsv(experimentId, startDate, endDate);
 };
 
-export const exportIotJson = async (experimentId, startDate, endDate) => {
-  return await IotAPI.exportIotJson(experimentId, startDate, endDate);
-};
+export const exportJson = (experimentId, startDate, endDate) =>
+  IotAPI.exportIotJson(experimentId, startDate, endDate);
+
