@@ -1,6 +1,5 @@
-name: Build & Push Docker Image  # Navn på workflow'et
+name: Build & Push Docker Image
 
-# Kør workflow når der pushes til main-branch
 on:
   push:
     branches:
@@ -13,24 +12,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Kør på seneste Ubuntu GitHub-hostet runner
+    runs-on: ubuntu-latest
 
     steps:
-      # Trin 1: Tjek projektet ud
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Trin 2: Log ind på Docker Hub med credentials gemt i GitHub Secrets
+      # Vitest tests
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Vitest tests
+        run: npx vitest run
+
+      # Docker login med GitHub Secrets
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Trin 3: Byg Docker-image og tag det med brugernavn/image-navn
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/growheat-frontend .
 
-      # Trin 4: Push Docker image til Docker Hub
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/growheat-frontend
