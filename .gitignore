@@ -7,30 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Dependency folders
-node_modules/
-
-# Build output
-dist/
-dist-ssr/
-
-# Local environment settings
+node_modules
+dist
+dist-ssr
 *.local
 
-# OS og IDE-specifikke filer
-.DS_Store
+# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea/
+.idea
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# Test-output
-coverage/
-*.test.js.snap
-
-# Docker/CI
-docker-compose.override.yml
