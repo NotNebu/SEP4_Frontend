@@ -5,8 +5,8 @@ import Form from '@Presentation/Components/Shared/UI/Form';
 import PasswordStrengthMeter from '@/Presentation/Components/Shared/Validation/PasswordStrengthMeter';
 
 // Modalvindue til oprettelse af ny bruger
-const RegisterModal = ({ onClose }) => {
-  const { form, handleChange, onRegister } = RegisterViewModel();
+const RegisterModal = ({ onClose }) =>  {
+  const { form, handleChange, onRegister } = RegisterViewModel(onClose);
 
   // Felter til registreringsformularen
   const fields = [

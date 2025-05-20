@@ -7,12 +7,17 @@ export const registerUser = async ({ email, password, username }) => {
     body: JSON.stringify({ email, password, username }),
   });
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(err || "Registrering fejlede.");
-  }
+   if (!response.ok) {
+    const data = await response.json();
+
+    if (data.errors) {
+      // Hvis der er valideringsfejl, samler vi dem i en liste
+      const messages = Object.values(data.errors).flat();
+      throw new Error(messages.join("\n"));
+    }
 
   return await response.text();
+   }
 };
 
 // --- LOGIN ---
@@ -24,11 +29,24 @@ export const loginUser = async ({ email, password }) => {
     body: JSON.stringify({ email, password }),
     credentials: "include",
   });
-
+  
   if (!response.ok) {
-    const err = await response.text();
-    throw new Error(err || "Login fejlede.");
-  }
+    let errorMessage = "Login fejlede.";
 
+    try {
+      const clone = response.clone(); 
+      const data = await clone.json();
+      if (data?.message) errorMessage = data.message;
+    } catch {
+      try {
+        const text = await response.text(); 
+        if (text) errorMessage = text;
+      } catch {
+        errorMessage = "Uventet fejl under login.";
+      }
+    }
+
+    throw new Error(errorMessage);
+  }
   return true;
 };
