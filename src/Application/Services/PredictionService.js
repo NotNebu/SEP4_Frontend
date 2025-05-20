@@ -1,12 +1,21 @@
-// Sender data til API'et for at få en forudsigelse baseret på sensordata
+const BASE_URL = "https://localhost:5107/api";
+
+//    Hent forudsigelse fra serveren
 export const submitPrediction = async (payload) => {
-  const response = await fetch("https://localhost:5107/api/sensor/predict", {
+  const formattedPayload = {
+    TypeofModel: payload.TypeofModel,
+    NameOfModel: payload.ModelName,
+    Data: payload.Data,
+  };
+
+  // Send POST-anmodning til serveren med forudsigelsesdata
+  const response = await fetch(`${BASE_URL}/sensor/predict`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify(payload),
+    body: JSON.stringify(formattedPayload),
   });
 
   if (!response.ok) {
@@ -17,31 +26,22 @@ export const submitPrediction = async (payload) => {
   return await response.text();
 };
 
-// Gemmer forudsigelsen i UserService databasen
-export const savePrediction = async ({ model, fileName, input, result }) => {
-  const response = await fetch("https://localhost:5107/api/prediction", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+// Slet forudsigelse fra serveren
+export const deletePrediction = async (id) => {
+  const response = await fetch(`${BASE_URL}/prediction/${id}`, {
+    method: "DELETE",
     credentials: "include",
-    body: JSON.stringify({
-      model,
-      fileName,
-      input,
-      result,
-    }),
   });
 
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(error || "Kunne ikke gemme forudsigelse.");
+    throw new Error(error || "Kunne ikke slette forudsigelse.");
   }
 };
 
-// Henter tidligere forudsigelser
+// Hent forudsigelseshistorik fra serveren
 export const fetchPredictionHistory = async () => {
-  const response = await fetch("https://localhost:5107/api/prediction", {
+  const response = await fetch(`${BASE_URL}/prediction`, {
     credentials: "include",
   });
 
@@ -53,15 +53,38 @@ export const fetchPredictionHistory = async () => {
   return await response.json();
 };
 
-// Sletter én forudsigelse (hvis controlleren har endpoint til DELETE senere)
-export const deletePrediction = async (id) => {
-  const response = await fetch(`https://localhost:5107/api/prediction/${id}`, {
-    method: "DELETE",
+  // Gem forudsigelse på serveren
+export const savePrediction = async ({ model, fileName, input, result }) => {
+  const response = await fetch(`${BASE_URL}/prediction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ model, fileName, input, result }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || "Kunne ikke gemme forudsigelse.");
+  }
+};
+
+// Hent tilgængelige modeller fra serveren
+// og returner dem som en liste
+export const fetchAvailableModels = async () => {
+  const response = await fetch(`${BASE_URL}/sensor/model`, {
     credentials: "include",
   });
 
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(error || "Kunne ikke slette forudsigelsen.");
+    throw new Error(error || "Kunne ikke hente tilgængelige modeller.");
   }
+
+  const result = await response.text();
+  const parsed = JSON.parse(result);
+  return parsed.model_files || [];
+
+  
 };
