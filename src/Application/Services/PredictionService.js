@@ -86,5 +86,4 @@ export const fetchAvailableModels = async () => {
   const parsed = JSON.parse(result);
   return parsed.model_files || [];
 
-  
 };
