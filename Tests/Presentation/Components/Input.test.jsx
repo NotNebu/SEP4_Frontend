@@ -1,47 +1,38 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import Navbar from '@/Presentation/Layout/Navbar';
+import Input from '@/Presentation/Components/Shared/UI/Input';
+import { describe, it, expect, vi } from 'vitest';
 
-describe('Navbar component', () => {
-  // Hjælpefunktion: renderer Navbar i en router-context
-  const renderWithRouter = () => render(<Navbar />, { wrapper: MemoryRouter });
-
-  // Tester at logo og app-navn "GroWheat" vises
-  test('renders logo and app name', () => {
-    renderWithRouter();
-    expect(screen.getByText('GroWheat')).toBeInTheDocument();
+describe('Input component', () => {
+  it('renders label and input', () => {
+    render(<Input label="Brugernavn" name="username" />);
+    expect(screen.getByLabelText('Brugernavn')).toBeInTheDocument();
   });
 
-  // Tester at hovednavigationens links er synlige: Dashboard, Prediction, Forsøg
-  test('renders main nav links', () => {
-    renderWithRouter();
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Prediction')).toBeInTheDocument();
-    expect(screen.getByText('Forsøg')).toBeInTheDocument();
+  it('sets the correct input type', () => {
+    render(<Input label="Email" name="email" type="email" />);
+    const input = screen.getByLabelText('Email');
+    expect(input).toHaveAttribute('type', 'email');
   });
 
-  // Tester login-funktionalitet: klik på "Login" skifter teksten til "Log ud"
-  test('toggles login/logout state', () => {
-    renderWithRouter();
-    const loginButton = screen.getByText('Login');
-    fireEvent.click(loginButton);
-    expect(screen.getByText('Log ud')).toBeInTheDocument();
+  it('sets the value and calls onChange when typing', () => {
+    const handleChange = vi.fn();
+    render(
+      <Input
+        label="Navn"
+        name="name"
+        value="Test"
+        onChange={handleChange}
+      />
+    );
+    const input = screen.getByLabelText('Navn');
+    expect(input).toHaveValue('Test');
+    fireEvent.change(input, { target: { value: 'Ny værdi' } });
+    expect(handleChange).toHaveBeenCalledTimes(1);
   });
 
-  // Tester dropdown: klik på "Forsøg" viser undermenu med "Forsøg 1" og "Forsøg 2"
-  test('shows dropdown menu when Forsøg is clicked', () => {
-    renderWithRouter();
-    const forsøgBtn = screen.getByText('Forsøg');
-    fireEvent.click(forsøgBtn);
-    expect(screen.getByText('Forsøg 1')).toBeInTheDocument();
-    expect(screen.getByText('Forsøg 2')).toBeInTheDocument();
-  });
-
-  // Tester at hamburger-menu til mobilvisning findes som sidste <button> i DOM
-  test('shows mobile menu button (hamburger style)', () => {
-    renderWithRouter();
-    const buttons = screen.getAllByRole('button');
-    const hamburgerButton = buttons[buttons.length - 1];
-    expect(hamburgerButton).toBeInTheDocument();
+  it('applies the "auth" variant style', () => {
+    render(<Input label="Adgangskode" name="password" variant="auth" />);
+    const input = screen.getByLabelText('Adgangskode');
+    expect(input.className).toMatch(/rounded-full/); // auth-variant bruger det
   });
 });

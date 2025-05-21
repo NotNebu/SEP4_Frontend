@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Button from '@/Presentation/Components/Shared/UI/Button';
+import { test, expect} from 'vitest';
 
 // Tester at Button-komponenten renderer korrekt med label-prop.
 // Den sikrer at teksten bliver vist i DOM'en, og validerer både rendering og props-håndtering.
