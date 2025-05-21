@@ -33,10 +33,12 @@ export const useProfileViewModel = () => {
       });
   }, []);
 
-  // Håndter ændringer fra inputfelter (event-baseret)
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+  //Håndter ændringer fra Input via name og value
+  const handleChange = (name, value) => {
+    setProfile((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSave = async () => {

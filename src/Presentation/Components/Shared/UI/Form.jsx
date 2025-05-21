@@ -2,10 +2,15 @@
 import Input from "./Input";
 import Button from "./Button";
 
+/**
+ * En genanvendelig Form-komponent.
+ * Understøtter både forms med og uden submit/reset knapper.
+ */
 export default function Form({
   fields = [],
   values = {},
   onChange,
+  onChangeValue,
   onSubmit,
   onReset,
   showButtons = false,
@@ -15,12 +20,11 @@ export default function Form({
   resetVariant = "secondary",
   childrenAfter = null,
 }) {
-  const handleChange = (name, event) => {
-    if (event?.target && !event.target.name) {
-      event.target.name = name;
-    }
-    if (onChange) {
-      onChange(event);
+  const handleChange = (name, valueOrEvent) => {
+    if (onChangeValue) {
+      onChangeValue(name, valueOrEvent);
+    } else if (onChange) {
+      onChange(valueOrEvent);
     }
   };
 
@@ -35,6 +39,7 @@ export default function Form({
           placeholder={placeholder}
           value={values[name] || ""}
           onChange={(e) => handleChange(name, e)}
+          onChangeValue={(val) => handleChange(name, val)}
         />
       ))}
 
