@@ -1,3 +1,4 @@
+// useProfileViewModel.js
 import { useEffect, useState } from "react";
 import { fetchUserProfile, updateUserProfile } from "@/Application/Services/ProfileService";
 
@@ -17,9 +18,9 @@ export const useProfileViewModel = () => {
     city: "",
   });
 
-  const [loading, setLoading] = useState(true); // Vises indtil profil er hentet
+  const [loading, setLoading] = useState(true);
 
-  // Hent profilinfo ved første indlæsning
+  // Hent profilinfo
   useEffect(() => {
     fetchUserProfile()
       .then((data) => {
@@ -32,17 +33,18 @@ export const useProfileViewModel = () => {
       });
   }, []);
 
-  // Opdaterer felt i profilen
+  // Håndter ændringer fra inputfelter (event-baseret)
   const handleChange = (e) => {
-    setProfile((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Gem ændringer til profilen
   const handleSave = async () => {
     try {
       await updateUserProfile(profile);
       alert("Profil opdateret.");
     } catch (err) {
+      console.error(err);
       alert("Noget gik galt.");
     }
   };

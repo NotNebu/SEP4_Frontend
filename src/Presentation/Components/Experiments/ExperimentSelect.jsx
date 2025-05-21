@@ -12,7 +12,7 @@ export default function ExperimentSelect({ selected, options, onSelect }) {
       onChange={onSelect}
       options={options.map((item) => ({
         label: item.experiment,
-        value: item.experiment,
+        value: item.value,
       }))}
     />
   );

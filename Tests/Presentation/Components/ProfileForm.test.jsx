@@ -1,36 +1,55 @@
 import { render, screen } from '@testing-library/react';
+import { describe, test, expect } from 'vitest';
 import ProfileForm from '@/Presentation/Components/Profile/ProfileForm';
 
 describe('ProfileForm component', () => {
-  // Tester at alle labels vises i DOM
+  const mockProfile = {
+    firstname: 'John',
+    lastname: 'Doe',
+    username: 'johndoe',
+    email: 'john@example.com',
+    birthday: '1990-01-01',
+    country: 'Denmark',
+    street: 'Main St.',
+    houseNumber: '10',
+    city: 'Copenhagen',
+  };
+
   test('renders all input labels', () => {
-    render(<ProfileForm />);
-    expect(screen.getByText('Fornavn')).toBeInTheDocument();
-    expect(screen.getByText('Efternavn')).toBeInTheDocument();
-    expect(screen.getByText('Brugernavn')).toBeInTheDocument();
-    expect(screen.getByText('Email')).toBeInTheDocument();
-    expect(screen.getByText('Fødselsdag')).toBeInTheDocument();
-    expect(screen.getByText('Land')).toBeInTheDocument();
-    expect(screen.getByText('Vejnavn')).toBeInTheDocument();
-    expect(screen.getByText('Husnummer')).toBeInTheDocument();
-    expect(screen.getByText('By')).toBeInTheDocument();
+    render(<ProfileForm profile={mockProfile} onChange={() => {}} />);
+    
+    const labels = [
+      'Fornavn',
+      'Efternavn',
+      'Brugernavn',
+      'Email',
+      'Fødselsdag',
+      'Land',
+      'Vejnavn',
+      'Husnummer',
+      'By',
+    ];
+
+    labels.forEach((label) => {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    });
   });
 
-  // Tester at inputfeltet for "Fødselsdag" har typen "date"
   test('renders Fødselsdag input with type date', () => {
-    render(<ProfileForm />);
-    const label = screen.getByText('Fødselsdag');
-    const input = label.nextElementSibling;
-    expect(input).toHaveAttribute('type', 'date');
+    render(<ProfileForm profile={mockProfile} onChange={() => {}} />);
+    const dateInput = screen.getByLabelText('Fødselsdag');
+    expect(dateInput).toHaveAttribute('type', 'date');
   });
 
-  // Tester antal inputfelter
   test('renders 9 input fields', () => {
-    render(<ProfileForm />);
-    const inputs = screen.getAllByRole('textbox'); // fanger text inputs
-    const allInputs = screen.getAllByRole('textbox', { hidden: true });
-    const inputTags = screen.getAllByRole('textbox', { name: '' }); // evt. fallback
-    const dateInputs = document.querySelectorAll('input[type="date"]');
-    expect(inputs.length + dateInputs.length).toBe(9);
+    render(<ProfileForm profile={mockProfile} onChange={() => {}} />);
+    
+    // Vigtigt: kun tælle faktiske <input> elementer
+    const allInputs = screen.getAllByRole('textbox');
+    const dateInput = screen.getByLabelText('Fødselsdag');
+
+    // `getAllByRole('textbox')` fanger ikke <input type="date">, så vi lægger 1 til
+    expect(allInputs.length + 1).toBe(9);
+    expect(dateInput).toBeInTheDocument();
   });
 });

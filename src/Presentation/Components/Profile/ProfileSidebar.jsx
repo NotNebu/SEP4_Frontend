@@ -7,12 +7,10 @@ export default function ProfileSidebar({ onSave }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // Håndterer valg af billede
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  // Uploader valgt billede til backend
   const handleUpload = async () => {
     if (!selectedFile) return alert("Vælg en fil først.");
 
@@ -48,8 +46,16 @@ export default function ProfileSidebar({ onSave }) {
       }
     >
       <div className="space-y-2">
-        {/* Billedevalg og preview */}
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+        {/* Billedevalg med label for testbarhed og tilgængelighed */}
+        <label htmlFor="profile-upload" className="sr-only">Vælg billede</label>
+        <input
+          id="profile-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+
+        {/* Preview af billede */}
         {selectedFile && (
           <img
             src={URL.createObjectURL(selectedFile)}
@@ -74,7 +80,7 @@ export default function ProfileSidebar({ onSave }) {
           Ændre kodeord
         </button>
 
-        {/* Gem ændringer (f.eks. profilfelter) */}
+        {/* Gem ændringer */}
         <button
           onClick={onSave}
           className="w-full border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition"
@@ -83,8 +89,12 @@ export default function ProfileSidebar({ onSave }) {
         </button>
       </div>
 
-      {/* Modal til at skifte adgangskode */}
-      <ChangePasswordModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      {/* Modal med korrekt ARIA-rolle */}
+      {showModal && (
+        <div role="dialog" aria-modal="true">
+          <ChangePasswordModal isOpen={showModal} onClose={() => setShowModal(false)} />
+        </div>
+      )}
     </SidebarCard>
   );
 }

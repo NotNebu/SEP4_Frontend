@@ -1,25 +1,15 @@
 /**
- * Input – Genanvendeligt inputfelt med understøttelse af forskellige varianter og ændringshåndtering.
- * Tekster (label og placeholder) leveres udefra.
+ * Input – Genanvendeligt inputfelt med støtte for forskellige varianter.
  */
 export default function Input({
-  label,                // Label ved feltet (fx "Brugernavn")
-  name,                 // Unik input-name og id
-  type = "text",        // Input-type: "text", "email", "password", "date", osv.
-  value,                // Nuvarande værdi
-  onChange,             // Alternativ onChange handler (evt. til hele eventet)
-  onChangeValue,        // Primær handler: kaldes med e.target.value
-  placeholder,          // Placeholder tekst (fx "Indtast navn...")
-  variant = "default",  // Visuel stil: "default" eller "auth"
+  label,
+  name,
+  type = "text",
+  value,
+  onChange,
+  placeholder,
+  variant = "default",
 }) {
-  const handleInputChange = (e) => {
-    if (onChangeValue) {
-      onChangeValue(e.target.value);
-    } else if (onChange) {
-      onChange(e);
-    }
-  };
-
   const baseClasses = `
     w-full px-3 py-2 
     border rounded-lg 
@@ -42,20 +32,18 @@ export default function Input({
 
   return (
     <div className="space-y-1">
-      {/* Label vises hvis angivet */}
       {label && (
         <label htmlFor={name} className="block text-sm font-medium text-gray-300">
           {label}
         </label>
       )}
 
-      {/* Selve inputfeltet */}
       <input
         id={name}
         name={name}
         type={type}
         value={value}
-        onChange={handleInputChange}
+        onChange={onChange} // 🔥 KUN denne
         placeholder={placeholder}
         className={`${baseClasses} ${variants[variant]}`}
       />

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import DashboardBox from '@/Presentation/Layout/DashboardBox';
+import { describe,test, expect} from 'vitest';
 
 describe('DashboardBox component', () => {
   // Tester at komponenten viser children korrekt
