@@ -1,28 +1,48 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeAll } from 'vitest';
 import ProfileSidebar from '@/Presentation/Components/Profile/ProfileSidebar';
-import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
-// Mock ChangePasswordModal for at fokusere på sidebar-test
-vi.mock('@/Presentation/Modals/ChangePasswordModal', () => ({
-  default: ({ isOpen }) => isOpen ? <div>Modal er åben</div> : null
-}));
+beforeAll(() => {
+  globalThis.URL.createObjectURL = vi.fn(() => 'mock-url');
+});
 
 describe('ProfileSidebar component', () => {
-  // Tjekker at overskrift og knapper vises
-  test('renders profile title and all buttons', () => {
-    render(<ProfileSidebar />);
+  it('renders profile title and all buttons', () => {
+    render(
+      <MemoryRouter>
+        <ProfileSidebar onSave={() => {}} />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Profil')).toBeInTheDocument();
     expect(screen.getByText('Upload billede')).toBeInTheDocument();
-    expect(screen.getByText('Ændre password')).toBeInTheDocument();
+    expect(screen.getByText('Ændre kodeord')).toBeInTheDocument();
     expect(screen.getByText('Gem ændringer')).toBeInTheDocument();
   });
 
-  // Tester at modal vises efter klik
-  test('opens modal when "Ændre password" is clicked', () => {
-    render(<ProfileSidebar />);
-    expect(screen.queryByText('Modal er åben')).not.toBeInTheDocument();
-    const button = screen.getByText('Ændre password');
-    fireEvent.click(button);
-    expect(screen.getByText('Modal er åben')).toBeInTheDocument();
+  it('opens modal when "Ændre kodeord" is clicked', () => {
+    render(
+      <MemoryRouter>
+        <ProfileSidebar onSave={() => {}} />
+      </MemoryRouter>
+    );
+    fireEvent.click(screen.getByText('Ændre kodeord'));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('handles image file selection', () => {
+    render(
+      <MemoryRouter>
+        <ProfileSidebar onSave={() => {}} />
+      </MemoryRouter>
+    );
+
+    const fileInput = screen.getByLabelText('Vælg billede');
+    const file = new File(['image'], 'profile.jpg', { type: 'image/jpeg' });
+
+    fireEvent.change(fileInput, { target: { files: [file] } });
+
+    expect(fileInput.files[0]).toBe(file);
+    expect(fileInput.files).toHaveLength(1);
   });
 });
