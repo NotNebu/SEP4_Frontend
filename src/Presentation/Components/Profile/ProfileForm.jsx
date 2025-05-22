@@ -18,5 +18,12 @@ export default function ProfileForm({ profile, onChange, error }) {
     birthday: profile.birthday?.substring(0, 10),
   };
 
-  return <Form fields={fields} values={safeProfile} onChange={onChange} />;
+  return (
+    <>
+      <Form fields={fields} values={safeProfile} onChange={onChange} />
+      {error && (
+        <p className="text-red-400 text-sm mt-4">{error}</p>
+      )}
+    </>
+  );
 }
