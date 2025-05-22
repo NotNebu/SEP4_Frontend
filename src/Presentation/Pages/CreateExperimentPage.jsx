@@ -34,18 +34,45 @@ export default function CreateExperimentPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
+  e.preventDefault();
+  setError(null);
 
-    try {
-      await createExperiment({ title, description, dataJson });
-      alert("Eksperiment oprettet!");
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      setError("Der opstod en fejl ved oprettelsen.");
-    }
+  const numTemp = Number(temperature);
+  const numAir = Number(airHumidity);
+  const numSoil = Number(soilHumidity);
+  const numLight = Number(lightLevel);
+  const numExp = Number(experimentNumber);
+
+  // Validering af input
+  if (numExp < 1 || numExp > 10000)
+    return setError("Eksperimentnummer skal være mellem 1 og 10.000.");
+  if (numTemp < -20 || numTemp > 50)
+    return setError("Temperatur skal være mellem -20°C og 50°C.");
+  if (numAir < 0 || numAir > 100)
+    return setError("Luftfugtighed skal være mellem 0% og 100%.");
+  if (numSoil < 0 || numSoil > 100)
+    return setError("Jordfugtighed skal være mellem 0% og 100%.");
+  if (numLight < 0 || numLight > 100000)
+    return setError("Lysniveau skal være mellem 0 og 100.000 lux.");
+
+  const dataJson = {
+    experimentNumber: numExp,
+    temperature: numTemp,
+    airHumidity: numAir,
+    soilHumidity: numSoil,
+    lightLevel: numLight,
+    wateringActive,
   };
+
+  try {
+    await createExperiment({ title, description, dataJson });
+    alert("Eksperiment oprettet!");
+    navigate("/");
+  } catch (err) {
+    console.error(err);
+    setError("Der opstod en fejl ved oprettelsen.");
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white">

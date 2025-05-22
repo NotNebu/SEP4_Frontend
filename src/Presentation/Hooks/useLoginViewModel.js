@@ -1,64 +1,31 @@
+// src/Presentation/ViewModels/LoginViewModel.js
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@Shared/Context/AuthContext.jsx';
 import { loginUser } from '@/Application/Services/AuthService';
 
-/**
- * LoginViewModel – Håndterer loginformularens state og login-funktionalitet.
- */
 export const LoginViewModel = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { refreshUser } = useAuth(); // Henter brugerdata efter login
+  const { refreshUser } = useAuth();
 
-  // Forsøger at logge brugeren ind
   const onLogin = async () => {
     try {
-   // Alert Validering af email
-    if (!email) {
-      alert("Email er påkrævet.");
-      return;
-    }
+      if (!email) return alert("Email er påkrævet.");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert("Ugyldig email.");
+      if (!password) return alert("Adgangskode er påkrævet.");
+      if (password.length < 6) return alert("Adgangskoden skal være mindst 6 tegn.");
 
-     // Tjek om email er gyldigt format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert("Indtast en gyldig emailadresse (f.eks. test@email.com).");
-      return;
+      await loginUser({ email, password });
+      await refreshUser();
+      navigate("/dashboard"); // ← her bruger du din destination
+    } catch (error) {
+      const msg = error?.message || "Login fejlede";
+      alert(msg.toLowerCase().startsWith("login") ? msg : `Login fejlede: ${msg}`);
     }
-
-    // Alert Validering af adgangskode
-    if (!password) {
-      alert("Adgangskode er påkrævet.");
-      return;
-    }
-
-    // Validering af adgangskode længde
-    if (password.length < 6) {
-      alert("Adgangskoden skal være mindst 6 tegn lang.");
-      return;
-    }
-      // Validering af email og adgangskode
-      await loginUser({ email, password });   // API-kald med login-oplysninger
-      await refreshUser();                    // Opdater brugerdata i context
-        } catch (error) {
-    const msg = error?.message || "Login fejlede";
-
-     // Hvis den allerede starter med "Login", vis bare beskeden direkte
-    if (msg.toLowerCase().startsWith("login")) {
-      alert(msg);
-    } else {
-      alert(`Login fejlede: ${msg}`);
-    }
-  }
   };
 
-  return {
-    email,
-    password,
-    setEmail,
-    setPassword,
-    onLogin,
-  };
+  return { email, password, setEmail, setPassword, onLogin };
 };

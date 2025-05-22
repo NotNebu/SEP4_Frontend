@@ -5,7 +5,7 @@ export default function ToggleTextButton({ expanded, onClick, labels }) {
   return (
     <Button
       onClick={onClick}
-      label={expanded ? labels.hide : labels.show} // Viser korrekt label baseret på tilstanden
+      label={expanded ? labels.hide : labels.show}
       variant="outline"
       className="text-sm"
     />

@@ -1,18 +1,19 @@
+// src/Presentation/ViewModels/useAuthViewModel.js
+
 import { useEffect, useState } from "react";
-import * as AuthService from "@Infrastructure/API/auth";
+import { getMe, logout as logoutUser } from "@/Application/Services/AuthService";
 
 /**
  * useAuthViewModel – Håndterer brugerens autentificeringstilstand (login-status).
  * Giver adgang til brugerdata, loading-status og logout-funktion.
  */
 export const useAuthViewModel = () => {
-  const [user, setUser] = useState(null);     // Gemmer nuværende bruger
-  const [loading, setLoading] = useState(true); // Viser om brugerdata hentes
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Henter information om den aktuelle bruger
   const refreshUser = async () => {
     try {
-      const data = await AuthService.getMe();
+      const data = await getMe();
       console.log("Bruger data:", data);
       setUser(data);
     } catch (err) {
@@ -23,10 +24,9 @@ export const useAuthViewModel = () => {
     }
   };
 
-  // Logger brugeren ud
   const logout = async () => {
     try {
-      await AuthService.logout();
+      await logoutUser();
     } catch (err) {
       console.error("Logout-fejl:", err.message);
     } finally {
@@ -34,7 +34,6 @@ export const useAuthViewModel = () => {
     }
   };
 
-  // Hent brugerdata ved første load
   useEffect(() => {
     refreshUser();
   }, []);

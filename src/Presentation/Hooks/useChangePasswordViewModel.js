@@ -1,9 +1,8 @@
+// src/Presentation/ViewModels/useChangePasswordViewModel.js
+
 import { useState } from "react";
 import { changePassword } from "@/Application/Services/AccountService";
 
-/**
- * useChangePasswordViewModel – Håndterer formularstate og validering for skift af kodeord.
- */
 export const useChangePasswordViewModel = () => {
   const [form, setForm] = useState({
     oldPassword: "",
@@ -11,21 +10,18 @@ export const useChangePasswordViewModel = () => {
     confirmPassword: "",
   });
 
-  const [error, setError] = useState("");     // Fejlbesked (vises i UI)
-  const [success, setSuccess] = useState(""); // Succesbesked
-  const [loading, setLoading] = useState(false); // Loader-state
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Opdaterer feltværdier i formularen
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Validerer og forsøger at gemme nyt kodeord
   const handleSave = async () => {
     setError("");
     setSuccess("");
 
-    // Tjek om nye kodeord matcher
     if (form.newPassword !== form.confirmPassword) {
       setError("Kodeordene matcher ikke!");
       return;
