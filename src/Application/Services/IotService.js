@@ -1,101 +1,47 @@
-// Henter alle eksperimenter
-export const getAllIotExperiments = async () => {
-  const response = await fetch("https://localhost:5107/api/experiments", {
-    credentials: "include",
-  });
+// src/Application/Services/IotExperimentService.js
 
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente IoT-eksperimenter.");
-  return await response.json();
+import {
+  fetchAllExperimentsAPI,
+  fetchExperimentByIdAPI,
+  fetchMeasurementsAPI,
+  fetchLatestMeasurementsAPI,
+  createExperimentAPI,
+  activateExperimentAPI,
+  fetchActiveExperimentAPI,
+  exportCsvAPI,
+  exportJsonAPI,
+} from "@/Infrastructure/API/IotExperimentAPI";
+
+const handleResponse = async (res, fallbackMessage) => {
+  if (!res.ok) throw new Error(await res.text() || fallbackMessage);
+  return res.headers.get("Content-Type")?.includes("application/json")
+    ? await res.json()
+    : await res.text();
 };
 
-// Henter eksperiment med ID
-export const getIotExperimentById = async (id) => {
-  const response = await fetch(`https://localhost:5107/api/experiments/${id}`, {
-    credentials: "include",
-  });
+export const getAllIotExperiments = async () =>
+  await handleResponse(await fetchAllExperimentsAPI(), "Kunne ikke hente IoT-eksperimenter.");
 
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente eksperiment.");
-  return await response.json();
-};
+export const getIotExperimentById = async (id) =>
+  await handleResponse(await fetchExperimentByIdAPI(id), "Kunne ikke hente eksperiment.");
 
-// Henter alle målinger for et eksperiment
-export const getIotMeasurements = async (experimentId) => {
-  const response = await fetch(`https://localhost:5107/api/experiments/${experimentId}/measurements`, {
-    credentials: "include",
-  });
+export const getIotMeasurements = async (experimentId) =>
+  await handleResponse(await fetchMeasurementsAPI(experimentId), "Kunne ikke hente målinger.");
 
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente målinger.");
-  return await response.json();
-};
+export const getIotLatestMeasurements = async (experimentId) =>
+  await handleResponse(await fetchLatestMeasurementsAPI(experimentId), "Kunne ikke hente nyeste målinger.");
 
-// Henter de seneste 10 målinger
-export const getIotLatestMeasurements = async (experimentId) => {
-  const response = await fetch(`https://localhost:5107/api/experiments/${experimentId}/measurements/latest`, {
-    credentials: "include",
-  });
+export const createIotExperiment = async (payload) =>
+  await handleResponse(await createExperimentAPI(payload), "Kunne ikke oprette IoT-eksperiment.");
 
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente nyeste målinger.");
-  return await response.json();
-};
+export const activateIotExperiment = async (experimentId) =>
+  await handleResponse(await activateExperimentAPI(experimentId), "Kunne ikke aktivere eksperiment.");
 
-// Opretter et nyt IoT-eksperiment
-export const createIotExperiment = async (payload) => {
-  const response = await fetch("https://localhost:5107/api/experiments", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+export const getActiveIotExperiment = async () =>
+  await handleResponse(await fetchActiveExperimentAPI(), "Kunne ikke hente aktivt eksperiment.");
 
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke oprette IoT-eksperiment.");
-  return await response.json();
-};
+export const exportIotCsv = async (experimentId, startDate, endDate) =>
+  await handleResponse(await exportCsvAPI(experimentId, startDate, endDate), "Kunne ikke eksportere CSV.");
 
-// Aktiverer et eksperiment til live målinger
-export const activateIotExperiment = async (experimentId) => {
-  const response = await fetch(`https://localhost:5107/api/experiments/${experimentId}/activate`, {
-    method: "PUT",
-    credentials: "include",
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke aktivere eksperiment.");
-  return await response.json();
-};
-
-// Henter det aktive eksperiment
-export const getActiveIotExperiment = async () => {
-  const response = await fetch("https://localhost:5107/api/experiments/active", {
-    credentials: "include",
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente aktivt eksperiment.");
-  return await response.json();
-};
-
-// Eksporterer målinger som CSV
-export const exportIotCsv = async (experimentId, startDate, endDate) => {
-  const params = new URLSearchParams();
-  if (startDate) params.append("startDate", startDate);
-  if (endDate) params.append("endDate", endDate);
-
-  const response = await fetch(`https://localhost:5107/api/experiments/${experimentId}/export/csv?${params.toString()}`, {
-    credentials: "include",
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke eksportere CSV.");
-  return await response.text();
-};
-
-// Eksporterer målinger som JSON
-export const exportIotJson = async (experimentId, startDate, endDate) => {
-  const params = new URLSearchParams();
-  if (startDate) params.append("startDate", startDate);
-  if (endDate) params.append("endDate", endDate);
-
-  const response = await fetch(`https://localhost:5107/api/experiments/${experimentId}/export/json?${params.toString()}`, {
-    credentials: "include",
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke eksportere JSON.");
-  return await response.json();
-};
+export const exportIotJson = async (experimentId, startDate, endDate) =>
+  await handleResponse(await exportJsonAPI(experimentId, startDate, endDate), "Kunne ikke eksportere JSON.");

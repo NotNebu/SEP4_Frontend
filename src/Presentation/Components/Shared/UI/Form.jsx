@@ -1,10 +1,11 @@
-// components/ui/Form.jsx
+import { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 
 /**
  * En genanvendelig Form-komponent.
  * Understøtter både forms med og uden submit/reset knapper.
+ * Understøtter også validering pr. felt hvis `validate`-funktion er angivet.
  */
 export default function Form({
   fields = [],
@@ -20,12 +21,21 @@ export default function Form({
   resetVariant = "secondary",
   childrenAfter = null,
 }) {
+  const [errors, setErrors] = useState({});
+
   const handleChange = (name, valueOrEvent) => {
-    if (onChangeValue) {
-      onChangeValue(name, valueOrEvent);
-    } else if (onChange) {
-      onChange(valueOrEvent);
-    }
+    const value =
+      valueOrEvent?.target?.value !== undefined
+        ? valueOrEvent.target.value
+        : valueOrEvent;
+
+    // Valider felt, hvis feltet har en validate-funktion
+    const field = fields.find((f) => f.name === name);
+    const error = field?.validate?.(value) || null;
+    setErrors((prev) => ({ ...prev, [name]: error }));
+
+    if (onChange) onChange(name, value);
+    if (onChangeValue) onChangeValue(name, value);
   };
 
   return (
@@ -38,6 +48,7 @@ export default function Form({
           type={type}
           placeholder={placeholder}
           value={values[name] || ""}
+          error={errors[name]} // 👈 vis fejl i input
           onChange={(e) => handleChange(name, e)}
           onChangeValue={(val) => handleChange(name, val)}
         />

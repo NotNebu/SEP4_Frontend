@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+// src/Presentation/ViewModels/DashboardViewModel.js
+
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { fetchSensorData } from "@/Application/Services/DashboardService";
+import { saveFetchedExperiment } from "@/Application/Services/ExperimentService"; // hvis du bruger det
 
 /**
- * DashboardViewModel – Henter og formatterer sensordata til visning i dashboardet.
- * Automatisk importerer målingen som eksperiment én gang pr. session.
+ * DashboardViewModel – Henter og formatterer sensordata til grafvisning.
+ * Navigerer til fejlside ved fejl.
  */
 export const DashboardViewModel = (navigate) => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
   const [soilData, setSoilData] = useState([]);
   const [distanceData, setDistanceData] = useState([]);
-  const [status, setStatus] = useState("loading");       // 'loading' | 'success' | 'error'
-  const [statusCode, setStatusCode] = useState(null);    // HTTP statuskode ved fejl
+  const [status, setStatus] = useState("loading");
+  const [statusCode, setStatusCode] = useState(null);
 
-  // Formatterer rå sensor-data til dato og målinger
   const formatData = (data) => {
     return data.map((entry) => {
       const time = new Date(entry.timestamp);
@@ -32,7 +34,6 @@ export const DashboardViewModel = (navigate) => {
     });
   };
 
-  // Henter data og importerer eksperiment ved første load
   const fetchData = async () => {
     setStatus("loading");
     setStatusCode(null);
@@ -41,13 +42,11 @@ export const DashboardViewModel = (navigate) => {
       const sensorData = await fetchSensorData();
       const formatted = formatData(sensorData);
 
-      // Opdel data i separate serier til grafvisning
       setTemperatureData(formatted.map(({ time, temperature }) => ({ time, temperature })));
       setHumidityData(formatted.map(({ time, humidity }) => ({ time, humidity })));
       setSoilData(formatted.map(({ time, soil }) => ({ time, soil })));
       setDistanceData(formatted.map(({ time, distance }) => ({ time, distance })));
 
-      // Gem kun data én gang per session
       if (!sessionStorage.getItem("dashboardDataSaved")) {
         await saveFetchedExperiment("Dashboard måling", sensorData);
         sessionStorage.setItem("dashboardDataSaved", "true");
@@ -55,12 +54,11 @@ export const DashboardViewModel = (navigate) => {
 
       setStatus("success");
     } catch (error) {
-      setStatusCode(error.status || 500);
       setStatus("error");
+      setStatusCode(error.status || 500);
 
       console.error("Fejl ved hentning af data:", error);
 
-      // Naviger til fejlside med dansk fejlbesked
       navigate("/error", {
         state: {
           code: error.status || 500,

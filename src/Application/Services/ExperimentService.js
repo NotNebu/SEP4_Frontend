@@ -1,50 +1,31 @@
-// Henter brugerens egne eksperimenter
+// src/Application/Services/ExperimentService.js
+
+import {
+  fetchMyExperimentsAPI,
+  deleteExperimentAPI,
+  createExperimentAPI,
+} from "@/Infrastructure/API/ExperimentAPI";
+
 export const getMyExperiments = async () => {
-  const response = await fetch("https://localhost:5107/api/experiment/my-experiments", {
-    credentials: "include",
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke hente eksperimenter.");
-  return await response.json();
+  const res = await fetchMyExperimentsAPI();
+  if (!res.ok) throw new Error(await res.text() || "Kunne ikke hente eksperimenter.");
+  return await res.json();
 };
 
-// Sletter et eksperiment baseret på ID
 export const deleteExperiment = async (id) => {
-  const response = await fetch(`https://localhost:5107/api/experiment/${id}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke slette eksperimentet.");
+  const res = await deleteExperimentAPI(id);
+  if (!res.ok) throw new Error(await res.text() || "Kunne ikke slette eksperimentet.");
 };
 
-// Opretter et nyt eksperiment med brugerens input
 export const createExperiment = async (payload) => {
-  const response = await fetch("https://localhost:5107/api/experiment", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke oprette eksperimentet.");
-  return await response.json();
+  const res = await createExperimentAPI(payload);
+  if (!res.ok) throw new Error(await res.text() || "Kunne ikke oprette eksperimentet.");
+  return await res.json();
 };
 
-// Gemmer sensorbaseret eksperiment direkte fra fetch-data
 export const saveFetchedExperiment = async (title, dataArray) => {
-  const payload = {
+  return await createExperiment({
     title,
     dataJson: dataArray,
-  };
-
-  const response = await fetch("https://localhost:5107/api/experiment", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
   });
-
-  if (!response.ok) throw new Error(await response.text() || "Kunne ikke gemme eksperimentet.");
-  return await response.json();
 };

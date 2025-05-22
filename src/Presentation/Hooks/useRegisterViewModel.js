@@ -1,8 +1,11 @@
+// src/Presentation/ViewModels/RegisterViewModel.js
+
 import { useState } from "react";
 import { registerUser } from "@/Application/Services/AuthService";
 
 /**
- * RegisterViewModel – Håndterer state og validering for registreringsformularen.
+ * RegisterViewModel – Håndterer formdata og validering i registreringsflow (f.eks. modal).
+ * @param {Function} onSuccess – Callback ved succesfuld registrering (fx luk modal).
  */
 export const RegisterViewModel = (onSuccess) => {
   const [form, setForm] = useState({
@@ -12,13 +15,16 @@ export const RegisterViewModel = (onSuccess) => {
     confirmPassword: "",
   });
 
-  // Opdaterer formularfelter
   const handleChange = (field, value) => {
-    setForm({ ...form, [field]: value });
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Forsøger at oprette en ny bruger
   const onRegister = async () => {
+    if (!form.email || !form.username || !form.password) {
+      alert("Alle felter skal udfyldes.");
+      return;
+    }
+
     if (form.password !== form.confirmPassword) {
       alert("Kodeordene matcher ikke!");
       return;
@@ -31,14 +37,19 @@ export const RegisterViewModel = (onSuccess) => {
         username: form.username,
       });
 
-      alert("Bruger oprettet");
+      alert("Bruger oprettet!");
+
       if (typeof onSuccess === "function") {
-        onSuccess(); // Til at luk modal
+        onSuccess(); 
       }
     } catch (error) {
       alert(error.message);
     }
   };
 
-  return { form, handleChange, onRegister };
+  return {
+    form,
+    handleChange,
+    onRegister,
+  };
 };
