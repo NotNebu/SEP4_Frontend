@@ -1,19 +1,6 @@
 import React from "react";
 import { DashboardViewModel } from "@/Presentation/Hooks/useDashboardViewModel";
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { ResponsiveContainer, LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,} from "recharts";
 
 // Viser dynamiske grafer baseret på valgte sensorer og valgt graf-type
 export default function DashboardPage({ filters, chartType }) {
