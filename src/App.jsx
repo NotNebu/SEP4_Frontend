@@ -1,22 +1,99 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './index.css'
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+import DashboardPage from "@Presentation/Pages/DashboardPage.jsx";
+import PredictionFormPage from "@/Presentation/Pages/PredictionFormPage.jsx";
+import Navbar from "@/Presentation/Layout/Navbar/Navbar.jsx";
+import LoginPage from "@/Presentation/Pages/LoginPage";
+import ProfilePage from "./Presentation/Pages/ProfilePage";
+import ErrorPage from "@Presentation/Pages/ErrorPage";
+import { useAuth } from "@Shared/Context/AuthContext.jsx";
+import CreateExperimentPage from "./Presentation/Pages/CreateExperimentPage";
+
+
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div className="text-center p-10">Loading...</div>;
+
+  return user ? children : <Navigate to="/login" replace />;
+}
+
+
+function Layout({ children }) {
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/error";
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600 mb-4">Tailwind is Working 🎉</h1>
-      <button
-        className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        onClick={() => setCount((count) => count + 1)}
-      >
-        Count is {count}
-      </button>
+    <div className="min-h-screen w-full bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+      {!isAuthPage && <Navbar />}
+      {children}
     </div>
-  )
-}  
+  );
+}
 
-export default App
+function App() {
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/prediction-form"
+            element={
+              <ProtectedRoute>
+                <PredictionFormPage />
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/create-experiment"
+            element={
+              <ProtectedRoute>
+                <CreateExperimentPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="/error"
+                replace
+                state={{
+                  code: 404,
+                  message: "Vi kunne ikke finde den ønskede anmodning.",
+                }}
+              />
+            }
+          />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+}
+
+export default App;
