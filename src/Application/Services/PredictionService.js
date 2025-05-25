@@ -1,3 +1,4 @@
+// Dette modul håndterer API-kald relateret til forudsigelser
 import {
   submitPrediction,
   savePrediction,

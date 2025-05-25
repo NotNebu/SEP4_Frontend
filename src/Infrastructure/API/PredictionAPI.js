@@ -1,5 +1,6 @@
 const BASE_URL = "https://localhost:5107/api";
 
+// Sender en forudsigelse til API'et
 export const submitPrediction = async (payload) => {
   const formattedPayload = {
     TypeofModel: payload.TypeofModel,
@@ -7,6 +8,7 @@ export const submitPrediction = async (payload) => {
     Data: payload.Data,
   };
 
+  // Validere payloaden
   const response = await fetch(`${BASE_URL}/sensor/predict`, {
     method: "POST",
     headers: {
@@ -16,6 +18,7 @@ export const submitPrediction = async (payload) => {
     body: JSON.stringify(formattedPayload),
   });
 
+  // Tjekke om svaret er OK
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || "Forudsigelse fejlede.");
@@ -24,6 +27,7 @@ export const submitPrediction = async (payload) => {
   return await response.text();
 };
 
+// Henter tilgængelige modeller fra API'et
 export const fetchAvailableModels = async () => {
   const response = await fetch(`${BASE_URL}/sensor/model`, {
     credentials: "include",
@@ -38,6 +42,7 @@ export const fetchAvailableModels = async () => {
   return JSON.parse(result).model_files || [];
 };
 
+// Gemmer en forudsigelse i databasen
 export const savePrediction = async ({ model, fileName, input, result }) => {
   const response = await fetch(`${BASE_URL}/prediction`, {
     method: "POST",
@@ -54,6 +59,7 @@ export const savePrediction = async ({ model, fileName, input, result }) => {
   }
 };
 
+// Henter historik over forudsigelser fra databasen
 export const fetchPredictionHistory = async () => {
   const response = await fetch(`${BASE_URL}/prediction`, {
     credentials: "include",
@@ -67,6 +73,7 @@ export const fetchPredictionHistory = async () => {
   return await response.json();
 };
 
+// Sletter en forudsigelse baseret på ID
 export const deletePrediction = async (id) => {
   const response = await fetch(`${BASE_URL}/prediction/${id}`, {
     method: "DELETE",
