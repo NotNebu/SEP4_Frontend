@@ -1,35 +1,49 @@
 import React from "react";
+import Button from "@/Presentation/Components/Shared/UI/Button";
+import Select from "@/Presentation/Components/Shared/UI/Select";
+import Checkbox from "@/Presentation/Components/Shared/UI/Checkbox";
 
-// Panel til at vælge sensorer, tidsinterval og opdatere grafvisning
-export default function SensorFilterPanel({ filters, setFilters, availableSensors }) {
-  // Tilføjer eller fjerner en sensor fra det valgte filter
+/**
+ * Panel til at vælge sensorer, tidsinterval og opdatere grafvisning.
+ */
+export default function SensorFilterPanel({
+  filters,
+  setFilters,
+  availableSensors,
+}) {
   const toggleSensor = (sensorId) => {
     const isSelected = filters.sensors.includes(sensorId);
     const updatedSensors = isSelected
       ? filters.sensors.filter((s) => s !== sensorId)
       : [...filters.sensors, sensorId];
 
-    setFilters(prev => ({ ...prev, sensors: updatedSensors }));
+    setFilters((prev) => ({ ...prev, sensors: updatedSensors }));
   };
 
-  // Håndterer ændring af tidsperiode
   const handleTimeRange = (e) => {
-    setFilters(prev => ({ ...prev, range: e.target.value }));
+    setFilters((prev) => ({ ...prev, range: e.target.value }));
   };
 
-  // Vælger alle tilgængelige sensorer
   const handleSelectAll = () => {
-    setFilters(prev => ({ ...prev, sensors: availableSensors }));
+    setFilters((prev) => ({ ...prev, sensors: availableSensors }));
   };
 
-  // Fravælger alle sensorer
   const handleClearAll = () => {
-    setFilters(prev => ({ ...prev, sensors: [] }));
+    setFilters((prev) => ({ ...prev, sensors: [] }));
   };
 
-  // Tvinger opdatering af graf
   const handleRefresh = () => {
-    setFilters(prev => ({ ...prev, refresh: true }));
+    setFilters((prev) => ({ ...prev, refresh: true }));
+  };
+
+  // Dansk oversættelse af sensor-id'er
+  const sensorLabels = {
+    temperature: "Temperatur",
+    humidity: "Luftfugtighed",
+    soil: "Jordfugtighed",
+    distance: "Afstand",
+    light: "Lys",
+    water: "Vand",
   };
 
   return (
@@ -39,50 +53,51 @@ export default function SensorFilterPanel({ filters, setFilters, availableSensor
         <label className="block mb-2 font-medium">Vælg sensorer</label>
         <div className="space-y-2">
           {availableSensors.map((sensor) => (
-            <label key={sensor} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="accent-blue-500"
-                checked={filters.sensors.includes(sensor)}
-                onChange={() => toggleSensor(sensor)}
-              />
-              <span>{sensor.charAt(0).toUpperCase() + sensor.slice(1)}</span>
-            </label>
+            <Checkbox
+              key={sensor}
+              name={sensor}
+              label={sensorLabels[sensor] || sensor}
+              checked={filters.sensors.includes(sensor)}
+              onChange={() => toggleSensor(sensor)}
+            />
           ))}
         </div>
 
-        {/* Knapper: Vælg/fravælg alle */}
-        <div className="flex justify-between mt-2 text-sm">
-          <button onClick={handleSelectAll} className="text-blue-400 hover:underline">
-            Vælg alle
-          </button>
-          <button onClick={handleClearAll} className="text-red-400 hover:underline">
-            Fravælg alle
-          </button>
+        <div className="flex justify-between mt-2 text-sm gap-2">
+          <Button
+            label="Vælg alle"
+            onClick={handleSelectAll}
+            variant="secondary"
+          />
+          <Button
+            label="Fravælg alle"
+            onClick={handleClearAll}
+            variant="danger"
+          />
         </div>
       </div>
 
-      {/* Tidsvalg */}
-      <div>
-        <label className="block mb-1 font-medium">Tidsperiode</label>
-        <select
-          className="w-full bg-gray-800 border border-gray-600 p-2 rounded"
-          value={filters.range}
-          onChange={handleTimeRange}
-        >
-          <option value="1h">Seneste 1 time</option>
-          <option value="6h">Seneste 6 timer</option>
-          <option value="24h">Seneste 24 timer</option>
-        </select>
-      </div>
+      {/* Tidsvalg med Select-komponent */}
+      <Select
+        label="Tidsperiode"
+        name="range"
+        value={filters.range}
+        onChange={handleTimeRange}
+        options={[
+          { value: "1h", label: "Seneste 1 time" },
+          { value: "6h", label: "Seneste 6 timer" },
+          { value: "24h", label: "Seneste 24 timer" },
+        ]}
+        variant="default"
+      />
 
       {/* Opdater-knap */}
-      <button
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
+      <Button
+        label="Opdater graf"
         onClick={handleRefresh}
-      >
-        Opdater graf
-      </button>
+        variant="primary"
+        fullWidth
+      />
     </div>
   );
 }

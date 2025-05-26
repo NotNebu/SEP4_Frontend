@@ -64,9 +64,7 @@ export default function IotTestPage() {
                 <tr key={index} className="hover:bg-gray-50">
                   {Object.values(m).map((val, i) => (
                     <td key={i} className="px-3 py-1 border-b">
-                      {typeof val === "number"
-                        ? val.toFixed(2)
-                        : String(val)}
+                      {typeof val === "number" ? val.toFixed(2) : String(val)}
                     </td>
                   ))}
                 </tr>

@@ -1,5 +1,3 @@
-// src/Presentation/ViewModels/useChangePasswordViewModel.js
-
 import { useState } from "react";
 import { changePassword } from "@/Application/Services/AccountService";
 

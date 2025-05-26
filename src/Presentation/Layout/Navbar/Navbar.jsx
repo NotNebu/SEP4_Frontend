@@ -35,7 +35,6 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-900 text-white dark:bg-gray-950 shadow-md w-full relative">
       <div className="h-16 flex items-center w-full px-4 sm:px-6 lg:px-8 relative">
-        
         {/* Brand/logo til venstre */}
         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
           <NavbarBrand />
@@ -57,7 +56,9 @@ const Navbar = () => {
 
         {/* Hamburger til mobilmenu */}
         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 sm:hidden">
-          <NavbarHamburger onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+          <NavbarHamburger
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          />
         </div>
       </div>
 

@@ -13,7 +13,8 @@ import { useEffect, useState } from "react";
  */
 export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();
-  const { profile, loading, handleChange, handleSave, error } = useProfileViewModel();
+  const { profile, loading, handleChange, handleSave, error } =
+    useProfileViewModel();
   const location = useLocation();
   const [showExperiments, setShowExperiments] = useState(false);
 
@@ -51,7 +52,11 @@ export default function ProfilePage() {
             {/* Venstreside: Profilformular */}
             <div className="lg:col-span-2">
               <div className="bg-gray-800 p-6 rounded-xl shadow-xl transition-shadow hover:shadow-2xl">
-                <ProfileForm profile={profile} onChange={handleChange} error={error} />
+                <ProfileForm
+                  profile={profile}
+                  onChange={handleChange}
+                  error={error}
+                />
               </div>
             </div>
 

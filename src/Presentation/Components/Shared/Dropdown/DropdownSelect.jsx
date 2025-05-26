@@ -2,11 +2,18 @@
  * Genanvendelig select/dropdown-komponent.
  * Label og valgmuligheder modtages som props.
  */
-export default function DropdownSelect({ label, value, onChange, options = [] }) {
+export default function DropdownSelect({
+  label,
+  value,
+  onChange,
+  options = [],
+}) {
   return (
     <div>
       {/* Vis label hvis angivet */}
-      {label && <label className="block mb-2 font-semibold text-lg">{label}</label>}
+      {label && (
+        <label className="block mb-2 font-semibold text-lg">{label}</label>
+      )}
 
       {/* Dropdown med valgmuligheder */}
       <select

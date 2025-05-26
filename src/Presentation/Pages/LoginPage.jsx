@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LoginViewModel } from '@/Presentation/Hooks/useLoginViewModel';
-import { useAuth } from '@Shared/Context/AuthContext.jsx';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { LoginViewModel } from "@/Presentation/Hooks/useLoginViewModel";
+import { useAuth } from "@Shared/Context/AuthContext.jsx";
 
-import LoginForm from '@/Presentation/Components/Auth/LoginForm.jsx';
-import RegisterModal from '@/Presentation/Components/Auth/RegisterModal.jsx';
-import AuthBackground from '@/Presentation/Components/Auth/AuthBackground.jsx';
-import Card from '@/Presentation/Components/Shared/UI/Card.jsx';
+import LoginForm from "@/Presentation/Components/Auth/LoginForm.jsx";
+import RegisterModal from "@/Presentation/Components/Auth/RegisterModal.jsx";
+import AuthBackground from "@/Presentation/Components/Auth/AuthBackground.jsx";
+import Card from "@/Presentation/Components/Shared/UI/Card.jsx";
 
-import logo from '@/assets/GroWheatLogo.png';
+import logo from "@/assets/GroWheatLogo.png";
 
 /**
  * LoginPage – Siden hvor brugeren logger ind, og evt. kan åbne registreringsmodal.

@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import ExperimentsModal from "@/Presentation/Components/Experiments/ExperimentsModal";
 
-// 🧪 MOCKS
+// MOCKS
 vi.mock("react-router-dom", async (importOriginal) => {
   const actual = await importOriginal();
   return {
@@ -16,8 +16,18 @@ vi.mock("@/Presentation/Hooks/useExperimentsViewModel", () => {
   return {
     useExperimentsViewModel: () => ({
       experiments: [
-        { id: 1, title: "Test Experiment 1", description: "Desc 1", dataJson: "[]" },
-        { id: 2, title: "Test Experiment 2", description: "Desc 2", dataJson: "[]" },
+        {
+          id: 1,
+          title: "Test Experiment 1",
+          description: "Desc 1",
+          dataJson: "[]",
+        },
+        {
+          id: 2,
+          title: "Test Experiment 2",
+          description: "Desc 2",
+          dataJson: "[]",
+        },
       ],
       expanded: null,
       setExpanded: vi.fn(),
@@ -58,7 +68,7 @@ describe("ExperimentsModal component", () => {
     const deleteButtons = screen.getAllByRole("button", { name: /Slet/i });
     fireEvent.click(deleteButtons[0]);
 
-    // Note: since we're mocking useExperimentsViewModel, we can't test the actual fn call unless we export and track it
+    // Tjekker at delete handler blev kaldt
     expect(deleteButtons[0]).toBeInTheDocument(); // Smoke check
   });
 

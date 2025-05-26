@@ -1,5 +1,3 @@
-// src/Presentation/ViewModels/RegisterViewModel.js
-
 import { useState } from "react";
 import { registerUser } from "@/Application/Services/AuthService";
 
@@ -37,13 +35,13 @@ export const RegisterViewModel = (onSuccess) => {
         username: form.username,
       });
 
-      alert("Bruger oprettet!");
+      alert("Din bruger er oprettet!");
 
       if (typeof onSuccess === "function") {
-        onSuccess(); 
+        onSuccess();
       }
     } catch (error) {
-      alert(error.message);
+      alert("Forkert indtastede oplysninger. Prøv igen.");
     }
   };
 

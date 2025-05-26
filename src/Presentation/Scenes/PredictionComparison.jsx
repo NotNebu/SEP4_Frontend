@@ -13,7 +13,9 @@ const PredictionComparison = () => {
 
   // Opdater valgt eksperiment baseret på dropdown-valg
   const handleSelect = (experimentName) => {
-    const experiment = predictionData.find((p) => p.experiment === experimentName);
+    const experiment = predictionData.find(
+      (p) => p.experiment === experimentName
+    );
     if (experiment) setSelected(experiment);
   };
 

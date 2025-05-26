@@ -8,11 +8,11 @@ import Graph from "@/Presentation/Components/Shared/Graphs/Graph";
  * med titel, undertitel og eventuel ekstra info i dashboard-layout.
  */
 export default function MetricGraph({
-  title,        // Titel på boksen (fx "Temperatur")
-  subtitle,     // Undertekst (fx "Seneste 24 timer")
-  sideText,     // Valgfri info 
-  data,         // Dataliste til grafen
-  lines,        // Array med dataserier (dataKey, label, stroke)
+  title, // Titel på boksen (fx "Temperatur")
+  subtitle, // Undertekst (fx "Seneste 24 timer")
+  sideText, // Valgfri info
+  data, // Dataliste til grafen
+  lines, // Array med dataserier (dataKey, label, stroke)
   ...graphProps // Ekstra props som unit, xKey, domain, showLegend osv.
 }) {
   return (

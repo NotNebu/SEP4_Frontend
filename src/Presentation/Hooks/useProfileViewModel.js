@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetchUserProfile, updateUserProfile } from "@/Application/Services/AccountService";
+import {
+  fetchUserProfile,
+  updateUserProfile,
+} from "@/Application/Services/AccountService";
 
 /**
  * useProfileViewModel – Håndterer visning og opdatering af brugerens profiloplysninger.

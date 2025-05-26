@@ -3,7 +3,9 @@ import React from "react";
 export default function PredictedSensorFeed({ feed = [] }) {
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-orange-400">Seneste Forudsigelser</h2>
+      <h2 className="text-2xl font-bold mb-4 text-orange-400">
+        Seneste Forudsigelser
+      </h2>
       <table className="w-full text-sm border-collapse">
         <thead className="bg-gray-100 dark:bg-gray-700">
           <tr>
@@ -17,8 +19,13 @@ export default function PredictedSensorFeed({ feed = [] }) {
         </thead>
         <tbody>
           {feed.map((entry, index) => (
-            <tr key={index} className="text-center border-t dark:border-gray-600">
-              <td className="p-1">{new Date(entry.timestamp).toLocaleTimeString()}</td>
+            <tr
+              key={index}
+              className="text-center border-t dark:border-gray-600"
+            >
+              <td className="p-1">
+                {new Date(entry.timestamp).toLocaleTimeString()}
+              </td>
               <td className="p-1">{entry.predictedTemperatur}</td>
               <td className="p-1">{entry.predictedLuftfugtighed}</td>
               <td className="p-1">{entry.predictedJordfugtighed}</td>

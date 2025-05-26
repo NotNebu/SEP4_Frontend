@@ -39,9 +39,15 @@ export default function ExperimentCard({
         <div className="flex flex-col gap-4">
           {/* Titel og beskrivelse */}
           <div>
-            <h3 className="text-lg font-semibold">{exp.title || "Eksperiment #Ukendt"}</h3>
-            <p className="text-sm text-gray-600">{exp.description || "Ingen beskrivelse"}</p>
-            <p className="text-xs text-gray-400 mt-1">Oprettet: {exp.createdAt}</p>
+            <h3 className="text-lg font-semibold">
+              {exp.title || "Eksperiment #Ukendt"}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {exp.description || "Ingen beskrivelse"}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              Oprettet: {exp.createdAt}
+            </p>
           </div>
 
           {/* Målinger vises kun hvis kortet er foldet ud */}
@@ -52,7 +58,9 @@ export default function ExperimentCard({
                   key={index}
                   className="bg-gray-800 text-sm text-white rounded-md p-3 border border-gray-700"
                 >
-                  <h4 className="font-semibold text-purple-400 mb-2">Måling {index + 1}</h4>
+                  <h4 className="font-semibold text-purple-400 mb-2">
+                    Måling {index + 1}
+                  </h4>
                   <ul className="space-y-1">
                     {Object.entries(item).map(([key, value]) => (
                       <li

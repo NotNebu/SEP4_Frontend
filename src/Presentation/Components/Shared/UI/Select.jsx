@@ -1,22 +1,13 @@
-export default function Input({
+export default function Select({
   label,
   name,
-  type = "text",
   value,
   onChange,
-  onChangeValue,
+  options,
   placeholder,
   variant = "default",
   error,
 }) {
-  const handleInputChange = (e) => {
-    if (onChangeValue) {
-      onChangeValue(e.target.value);
-    } else if (onChange) {
-      onChange(e);
-    }
-  };
-
   const baseClasses = `
     w-full px-3 py-2
     border rounded-lg
@@ -30,7 +21,6 @@ export default function Input({
       focus:ring-blue-500
     `,
     auth: `
-      rounded-full pl-10 pr-4 py-2
       bg-white/10 border border-white/30
       text-white placeholder-gray-300
       focus:ring-pink-500
@@ -50,15 +40,20 @@ export default function Input({
         </label>
       )}
 
-      <input
+      <select
         id={name}
         name={name}
-        type={type}
         value={value}
-        onChange={handleInputChange}
-        placeholder={placeholder}
+        onChange={onChange}
         className={`${baseClasses} ${variants[variant]} ${errorClass}`}
-      />
+      >
+        {placeholder && <option value="">{placeholder}</option>}
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
 
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>

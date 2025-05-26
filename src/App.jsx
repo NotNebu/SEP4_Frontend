@@ -16,7 +16,6 @@ import ErrorPage from "@Presentation/Pages/ErrorPage";
 import { useAuth } from "@Shared/Context/AuthContext.jsx";
 import CreateExperimentPage from "./Presentation/Pages/CreateExperimentPage";
 
-
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
@@ -25,10 +24,10 @@ function ProtectedRoute({ children }) {
   return user ? children : <Navigate to="/login" replace />;
 }
 
-
 function Layout({ children }) {
   const location = useLocation();
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/error";
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/error";
 
   return (
     <div className="min-h-screen w-full bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
@@ -68,7 +67,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-            <Route
+          <Route
             path="/create-experiment"
             element={
               <ProtectedRoute>

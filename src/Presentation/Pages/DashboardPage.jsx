@@ -26,7 +26,6 @@ export default function DashboardPage() {
 
         {/* Sektion: Filter og graf/table visning */}
         <div className="flex flex-col xl:flex-row gap-6">
-
           {/* Venstre kolonne: Filtreringspanel */}
           <div className="w-full xl:w-1/5">
             <SensorFilterPanel

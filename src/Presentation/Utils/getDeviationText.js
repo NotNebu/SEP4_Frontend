@@ -10,8 +10,6 @@ export default function DeviationText({ deviation }) {
   const deviationColor = getDeviationColor(deviation);
 
   return (
-    <p className={`${deviationColor} font-medium`}>
-      Afvigelse: {deviation}%
-    </p>
+    <p className={`${deviationColor} font-medium`}>Afvigelse: {deviation}%</p>
   );
 }

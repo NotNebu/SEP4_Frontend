@@ -2,25 +2,38 @@
 
 export const parseCSV = (text) => {
   const rows = [];
-  let row = [], cell = "", inQuotes = false;
+  let row = [],
+    cell = "",
+    inQuotes = false;
 
   for (let i = 0; i < text.length; i++) {
-    const char = text[i], next = text[i + 1];
+    const char = text[i],
+      next = text[i + 1];
     if (char === '"' && inQuotes && next === '"') {
-      cell += '"'; i++;
+      cell += '"';
+      i++;
     } else if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === "," && !inQuotes) {
-      row.push(cell); cell = "";
-    } else if ((char === "\n" || (char === "\r" && next === "\n")) && !inQuotes) {
-      row.push(cell); rows.push(row); row = []; cell = ""; if (char === "\r") i++;
+      row.push(cell);
+      cell = "";
+    } else if (
+      (char === "\n" || (char === "\r" && next === "\n")) &&
+      !inQuotes
+    ) {
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+      if (char === "\r") i++;
     } else {
       cell += char;
     }
   }
 
   if (cell !== "" || row.length) {
-    row.push(cell); rows.push(row);
+    row.push(cell);
+    rows.push(row);
   }
 
   return rows;

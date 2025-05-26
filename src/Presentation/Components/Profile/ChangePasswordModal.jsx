@@ -1,26 +1,20 @@
-import Modal from '@Presentation/Components/Shared/Modal/Modal';
-import ModalHeader from '@Presentation/Components/Shared/Modal/ModalHeader';
-import Form from '@Presentation/Components/Shared/UI/Form';
-import ErrorMessage from '@Presentation/Components/Shared/UI/ErrorMessage';
-import PasswordRequirements from '@/Presentation/Components/Shared/Validation/PasswordStrengthMeter';
-import useChangePasswordViewModel from '@Presentation/Hooks/useChangePasswordViewModel';
+import Modal from "@Presentation/Components/Shared/Modal/Modal";
+import ModalHeader from "@Presentation/Components/Shared/Modal/ModalHeader";
+import Form from "@Presentation/Components/Shared/UI/Form";
+import ErrorMessage from "@Presentation/Components/Shared/UI/ErrorMessage";
+import PasswordRequirements from "@/Presentation/Components/Shared/Validation/PasswordStrengthMeter";
+import useChangePasswordViewModel from "@Presentation/Hooks/useChangePasswordViewModel";
 
 // Modal til ændring af brugerens adgangskode
 export default function ChangePasswordModal({ isOpen, onClose }) {
-  const {
-    form,
-    handleChange,
-    handleSave,
-    error,
-    success,
-    loading,
-  } = useChangePasswordViewModel();
+  const { form, handleChange, handleSave, error, success, loading } =
+    useChangePasswordViewModel();
 
   // Felter til formularen
   const fields = [
-    { name: 'oldPassword', label: 'Gammelt kodeord', type: 'password' },
-    { name: 'newPassword', label: 'Nyt kodeord', type: 'password' },
-    { name: 'confirmPassword', label: 'Bekræft nyt kodeord', type: 'password' },
+    { name: "oldPassword", label: "Gammelt kodeord", type: "password" },
+    { name: "newPassword", label: "Nyt kodeord", type: "password" },
+    { name: "confirmPassword", label: "Bekræft nyt kodeord", type: "password" },
   ];
 
   return (

@@ -7,7 +7,11 @@ import logo from "@/assets/GroWheatLogo.png";
 export default function NavbarBrand() {
   return (
     <div className="flex items-center space-x-2">
-      <img src={logo} alt="GroWheat Logo" className="h-60 w-60 object-contain" />
+      <img
+        src={logo}
+        alt="GroWheat Logo"
+        className="h-60 w-60 object-contain"
+      />
     </div>
   );
 }

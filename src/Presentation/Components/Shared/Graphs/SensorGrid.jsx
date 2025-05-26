@@ -11,14 +11,14 @@ export default function SensorGrid({ sensors = [] }) {
       {sensors.map((sensor, index) => (
         <SensorGraphBox
           key={index}
-          title={sensor.title}         // Fx "Temperatur"
-          subtitle={sensor.subtitle}   // Fx "Seneste 24 timer"
-          sideText={sensor.sideText}   // Fx "Gns: 22°C"
+          title={sensor.title} // Fx "Temperatur"
+          subtitle={sensor.subtitle} // Fx "Seneste 24 timer"
+          sideText={sensor.sideText} // Fx "Gns: 22°C"
           data={sensor.data}
           dataKey={sensor.dataKey}
           stroke={sensor.stroke}
-          unit={sensor.unit}           // Fx "°C", "%", "cm"
-          domain={sensor.domain}       // Fx [0, 100]
+          unit={sensor.unit} // Fx "°C", "%", "cm"
+          domain={sensor.domain} // Fx [0, 100]
         />
       ))}
     </div>

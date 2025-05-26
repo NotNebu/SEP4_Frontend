@@ -15,10 +15,10 @@ import {
  */
 const Graph = ({
   data,
-  lines = [],              // Array af linjer, hver med dataKey, stroke og label
-  unit = "",               // Enhed for Y-aksen, fx "°C" eller "%"
-  xKey = "time",           // Nøgle for X-aksen
-  domain,                  // Valgfri Y-akse-domain, fx [0, 100]
+  lines = [], // Array af linjer, hver med dataKey, stroke og label
+  unit = "", // Enhed for Y-aksen, fx "°C" eller "%"
+  xKey = "time", // Nøgle for X-aksen
+  domain, // Valgfri Y-akse-domain, fx [0, 100]
   showLegend = false,
   strokeDasharray = "3 3",
 }) => {
@@ -48,7 +48,10 @@ const Graph = ({
           <XAxis dataKey={xKey} stroke="#ccc" />
           <YAxis unit={unit} stroke="#ccc" domain={domain} />
           <Tooltip
-            contentStyle={{ backgroundColor: "#1f2937", borderColor: "#374151" }}
+            contentStyle={{
+              backgroundColor: "#1f2937",
+              borderColor: "#374151",
+            }}
             labelStyle={{ color: "#fff" }}
             itemStyle={{ color: "#ddd" }}
           />

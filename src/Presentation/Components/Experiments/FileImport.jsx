@@ -22,7 +22,11 @@ export default function FileImport({ onFileChange, onImport, importData }) {
       />
 
       {/* Import-knap */}
-      <Button label="Importér Eksperiment" onClick={onImport} variant="primary" />
+      <Button
+        label="Importér Eksperiment"
+        onClick={onImport}
+        variant="primary"
+      />
 
       {/* Forhåndsvisning af importeret data */}
       {importData && (

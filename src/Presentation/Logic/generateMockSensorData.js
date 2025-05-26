@@ -8,7 +8,10 @@ let lastSensorData = {
 
 export const generateMockSensorData = () => {
   const vary = (value, delta, min, max) =>
-    Math.min(max, Math.max(min, +(value + (Math.random() * delta * 2 - delta)).toFixed(1)));
+    Math.min(
+      max,
+      Math.max(min, +(value + (Math.random() * delta * 2 - delta)).toFixed(1))
+    );
 
   lastSensorData = {
     temperatur: vary(lastSensorData.temperatur, 0.3, 20, 30),

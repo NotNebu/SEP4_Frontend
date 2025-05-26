@@ -48,7 +48,7 @@ export default function Form({
           type={type}
           placeholder={placeholder}
           value={values[name] || ""}
-          error={errors[name]} // 👈 vis fejl i input
+          error={errors[name]}
           onChange={(e) => handleChange(name, e)}
           onChangeValue={(val) => handleChange(name, val)}
         />
@@ -57,7 +57,12 @@ export default function Form({
       {showButtons && (
         <div className="flex gap-4 mt-4">
           <Button type="submit" label={submitLabel} variant={submitVariant} />
-          <Button type="button" label={resetLabel} variant={resetVariant} onClick={onReset} />
+          <Button
+            type="button"
+            label={resetLabel}
+            variant={resetVariant}
+            onClick={onReset}
+          />
         </div>
       )}
 

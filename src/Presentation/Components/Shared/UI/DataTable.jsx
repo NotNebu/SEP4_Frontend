@@ -26,15 +26,22 @@ const DataTable = ({ data, columns = [], title }) => {
           <thead>
             <tr className="text-gray-300 border-b border-gray-700">
               {columns.map((col) => (
-                <th key={col.key} className="py-2 px-3">{col.label}</th>
+                <th key={col.key} className="py-2 px-3">
+                  {col.label}
+                </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {data.map((row, idx) => (
-              <tr key={idx} className="border-b border-gray-800 hover:bg-gray-800 transition">
+              <tr
+                key={idx}
+                className="border-b border-gray-800 hover:bg-gray-800 transition"
+              >
                 {columns.map((col) => (
-                  <td key={col.key} className="py-2 px-3">{row[col.key]}</td>
+                  <td key={col.key} className="py-2 px-3">
+                    {row[col.key]}
+                  </td>
                 ))}
               </tr>
             ))}

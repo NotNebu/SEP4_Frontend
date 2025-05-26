@@ -2,7 +2,8 @@ import { calculatePasswordStrength } from "@/Presentation/Utils/PasswordHelper";
 
 // Viser krav til adgangskode og vurderer styrken baseret på opfyldte regler
 export default function PasswordStrengthMeter({ password }) {
-  const { strength, requirements, label, color } = calculatePasswordStrength(password);
+  const { strength, requirements, label, color } =
+    calculatePasswordStrength(password);
 
   return (
     <div className="mt-4 space-y-2">
@@ -20,7 +21,10 @@ export default function PasswordStrengthMeter({ password }) {
       {/* Krav */}
       <ul className="text-sm space-y-1">
         {requirements.map((req, i) => (
-          <li key={i} className={req.isValid ? "text-green-400" : "text-red-400"}>
+          <li
+            key={i}
+            className={req.isValid ? "text-green-400" : "text-red-400"}
+          >
             {req.isValid ? "✓" : "✗"} {req.label}
           </li>
         ))}

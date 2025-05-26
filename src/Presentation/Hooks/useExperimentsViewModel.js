@@ -36,7 +36,9 @@ export const useExperimentsViewModel = (isOpen) => {
 
             try {
               parsed = normalizeDataJson(
-                typeof exp.dataJson === "string" ? JSON.parse(exp.dataJson) : exp.dataJson
+                typeof exp.dataJson === "string"
+                  ? JSON.parse(exp.dataJson)
+                  : exp.dataJson
               );
             } catch (e) {
               console.error("Kunne ikke parse dataJson:", e);
@@ -125,26 +127,29 @@ export const useExperimentsViewModel = (isOpen) => {
     if (!file) return;
     setImportFile(file);
 
-    file.text().then((text) => {
-      if (file.name.toLowerCase().endsWith(".json")) {
-        const parsed = JSON.parse(text);
-        setImportData(normalizeDataJson(parsed));
-      } else if (file.name.toLowerCase().endsWith(".csv")) {
-        const [headerRow, ...dataRows] = parseCSV(text);
-        const data = dataRows.map((r) =>
-          r.reduce((obj, val, idx) => {
-            obj[headerRow[idx]] = val;
-            return obj;
-          }, {})
-        );
-        setImportData(data);
-      } else {
-        alert("Understøtter kun JSON eller CSV.");
-      }
-    }).catch((err) => {
-      console.error(err);
-      alert("Fejl ved læsning af fil");
-    });
+    file
+      .text()
+      .then((text) => {
+        if (file.name.toLowerCase().endsWith(".json")) {
+          const parsed = JSON.parse(text);
+          setImportData(normalizeDataJson(parsed));
+        } else if (file.name.toLowerCase().endsWith(".csv")) {
+          const [headerRow, ...dataRows] = parseCSV(text);
+          const data = dataRows.map((r) =>
+            r.reduce((obj, val, idx) => {
+              obj[headerRow[idx]] = val;
+              return obj;
+            }, {})
+          );
+          setImportData(data);
+        } else {
+          alert("Understøtter kun JSON eller CSV.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Fejl ved læsning af fil");
+      });
   };
 
   // Importerer det valgte eksperiment
@@ -184,25 +189,38 @@ export const useExperimentsViewModel = (isOpen) => {
   // Parser CSV til 2D array
   const parseCSV = (text) => {
     const rows = [];
-    let row = [], cell = "", inQuotes = false;
+    let row = [],
+      cell = "",
+      inQuotes = false;
 
     for (let i = 0; i < text.length; i++) {
-      const char = text[i], next = text[i + 1];
+      const char = text[i],
+        next = text[i + 1];
       if (char === '"' && inQuotes && next === '"') {
-        cell += '"'; i++;
+        cell += '"';
+        i++;
       } else if (char === '"') {
         inQuotes = !inQuotes;
       } else if (char === "," && !inQuotes) {
-        row.push(cell); cell = "";
-      } else if ((char === "\n" || (char === "\r" && next === "\n")) && !inQuotes) {
-        row.push(cell); rows.push(row); row = []; cell = ""; if (char === "\r") i++;
+        row.push(cell);
+        cell = "";
+      } else if (
+        (char === "\n" || (char === "\r" && next === "\n")) &&
+        !inQuotes
+      ) {
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = "";
+        if (char === "\r") i++;
       } else {
         cell += char;
       }
     }
 
     if (cell !== "" || row.length) {
-      row.push(cell); rows.push(row);
+      row.push(cell);
+      rows.push(row);
     }
 
     return rows;

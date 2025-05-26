@@ -1,6 +1,11 @@
 // src/Application/Services/AuthService.js
 
-import { loginAPI, registerAPI, getMeAPI, logoutAPI } from "@/Infrastructure/API/AuthAPI";
+import {
+  loginAPI,
+  registerAPI,
+  getMeAPI,
+  logoutAPI,
+} from "@/Infrastructure/API/AuthAPI";
 
 export const loginUser = async ({ email, password }) => {
   const response = await loginAPI(email, password);
@@ -46,9 +51,8 @@ export const registerUser = async ({ email, password, username }) => {
       throw new Error(text || "Registrering fejlede.");
     }
   }
-  return true; 
+  return true;
 };
-
 
 export const getMe = async () => {
   const response = await getMeAPI();

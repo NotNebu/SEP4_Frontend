@@ -1,9 +1,7 @@
-// src/Presentation/ViewModels/DashboardViewModel.js
-
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { fetchSensorData } from "@/Application/Services/DashboardService";
-import { saveFetchedExperiment } from "@/Application/Services/ExperimentService"; // hvis du bruger det
+import { saveFetchedExperiment } from "@/Application/Services/ExperimentService";
 
 /**
  * DashboardViewModel – Henter og formatterer sensordata til grafvisning.
@@ -21,7 +19,7 @@ export const DashboardViewModel = (navigate) => {
     return data.map((entry) => {
       const time = new Date(entry.timestamp);
       const formattedTime = isNaN(time.getTime())
-        ? "Invalid Date"
+        ? "Forkert Dato"
         : format(time, "dd MMM yyyy, HH:mm:ss");
 
       return {
@@ -42,13 +40,19 @@ export const DashboardViewModel = (navigate) => {
       const sensorData = await fetchSensorData();
       const formatted = formatData(sensorData);
 
-      setTemperatureData(formatted.map(({ time, temperature }) => ({ time, temperature })));
-      setHumidityData(formatted.map(({ time, humidity }) => ({ time, humidity })));
+      setTemperatureData(
+        formatted.map(({ time, temperature }) => ({ time, temperature }))
+      );
+      setHumidityData(
+        formatted.map(({ time, humidity }) => ({ time, humidity }))
+      );
       setSoilData(formatted.map(({ time, soil }) => ({ time, soil })));
-      setDistanceData(formatted.map(({ time, distance }) => ({ time, distance })));
+      setDistanceData(
+        formatted.map(({ time, distance }) => ({ time, distance }))
+      );
 
       if (!sessionStorage.getItem("dashboardDataSaved")) {
-        await saveFetchedExperiment("Dashboard måling", sensorData);
+        await saveFetchedExperiment("Eksperiment 1", sensorData);
         sessionStorage.setItem("dashboardDataSaved", "true");
       }
 

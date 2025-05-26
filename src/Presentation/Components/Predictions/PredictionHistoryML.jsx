@@ -1,11 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { fetchPredictionHistory, deletePrediction } from '@/Application/Services/PredictionService';
+import React, { useEffect, useState } from "react";
+import {
+  fetchPredictionHistory,
+  deletePrediction,
+} from "@/Application/Services/PredictionService";
+
+// Oversættelser til dansk
+const fieldMap = {
+  soil_type: "Jordtype",
+  water_frequency: "Vandingsfrekvens",
+  fertilizer_type: "Gødningstype",
+  sunlight_hours: "Solskinstimer",
+  temperature: "Temperatur",
+  humidity: "Luftfugtighed",
+  prediction: "Forudsigelse",
+  confidence: "Sikkerhed",
+  message: "Besked",
+  status: "Status",
+  model_used: "Model",
+};
+
+const valueMap = {
+  loam: "Muldjord",
+  sandy: "Sandjord",
+  clay: "Lerjord",
+  daily: "Dagligt",
+  weekly: "Ugentligt",
+  "bi-weekly": "Hver 14. dag",
+  chemical: "Kemisk",
+  organic: "Organisk",
+  none: "Ingen",
+  success: "Succes",
+  error: "Fejl",
+};
+
+// Visningsnavne for model-filer
+const modelNameMap = {
+  "mylrmodel_v6_logistic_regression.joblib": "Logistisk Regression v6",
+  "finalversion_logistic_regression.joblib": "Logistisk Regression v5",
+  "logistiskregression_logistic_regression.joblib":
+    "Logistisk Regression (Eksperimentel)",
+  "randomforestregressor.joblib": "Random Forest v1",
+  "randomforestregressor_20250510_160735.joblib": "Random Forest v2",
+  "randomforestregressor_20250511_210430.joblib": "Random Forest v3",
+};
+
+// Oversæt beskeder til dansk
+const translateMessage = (msg) => {
+  if (!msg) return "";
+
+  if (msg.includes("Logistic Regression prediction")) {
+    return "Logistisk regression forudsigelse blev gennemført.";
+  }
+
+  if (msg.includes("Random Forest prediction")) {
+    return "Random Forest forudsigelse blev gennemført.";
+  }
+
+  return msg;
+};
 
 const PredictionHistoryML = ({ refreshTrigger }) => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
-    const loadPredictions = async () => {
+  const loadPredictions = async () => {
     setLoading(true);
     try {
       const data = await fetchPredictionHistory();
@@ -17,7 +75,6 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
     }
   };
 
-  // Hent ved første indlæsning og hver gang trigger ændrer sig
   useEffect(() => {
     loadPredictions();
   }, [refreshTrigger]);
@@ -25,10 +82,22 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
   const handleDelete = async (id) => {
     try {
       await deletePrediction(id);
-      await loadPredictions(); // Reload listen efter sletning
+      await loadPredictions();
     } catch (err) {
       alert("Fejl ved sletning af forudsigelse");
     }
+  };
+
+  const translateKey = (key) => fieldMap[key] || key;
+
+  const translateValue = (value, key) => {
+    // Vis kun % for confidence
+    if (key === "confidence" && typeof value === "number" && value >= 0 && value <= 1) {
+      return (value * 100).toFixed(2) + "%";
+    }
+
+    // Almindelig oversættelse
+    return valueMap[value] || value;
   };
 
   return (
@@ -36,41 +105,55 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
       <h2 className="text-xl font-bold mb-4">Tidligere forudsigelser</h2>
 
       {loading ? (
-        // Vises mens data hentes
         <div className="text-gray-400">Indlæser tidligere forudsigelser...</div>
       ) : entries.length === 0 ? (
-        // Vises hvis ingen resultater
         <div className="text-gray-400">Ingen forudsigelser fundet.</div>
       ) : (
-        // Liste over forudsigelser
-        <ul className="space-y-3 max-h-96 overflow-y-scroll pr-2"> {/* Altid scrollbar */}
+        <ul className="space-y-3 max-h-96 overflow-y-scroll pr-2">
           {entries.map((entry) => {
-            // Forsøg at parse input/result som JSON
             let parsedInput = entry.input;
             let parsedResult = entry.result;
             try {
-              if (typeof parsedInput === 'string') parsedInput = JSON.parse(parsedInput);
-              if (typeof parsedResult === 'string') parsedResult = JSON.parse(parsedResult);
-            } catch (_) {
-              // Hvis parsing fejler, behold original string
-            }
+              if (typeof parsedInput === "string")
+                parsedInput = JSON.parse(parsedInput);
+              if (typeof parsedResult === "string")
+                parsedResult = JSON.parse(parsedResult);
+            } catch (_) {}
 
             return (
               <li key={entry.id} className="p-4 bg-gray-700 rounded-md shadow">
-                <div className="text-sm font-semibold">Model: {entry.model}</div>
+                <div className="text-sm font-semibold">
+                  Model:{" "}
+                  {modelNameMap[entry.model?.toLowerCase()] || entry.model}
+                </div>
 
                 <div className="mt-2 text-sm font-semibold">Input:</div>
                 {Object.entries(parsedInput).map(([key, value]) => (
-                  <div key={key} className="text-sm pl-2 text-gray-300">{key}: {value}</div>
+                  <div key={key} className="text-sm pl-2 text-gray-300">
+                    {translateKey(key)}: {translateValue(value, key)}
+                  </div>
                 ))}
 
                 <div className="mt-2 text-sm font-semibold">Resultat:</div>
-                {Object.entries(parsedResult).map(([key, value]) => (
-                  <div key={key} className="text-sm pl-2 text-gray-300">{key}: {value.toString()}</div>
-                ))}
+                {Object.entries(parsedResult).map(([key, value]) => {
+                  const displayKey = translateKey(key);
+                  const displayValue =
+                    key === "model_used"
+                      ? modelNameMap[value?.toLowerCase()] || value
+                      : key === "message"
+                      ? translateMessage(value)
+                      : translateValue(value, key);
+
+                  return (
+                    <div key={key} className="text-sm pl-2 text-gray-300">
+                      {displayKey}: {displayValue}
+                    </div>
+                  );
+                })}
 
                 <div className="text-xs text-gray-400 mt-2">
-                  Tidspunkt: {new Date(entry.timestamp || entry.createdAt).toLocaleString()}
+                  Tidspunkt:{" "}
+                  {new Date(entry.timestamp || entry.createdAt).toLocaleString()}
                 </div>
 
                 <button

@@ -10,4 +10,3 @@ const DashboardBox = ({ children }) => {
 };
 
 export default DashboardBox;
-

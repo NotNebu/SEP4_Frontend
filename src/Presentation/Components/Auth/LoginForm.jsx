@@ -1,9 +1,15 @@
-import { FaUser, FaLock } from 'react-icons/fa';
-import Input from '@/Presentation/Components/Shared/UI/Input';
-import Button from '@/Presentation/Components/Shared/UI/Button';
+import { FaUser, FaLock } from "react-icons/fa";
+import Input from "@/Presentation/Components/Shared/UI/Input";
+import Button from "@/Presentation/Components/Shared/UI/Button";
 
 // Formular til login med email og adgangskode
-export default function LoginForm({ email, password, setEmail, setPassword, onLogin }) {
+export default function LoginForm({
+  email,
+  password,
+  setEmail,
+  setPassword,
+  onLogin,
+}) {
   return (
     <form
       onSubmit={(e) => {
@@ -39,12 +45,7 @@ export default function LoginForm({ email, password, setEmail, setPassword, onLo
       </div>
 
       {/* Login-knap */}
-      <Button
-        type="submit"
-        label="Log ind"
-        fullWidth
-        variant="primary"
-      />
+      <Button type="submit" label="Log ind" fullWidth variant="primary" />
     </form>
   );
 }

@@ -11,7 +11,9 @@ export const changePassword = async ({ oldPassword, newPassword }) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Der opstod en fejl under ændring af kodeordet.");
+    throw new Error(
+      data.message || "Der opstod en fejl under ændring af kodeordet."
+    );
   }
 
   return data.message || "Kodeordet blev ændret succesfuldt!";
@@ -25,10 +27,10 @@ export const fetchUserProfile = async () => {
 };
 
 export const updateUserProfile = async (profile) => {
-  const res = await updateUserProfileAPI(profile); 
+  const res = await updateUserProfileAPI(profile);
 
   if (!res.ok) {
-    const raw = await res.text(); 
+    const raw = await res.text();
 
     try {
       const json = JSON.parse(raw);
@@ -40,5 +42,3 @@ export const updateUserProfile = async (profile) => {
 
   return await res.json();
 };
-
-

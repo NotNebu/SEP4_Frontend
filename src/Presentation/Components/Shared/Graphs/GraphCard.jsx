@@ -15,13 +15,13 @@ import {
  * Viser én dataserie med valgfri enhed og aksegrænser.
  */
 const GraphCard = ({
-  title,       // Titel på grafen
-  subtitle,    // Undertekst under titlen
-  sideText,    // Eventuel tekst til højre
-  data,        // Dataliste til grafen
-  dataKey,     // Nøgle i dataobjekterne, der skal plottes
-  unit,        // Enhed for Y-aksen (fx °C, %, cm)
-  domain,      // Valgfri Y-akse-grænser (fx [0, 100])
+  title, // Titel på grafen
+  subtitle, // Undertekst under titlen
+  sideText, // Eventuel tekst til højre
+  data, // Dataliste til grafen
+  dataKey, // Nøgle i dataobjekterne, der skal plottes
+  unit, // Enhed for Y-aksen (fx °C, %, cm)
+  domain, // Valgfri Y-akse-grænser (fx [0, 100])
   stroke = "#3b82f6", // Farve på linjen
 }) => {
   const containerRef = useRef(null);

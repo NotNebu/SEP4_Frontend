@@ -2,9 +2,43 @@ import Card from "@/Presentation/Components/Shared/UI/Card";
 import Form from "@/Presentation/Components/Shared/UI/Form";
 import { PredictionResult } from "@/Presentation/Components/Predictions/PredictionResult";
 
-// Viser forudsigelsesformularen og håndterer indtastning og indsendelse
-// af data til forudsigelse
-// Denne komponent viser en formular til at indtaste data til forudsigelse
+// Visningsnavne for model-filer
+const modelNameMap = {
+  "mylrmodel_v6_logistic_regression.joblib": "Logistisk Regression v6",
+  "finalversion_logistic_regression.joblib": "Logistisk Regression v5",
+  "logistiskregression_logistic_regression.joblib": "Logistisk Regression (Eksperimentel)",
+  "randomforestregressor.joblib": "Random Forest v1",
+  "randomforestregressor_20250510_160735.joblib": "Random Forest v2",
+  "randomforestregressor_20250511_210430.joblib": "Random Forest v3",
+};
+
+// Oversættelser af placeholder-felter
+const fieldPlaceholderMap = {
+  "Soil Type": "Jordtype",
+  "Water Frequency": "Vandingsfrekvens",
+  "Fertilizer Type": "Gødningstype",
+  "Sunlight Hours": "Solskinstimer",
+  "Temperature": "Temperatur",
+  "Humidity": "Luftfugtighed",
+};
+
+// Oversættelser af dropdown-option værdier
+const optionLabelMap = {
+  // Jordtyper
+  loam: "Muldjord",
+  sandy: "Sandjord",
+  clay: "Lerjord",
+
+  // Vandingsfrekvens
+  daily: "Dagligt",
+  weekly: "Ugentligt",
+  "bi-weekly": "Hver 14. dag",
+
+  // Gødningstype
+  chemical: "Kemisk",
+  organic: "Organisk",
+  none: "Ingen",
+};
 
 const PredictionForm = ({
   modelName,
@@ -15,13 +49,11 @@ const PredictionForm = ({
   onSubmit,
   onClear,
 }) => {
-
-  // Funktion til at vise enten dropdown eller tekst/nummer input afhængigt af feltets rfc/logistiske type
   const renderField = (field) => {
     const value = formData[field.name] || "";
     const handleChange = (e) => onChange(field.name, e.target.value);
+    const placeholder = fieldPlaceholderMap[field.placeholder] || field.placeholder;
 
-    // Hvis feltet har definerede valgmuligheder, vis som dropdown
     if (field.options) {
       return (
         <select
@@ -31,21 +63,22 @@ const PredictionForm = ({
           onChange={handleChange}
           className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
         >
-          <option value="">Vælg {field.placeholder}</option>
+          <option value="">Vælg {placeholder}</option>
           {field.options.map((opt) => (
-            <option key={opt} value={opt}>{opt}</option>
+            <option key={opt} value={opt}>
+              {optionLabelMap[opt] || opt}
+            </option>
           ))}
         </select>
       );
     }
 
-    // Standard inputfelt (tekst eller tal)
     return (
       <input
         key={field.name}
         type={field.type || "text"}
         name={field.name}
-        placeholder={field.placeholder}
+        placeholder={placeholder}
         value={value}
         onChange={handleChange}
         className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
@@ -53,31 +86,33 @@ const PredictionForm = ({
     );
   };
 
-  
   return (
     <Card>
       <h2 className="text-2xl font-semibold mb-4 text-white">
-        {modelName.toUpperCase()} Forudsigelse
+        {modelNameMap[modelName.toLowerCase()] || modelName.replace(".joblib", "")} Forudsigelse
       </h2>
 
-      {/* Formularen håndterer indtastning og knapper */}
       <form onSubmit={onSubmit} onReset={onClear} className="space-y-4">
-        {fields.map((field) => (
-          <div key={field.name}>
-            <label className="block mb-1 text-sm text-white">
-              {field.placeholder}
-            </label>
-            {renderField(field)}
-          </div>
-        ))}
+        {fields.map((field) => {
+          const placeholder = fieldPlaceholderMap[field.placeholder] || field.placeholder;
 
-        {/* Knapper til at predict eller rydde formularen */}
-        <div className="flex gap-4">
-          <button type="submit" className="bg-green-600 px-4 py-2 rounded text-white">Forudsig</button>
-          <button type="reset" className="bg-red-600 px-4 py-2 rounded text-white">Ryd</button>
+          return (
+            <div key={field.name}>
+              <label className="block mb-1 text-sm text-white">{placeholder}</label>
+              {renderField(field)}
+            </div>
+          );
+        })}
+
+        <div className="flex gap-4 mt-4">
+          <button type="submit" className="bg-green-600 px-4 py-2 rounded text-white">
+            Forudsig
+          </button>
+          <button type="reset" className="bg-red-600 px-4 py-2 rounded text-white">
+            Ryd
+          </button>
         </div>
 
-        {/* Hvis der er resultat, vis det nedenunder */}
         {result && (
           <div className="mt-6">
             <PredictionResult model={modelName} data={result} />

@@ -4,6 +4,7 @@ import PredictedSensorFeed from "@/Presentation/Components/Dashboard/PredictData
 import SensorVsPredictionChart from "@/Presentation/Components/Dashboard/SensorVsPredictionChart";
 import { generateMockSensorData } from "@/Presentation/Logic/generateMockSensorData";
 import { generatePredictedData } from "@/Presentation/Logic/generatePredictedData";
+import Select from "@/Presentation/Components/Shared/UI/Select";
 
 export default function SensorPredictionTableWrapper() {
   const [sensorFeed, setSensorFeed] = useState([]);
@@ -16,7 +17,10 @@ export default function SensorPredictionTableWrapper() {
     }, 3000);
 
     const predictionInterval = setInterval(() => {
-      setPredictedFeed((prev) => [generatePredictedData(), ...prev.slice(0, 19)]);
+      setPredictedFeed((prev) => [
+        generatePredictedData(),
+        ...prev.slice(0, 19),
+      ]);
     }, 3000);
 
     return () => {
@@ -35,29 +39,26 @@ export default function SensorPredictionTableWrapper() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <label className="text-white font-medium">Vælg sensor:</label>
-        <select
-          value={selectedSensor}
-          onChange={(e) => setSelectedSensor(e.target.value)}
-          className="p-2 rounded-md bg-gray-700 text-white"
-        >
-          {sensorOptions.map((option) => (
-            <option key={option.value} value={option.value}>{option.label}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <LiveSensorFeed feed={sensorFeed} />
-        <PredictedSensorFeed feed={predictedFeed} />
-      </div>
+      <Select
+        label="Vælg sensor"
+        name="sensor"
+        value={selectedSensor}
+        onChange={(e) => setSelectedSensor(e.target.value)}
+        options={sensorOptions}
+        variant="default"
+      />
 
       <SensorVsPredictionChart
         sensorFeed={sensorFeed}
         predictedFeed={predictedFeed}
         sensorKey={selectedSensor}
       />
+
+      {/* Tabelvisning */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <LiveSensorFeed feed={sensorFeed} />
+        <PredictedSensorFeed feed={predictedFeed} />
+      </div>
     </div>
   );
 }

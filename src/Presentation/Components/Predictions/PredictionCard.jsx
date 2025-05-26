@@ -16,8 +16,12 @@ const PredictionCard = ({ item }) => {
 
       {/* Talvisning og afvigelse */}
       <div className="mt-4 space-y-1 text-base">
-        <p>Forudsigelse: <span className="font-semibold">{item.predicted}</span></p>
-        <p>Målt: <span className="font-semibold">{item.actual}</span></p>
+        <p>
+          Forudsigelse: <span className="font-semibold">{item.predicted}</span>
+        </p>
+        <p>
+          Målt: <span className="font-semibold">{item.actual}</span>
+        </p>
         <DeviationText deviation={deviation} />
 
         {/* Fremdriftslinje */}

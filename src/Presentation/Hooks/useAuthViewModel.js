@@ -1,7 +1,8 @@
-// src/Presentation/ViewModels/useAuthViewModel.js
-
 import { useEffect, useState } from "react";
-import { getMe, logout as logoutUser } from "@/Application/Services/AuthService";
+import {
+  getMe,
+  logout as logoutUser,
+} from "@/Application/Services/AuthService";
 
 /**
  * useAuthViewModel – Håndterer brugerens autentificeringstilstand (login-status).
@@ -14,10 +15,8 @@ export const useAuthViewModel = () => {
   const refreshUser = async () => {
     try {
       const data = await getMe();
-      console.log("Bruger data:", data);
       setUser(data);
-    } catch (err) {
-      console.warn("Fejl ved /me:", err.message);
+    } catch {
       setUser(null);
     } finally {
       setLoading(false);
@@ -27,8 +26,8 @@ export const useAuthViewModel = () => {
   const logout = async () => {
     try {
       await logoutUser();
-    } catch (err) {
-      console.error("Logout-fejl:", err.message);
+    } catch {
+      alert("Log ud fejlede. Prøv igen.");
     } finally {
       setUser(null);
     }

@@ -34,50 +34,52 @@ export default function CreateExperimentPage() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(null);
+    e.preventDefault();
+    setError(null);
 
-  const numTemp = Number(temperature);
-  const numAir = Number(airHumidity);
-  const numSoil = Number(soilHumidity);
-  const numLight = Number(lightLevel);
-  const numExp = Number(experimentNumber);
+    const numTemp = Number(temperature);
+    const numAir = Number(airHumidity);
+    const numSoil = Number(soilHumidity);
+    const numLight = Number(lightLevel);
+    const numExp = Number(experimentNumber);
 
-  // Validering af input
-  if (numExp < 1 || numExp > 10000)
-    return setError("Eksperimentnummer skal være mellem 1 og 10.000.");
-  if (numTemp < -20 || numTemp > 50)
-    return setError("Temperatur skal være mellem -20°C og 50°C.");
-  if (numAir < 0 || numAir > 100)
-    return setError("Luftfugtighed skal være mellem 0% og 100%.");
-  if (numSoil < 0 || numSoil > 100)
-    return setError("Jordfugtighed skal være mellem 0% og 100%.");
-  if (numLight < 0 || numLight > 100000)
-    return setError("Lysniveau skal være mellem 0 og 100.000 lux.");
+    // Validering af input
+    if (numExp < 1 || numExp > 10000)
+      return setError("Eksperimentnummer skal være mellem 1 og 10.000.");
+    if (numTemp < -20 || numTemp > 50)
+      return setError("Temperatur skal være mellem -20°C og 50°C.");
+    if (numAir < 0 || numAir > 100)
+      return setError("Luftfugtighed skal være mellem 0% og 100%.");
+    if (numSoil < 0 || numSoil > 100)
+      return setError("Jordfugtighed skal være mellem 0% og 100%.");
+    if (numLight < 0 || numLight > 100000)
+      return setError("Lysniveau skal være mellem 0 og 100.000 lux.");
 
-  const dataJson = {
-    experimentNumber: numExp,
-    temperature: numTemp,
-    airHumidity: numAir,
-    soilHumidity: numSoil,
-    lightLevel: numLight,
-    wateringActive,
+    const dataJson = {
+      experimentNumber: numExp,
+      temperature: numTemp,
+      airHumidity: numAir,
+      soilHumidity: numSoil,
+      lightLevel: numLight,
+      wateringActive,
+    };
+
+    try {
+      await createExperiment({ title, description, dataJson });
+      alert("Eksperiment oprettet!");
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError("Der opstod en fejl ved oprettelsen.");
+    }
   };
-
-  try {
-    await createExperiment({ title, description, dataJson });
-    alert("Eksperiment oprettet!");
-    navigate("/");
-  } catch (err) {
-    console.error(err);
-    setError("Der opstod en fejl ved oprettelsen.");
-  }
-};
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white">
       <main className="flex-grow w-full max-w-screen-2xl mx-auto px-6 sm:px-10 xl:px-20 py-10">
-        <h1 className="text-3xl font-bold text-center mb-10">Opret nyt eksperiment</h1>
+        <h1 className="text-3xl font-bold text-center mb-10">
+          Opret nyt eksperiment
+        </h1>
 
         <form
           onSubmit={handleSubmit}
@@ -105,7 +107,7 @@ export default function CreateExperimentPage() {
               type="number"
               value={experimentNumber}
               onChangeValue={setExperimentNumber}
-              placeholder="Fx 1"
+              placeholder="1"
             />
             <Input
               label="Temperatur (°C)"
@@ -113,7 +115,7 @@ export default function CreateExperimentPage() {
               type="number"
               value={temperature}
               onChangeValue={setTemperature}
-              placeholder="Fx 22.5"
+              placeholder="22.5"
             />
             <Input
               label="Luftfugtighed (%)"
@@ -121,7 +123,7 @@ export default function CreateExperimentPage() {
               type="number"
               value={airHumidity}
               onChangeValue={setAirHumidity}
-              placeholder="Fx 60"
+              placeholder="60"
             />
             <Input
               label="Jordfugtighed (%)"
@@ -129,7 +131,7 @@ export default function CreateExperimentPage() {
               type="number"
               value={soilHumidity}
               onChangeValue={setSoilHumidity}
-              placeholder="Fx 45"
+              placeholder="45"
             />
             <Input
               label="Lysniveau (lux)"
@@ -137,7 +139,7 @@ export default function CreateExperimentPage() {
               type="number"
               value={lightLevel}
               onChangeValue={setLightLevel}
-              placeholder="Fx 800"
+              placeholder="800"
             />
             {error && <p className="text-red-400 text-sm">{error}</p>}
           </div>
@@ -146,18 +148,31 @@ export default function CreateExperimentPage() {
           <div className="w-full">
             <Card className="w-full bg-gray-800 text-white flex flex-col min-h-[420px] p-6 rounded-xl shadow-lg">
               <div>
-                <h3 className="text-lg font-semibold mb-4">Preview</h3>
+                <h3 className="text-lg font-semibold mb-4">Forhåndsvisning</h3>
                 <ul className="space-y-2 text-[15px] text-gray-200">
-                  <li><strong>Eksperimentnummer:</strong> {dataJson.experimentNumber}</li>
-                  <li><strong>Temperatur:</strong> {dataJson.temperature} °C</li>
-                  <li><strong>Luftfugtighed:</strong> {dataJson.airHumidity} %</li>
-                  <li><strong>Jordfugtighed:</strong> {dataJson.soilHumidity} %</li>
-                  <li><strong>Lysniveau:</strong> {dataJson.lightLevel} lux</li>
+                  <li>
+                    <strong>Eksperimentnummer:</strong>{" "}
+                    {dataJson.experimentNumber}
+                  </li>
+                  <li>
+                    <strong>Temperatur:</strong> {dataJson.temperature} °C
+                  </li>
+                  <li>
+                    <strong>Luftfugtighed:</strong> {dataJson.airHumidity} %
+                  </li>
+                  <li>
+                    <strong>Jordfugtighed:</strong> {dataJson.soilHumidity} %
+                  </li>
+                  <li>
+                    <strong>Lysniveau:</strong> {dataJson.lightLevel} lux
+                  </li>
                   <li>
                     <strong>Vanding:</strong>{" "}
                     <span
                       className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                        dataJson.wateringActive ? "bg-green-600 text-white" : "bg-red-600 text-white"
+                        dataJson.wateringActive
+                          ? "bg-green-600 text-white"
+                          : "bg-red-600 text-white"
                       }`}
                     >
                       {dataJson.wateringActive ? "Aktiv" : "Ikke aktiv"}
@@ -175,7 +190,10 @@ export default function CreateExperimentPage() {
                     onChange={(e) => setWateringActive(e.target.checked)}
                     className="h-4 w-4 text-blue-600"
                   />
-                  <label htmlFor="wateringActive" className="text-sm text-gray-300">
+                  <label
+                    htmlFor="wateringActive"
+                    className="text-sm text-gray-300"
+                  >
                     Vanding aktiv
                   </label>
                 </div>

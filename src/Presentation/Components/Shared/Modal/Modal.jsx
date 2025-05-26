@@ -1,4 +1,4 @@
-import Button from "@/Presentation/Components/Shared/UI/Button"; 
+import Button from "@/Presentation/Components/Shared/UI/Button";
 
 export default function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
@@ -11,11 +11,7 @@ export default function Modal({ isOpen, onClose, children }) {
       >
         {/* Luk-knap i øverste højre hjørne */}
         <div className="absolute top-3 right-3 z-10">
-          <Button
-            label="Luk"
-            onClick={onClose}
-            variant="danger"
-          />
+          <Button label="Luk" onClick={onClose} variant="danger" />
         </div>
 
         {/* Indhold vises her */}
