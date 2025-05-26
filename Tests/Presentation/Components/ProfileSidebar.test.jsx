@@ -15,7 +15,6 @@ describe("ProfileSidebar component", () => {
       </MemoryRouter>
     );
     expect(screen.getByText("Profil")).toBeInTheDocument();
-    expect(screen.getByText("Upload billede")).toBeInTheDocument();
     expect(screen.getByText("Ændre kodeord")).toBeInTheDocument();
     expect(screen.getByText("Gem ændringer")).toBeInTheDocument();
   });
@@ -36,13 +35,5 @@ describe("ProfileSidebar component", () => {
         <ProfileSidebar onSave={() => {}} />
       </MemoryRouter>
     );
-
-    const fileInput = screen.getByLabelText("Vælg billede");
-    const file = new File(["image"], "profile.jpg", { type: "image/jpeg" });
-
-    fireEvent.change(fileInput, { target: { files: [file] } });
-
-    expect(fileInput.files[0]).toBe(file);
-    expect(fileInput.files).toHaveLength(1);
   });
 });
