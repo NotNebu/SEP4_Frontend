@@ -1,5 +1,7 @@
 const BASE_URL = "https://localhost:5107/api";
 
+// Funktion til at indsende en forudsigelse via API
+// Tager et payload-objekt som input og sender en POST-request
 export const submitPredictionAPI = async (payload) => {
   const response = await fetch(`${BASE_URL}/sensor/predict`, {
     method: "POST",
@@ -16,6 +18,8 @@ export const submitPredictionAPI = async (payload) => {
   return await response.text();
 };
 
+// Funktion til at slette en forudsigelse via API
+// Tager et ID som input og sender en DELETE-request
 export const deletePredictionAPI = async (id) => {
   const response = await fetch(`${BASE_URL}/prediction/${id}`, {
     method: "DELETE",
@@ -28,6 +32,8 @@ export const deletePredictionAPI = async (id) => {
   }
 };
 
+// Funktion til at hente forudsigelseshistorik via API
+// Sender en GET-request og returnerer svaret
 export const fetchPredictionHistoryAPI = async () => {
   const response = await fetch(`${BASE_URL}/prediction`, {
     credentials: "include",
@@ -41,6 +47,8 @@ export const fetchPredictionHistoryAPI = async () => {
   return await response.json();
 };
 
+// Funktion til at gemme en forudsigelse via API
+// Tager model, filnavn, input og resultat som input og sender en POST-request
 export const savePredictionAPI = async ({ model, fileName, input, result }) => {
   const response = await fetch(`${BASE_URL}/prediction`, {
     method: "POST",
@@ -55,6 +63,8 @@ export const savePredictionAPI = async ({ model, fileName, input, result }) => {
   }
 };
 
+// Funktion til at hente tilgængelige modeller via API
+// Sender en GET-request og returnerer en liste af model-filer
 export const fetchAvailableModelsAPI = async () => {
   const response = await fetch(`${BASE_URL}/sensor/model`, {
     credentials: "include",

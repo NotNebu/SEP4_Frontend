@@ -1,3 +1,5 @@
+// Genanvendelig checkbox-komponent med label
+// Modtager label, navn, checked og onChange som props
 export default function Checkbox({ label, name, checked, onChange }) {
   return (
     <label htmlFor={name} className="flex items-center gap-2 cursor-pointer">

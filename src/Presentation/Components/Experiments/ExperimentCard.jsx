@@ -1,6 +1,33 @@
 import Card from "@/Presentation/Components/Shared/UI/Card";
 import Button from "@/Presentation/Components/Shared/UI/Button";
 import ToggleTextButton from "@/Presentation/Components/Buttons/ToggleTextButton";
+import React from "react";
+
+// Dansk oversættelse af datanøgler
+const keyMap = {
+  experimentNumber: "Eksperimentnr.",
+  airTemperature: "Lufttemperatur (°C)",
+  airHumidity: "Luftfugtighed (%)",
+  soilMoisture: "Jordfugtighed (%)",
+  soilType: "Jordtype",
+  fertilizerType: "Gødningstype",
+  temperature: "Temperatur (°C)",
+  light: "Lysniveau (lux)",
+  lightType: "Lyskilde",
+  lightMin: "Min. lys",
+  lightMax: "Maks. lys",
+  lightAvg: "Gns. lys",
+  lightVariation: "Lysvariation",
+  artificialLight: "Kunstigt lys",
+  distanceToHeight: "Afstand til plantehøjde (cm)",
+  wateringActive: "Vanding aktiv",
+  water: "Vanding aktiveret",
+  waterAmount: "Vandmængde (L)",
+  wateringFrequency: "Vandingsfrekvens (min)",
+  timeSinceLastWatering: "Tid siden sidste vanding (min)",
+  waterNeedScore: "Vandbehov-score",
+  timestamp: "Tidspunkt",
+};
 
 // Viser et enkelt eksperiment med titel, beskrivelse, data og handlinger
 export default function ExperimentCard({
@@ -29,9 +56,7 @@ export default function ExperimentCard({
       const isNumericKeyed = keys.every((k) => !isNaN(k));
       parsedData = isNumericKeyed ? keys.map((k) => rawData[k]) : [rawData];
     }
-  } catch (err) {
-    console.error("Fejl ved parsing af dataJson:", err);
-  }
+  } catch (_) {}
 
   return (
     <li>
@@ -56,24 +81,29 @@ export default function ExperimentCard({
               {parsedData.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-gray-800 text-sm text-white rounded-md p-3 border border-gray-700"
+                  className="bg-gray-800 text-sm text-white rounded-md p-4 border border-gray-700"
                 >
-                  <h4 className="font-semibold text-purple-400 mb-2">
+                  <h4 className="font-semibold text-purple-400 mb-3">
                     Måling {index + 1}
                   </h4>
-                  <ul className="space-y-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
                     {Object.entries(item).map(([key, value]) => (
-                      <li
-                        key={key}
-                        className="flex justify-between border-b border-gray-700 pb-1"
-                      >
-                        <span className="text-gray-300">{key}:</span>
-                        <span className="text-gray-100 break-all text-right">
-                          {String(value)}
-                        </span>
-                      </li>
+                      <React.Fragment key={key}>
+                        <div className="text-gray-300 font-medium">
+                          {keyMap[key] || key}:
+                        </div>
+                        <div className="text-gray-100 text-center break-words">
+                          {key === "timestamp"
+                            ? new Date(value).toLocaleString("da-DK")
+                            : typeof value === "boolean"
+                            ? value
+                              ? "Ja"
+                              : "Nej"
+                            : String(value)}
+                        </div>
+                      </React.Fragment>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ))}
             </div>

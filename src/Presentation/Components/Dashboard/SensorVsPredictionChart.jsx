@@ -10,6 +10,9 @@ import {
   Legend,
 } from "recharts";
 
+// Komponent til visning af graf med både sensorværdier og forudsagte værdier
+// Modtager sensorFeed, predictedFeed og sensorKey som props
+// Viser en sammenlignende linjegraf for valgte sensor og dens forudsigelse
 export default function SensorVsPredictionChart({
   sensorFeed = [],
   predictedFeed = [],
@@ -27,6 +30,7 @@ export default function SensorVsPredictionChart({
     .charAt(0)
     .toUpperCase()}${sensorKey.slice(1)}`;
 
+  // Sammenfletter sensor- og forudsigelsesdata til grafen
   const merged = sensorFeed.map((entry, index) => ({
     time: entry?.timestamp
       ? new Date(entry.timestamp).toLocaleTimeString()
@@ -35,6 +39,7 @@ export default function SensorVsPredictionChart({
     predictedValue: predictedFeed[index]?.[predictedKey] ?? null,
   }));
 
+  // Tjekker om der er gyldige data til at vise grafen
   const hasValidData = merged.some(
     (d) =>
       typeof d.sensorValue === "number" && typeof d.predictedValue === "number"

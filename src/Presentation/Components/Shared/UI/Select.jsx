@@ -1,3 +1,5 @@
+// Genanvendelig select/dropdown-komponent med label og validering
+// Modtager label, navn, value, onChange, options, placeholder, variant og error som props
 export default function Select({
   label,
   name,

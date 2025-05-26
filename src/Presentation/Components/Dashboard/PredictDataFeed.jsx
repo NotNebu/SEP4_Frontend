@@ -1,5 +1,7 @@
 import React from "react";
 
+// Komponent til visning af forudsagte sensormålinger i en tabel
+// Modtager et feed-array som prop og viser hver forudsigelse
 export default function PredictedSensorFeed({ feed = [] }) {
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
@@ -23,9 +25,11 @@ export default function PredictedSensorFeed({ feed = [] }) {
               key={index}
               className="text-center border-t dark:border-gray-600"
             >
+              {/* Viser tidspunktet for forudsigelsen */}
               <td className="p-1">
                 {new Date(entry.timestamp).toLocaleTimeString()}
               </td>
+              {/* Viser forudsagte værdier */}
               <td className="p-1">{entry.predictedTemperatur}</td>
               <td className="p-1">{entry.predictedLuftfugtighed}</td>
               <td className="p-1">{entry.predictedJordfugtighed}</td>

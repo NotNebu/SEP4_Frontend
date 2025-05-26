@@ -15,6 +15,7 @@ export const DashboardViewModel = (navigate) => {
   const [status, setStatus] = useState("loading");
   const [statusCode, setStatusCode] = useState(null);
 
+  // Formatterer rå sensordata til brug i grafer
   const formatData = (data) => {
     return data.map((entry) => {
       const time = new Date(entry.timestamp);
@@ -32,6 +33,7 @@ export const DashboardViewModel = (navigate) => {
     });
   };
 
+  // Henter sensordata og håndterer state samt fejl
   const fetchData = async () => {
     setStatus("loading");
     setStatusCode(null);
@@ -51,6 +53,7 @@ export const DashboardViewModel = (navigate) => {
         formatted.map(({ time, distance }) => ({ time, distance }))
       );
 
+      // Gemmer kun data én gang pr. session
       if (!sessionStorage.getItem("dashboardDataSaved")) {
         await saveFetchedExperiment("Eksperiment 1", sensorData);
         sessionStorage.setItem("dashboardDataSaved", "true");
@@ -61,8 +64,7 @@ export const DashboardViewModel = (navigate) => {
       setStatus("error");
       setStatusCode(error.status || 500);
 
-      console.error("Fejl ved hentning af data:", error);
-
+      // Navigerer til fejlside med status og besked
       navigate("/error", {
         state: {
           code: error.status || 500,

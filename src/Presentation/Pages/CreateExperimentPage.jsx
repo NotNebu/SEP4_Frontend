@@ -13,7 +13,6 @@ import { createExperiment } from "@/Application/Services/ExperimentService";
 export default function CreateExperimentPage() {
   const navigate = useNavigate();
 
-  // Formularfelter
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [experimentNumber, setExperimentNumber] = useState("");
@@ -30,12 +29,27 @@ export default function CreateExperimentPage() {
     airHumidity: Number(airHumidity),
     soilHumidity: Number(soilHumidity),
     lightLevel: Number(lightLevel),
-    wateringActive: wateringActive,
+    wateringActive,
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    // Tjek om alle felter er udfyldt
+    if (
+      !title.trim() ||
+      !description.trim() ||
+      experimentNumber === "" ||
+      temperature === "" ||
+      airHumidity === "" ||
+      soilHumidity === "" ||
+      lightLevel === ""
+    ) {
+      return setError(
+        "Alle felter skal udfyldes for at oprette et eksperiment."
+      );
+    }
 
     const numTemp = Number(temperature);
     const numAir = Number(airHumidity);
@@ -43,11 +57,11 @@ export default function CreateExperimentPage() {
     const numLight = Number(lightLevel);
     const numExp = Number(experimentNumber);
 
-    // Validering af input
+    // Validering af numeriske grænser
     if (numExp < 1 || numExp > 10000)
       return setError("Eksperimentnummer skal være mellem 1 og 10.000.");
-    if (numTemp < -20 || numTemp > 50)
-      return setError("Temperatur skal være mellem -20°C og 50°C.");
+    if (numTemp < 0 || numTemp > 50)
+      return setError("Temperatur skal være mellem 0°C og 50°C.");
     if (numAir < 0 || numAir > 100)
       return setError("Luftfugtighed skal være mellem 0% og 100%.");
     if (numSoil < 0 || numSoil > 100)
@@ -68,8 +82,7 @@ export default function CreateExperimentPage() {
       await createExperiment({ title, description, dataJson });
       alert("Eksperiment oprettet!");
       navigate("/");
-    } catch (err) {
-      console.error(err);
+    } catch (_) {
       setError("Der opstod en fejl ved oprettelsen.");
     }
   };

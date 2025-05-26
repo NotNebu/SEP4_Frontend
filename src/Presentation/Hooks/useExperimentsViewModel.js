@@ -6,7 +6,8 @@ import {
 } from "@/Application/Services/ExperimentService";
 
 /**
- * Konverterer et JSON-objekt til et array, uanset struktur
+ * Hook til håndtering af eksperimenter
+ * Indeholder logik til hentning, import, eksport og sletning af eksperimenter
  */
 const normalizeDataJson = (dataJson) => {
   if (Array.isArray(dataJson)) return dataJson;
@@ -26,7 +27,6 @@ export const useExperimentsViewModel = (isOpen) => {
   const [importFile, setImportFile] = useState(null);
   const [importData, setImportData] = useState(null);
 
-  // Henter og parser eksperimenter når modal er åben
   useEffect(() => {
     if (isOpen) {
       getMyExperiments()
@@ -40,9 +40,7 @@ export const useExperimentsViewModel = (isOpen) => {
                   ? JSON.parse(exp.dataJson)
                   : exp.dataJson
               );
-            } catch (e) {
-              console.error("Kunne ikke parse dataJson:", e);
-            }
+            } catch (_) {}
 
             return {
               ...exp,
@@ -52,7 +50,9 @@ export const useExperimentsViewModel = (isOpen) => {
 
           setExperiments(parsedExperiments);
         })
-        .catch(console.error);
+        .catch(() => {
+          alert("Kunne ikke hente eksperimenter.");
+        });
     }
   }, [isOpen]);
 
@@ -61,13 +61,12 @@ export const useExperimentsViewModel = (isOpen) => {
     try {
       await deleteExperiment(id);
       setExperiments((prev) => prev.filter((exp) => exp.id !== id));
-    } catch (err) {
-      console.error(err);
+    } catch (_) {
       alert("Fejl ved sletning.");
     }
   };
 
-  // Download alle eksperimenter som JSON
+  // Eksporterer alle eksperimenter som JSON
   const handleDownloadAllJSON = () => {
     const blob = new Blob([JSON.stringify(experiments, null, 2)], {
       type: "application/json",
@@ -75,7 +74,7 @@ export const useExperimentsViewModel = (isOpen) => {
     downloadBlob(blob, "experiments.json");
   };
 
-  // Download alle eksperimenter som CSV
+  // Eksporterer alle eksperimenter som CSV
   const handleDownloadAllCSV = () => {
     const allRows = experiments.flatMap((exp) => {
       const rows = normalizeDataJson(exp.dataJson);
@@ -98,7 +97,7 @@ export const useExperimentsViewModel = (isOpen) => {
     downloadBlob(blob, "experiments.csv");
   };
 
-  // Download et enkelt eksperiment som JSON
+  // Eksporterer et enkelt eksperiment som JSON
   const downloadJSON = (exp) => {
     const blob = new Blob([JSON.stringify(exp, null, 2)], {
       type: "application/json",
@@ -106,7 +105,7 @@ export const useExperimentsViewModel = (isOpen) => {
     downloadBlob(blob, `${exp.title || exp.id}.json`);
   };
 
-  // Download et enkelt eksperiment som CSV
+  // Eksporterer et enkelt eksperiment som CSV
   const downloadCSV = (exp) => {
     const rows = normalizeDataJson(exp.dataJson);
     const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
@@ -122,7 +121,7 @@ export const useExperimentsViewModel = (isOpen) => {
     downloadBlob(blob, `${exp.title || exp.id}.csv`);
   };
 
-  // Håndterer valg af fil til import
+  // Håndterer filvalg til import
   const handleFileChange = (file) => {
     if (!file) return;
     setImportFile(file);
@@ -130,29 +129,32 @@ export const useExperimentsViewModel = (isOpen) => {
     file
       .text()
       .then((text) => {
-        if (file.name.toLowerCase().endsWith(".json")) {
-          const parsed = JSON.parse(text);
-          setImportData(normalizeDataJson(parsed));
-        } else if (file.name.toLowerCase().endsWith(".csv")) {
-          const [headerRow, ...dataRows] = parseCSV(text);
-          const data = dataRows.map((r) =>
-            r.reduce((obj, val, idx) => {
-              obj[headerRow[idx]] = val;
-              return obj;
-            }, {})
-          );
-          setImportData(data);
-        } else {
-          alert("Understøtter kun JSON eller CSV.");
+        try {
+          if (file.name.toLowerCase().endsWith(".json")) {
+            const parsed = JSON.parse(text);
+            setImportData(normalizeDataJson(parsed));
+          } else if (file.name.toLowerCase().endsWith(".csv")) {
+            const [headerRow, ...dataRows] = parseCSV(text);
+            const data = dataRows.map((r) =>
+              r.reduce((obj, val, idx) => {
+                obj[headerRow[idx]] = val;
+                return obj;
+              }, {})
+            );
+            setImportData(data);
+          } else {
+            alert("Understøtter kun JSON eller CSV.");
+          }
+        } catch (_) {
+          alert("Fejl ved læsning af fil");
         }
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         alert("Fejl ved læsning af fil");
       });
   };
 
-  // Importerer det valgte eksperiment
+  // Importerer et eksperiment fra valgt fil
   const handleImport = async () => {
     if (!importData) {
       alert("Vælg en fil først.");
@@ -170,13 +172,12 @@ export const useExperimentsViewModel = (isOpen) => {
       alert("Eksperiment importeret!");
       setImportFile(null);
       setImportData(null);
-    } catch (err) {
-      console.error(err);
-      alert("Fejl ved import: " + err.message);
+    } catch (_) {
+      alert("Fejl ved import.");
     }
   };
 
-  // Hjælpefunktion til download
+  // Hjælpefunktion til at downloade Blob som fil
   const downloadBlob = (blob, filename) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -186,7 +187,7 @@ export const useExperimentsViewModel = (isOpen) => {
     URL.revokeObjectURL(url);
   };
 
-  // Parser CSV til 2D array
+  // Parser CSV-tekst til array
   const parseCSV = (text) => {
     const rows = [];
     let row = [],

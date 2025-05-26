@@ -1,3 +1,5 @@
+// Genanvendelig input-komponent med label og validering
+// Modtager label, navn, type, value, onChange, placeholder, variant og error som props
 export default function Input({
   label,
   name,

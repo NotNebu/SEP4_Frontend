@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { changePassword } from "@/Application/Services/AccountService";
 
+// Hook til håndtering af logik for ændring af kodeord
+// Indeholder formularstate, fejl/succesbeskeder og loading-status
 export const useChangePasswordViewModel = () => {
   const [form, setForm] = useState({
     oldPassword: "",
@@ -12,10 +14,12 @@ export const useChangePasswordViewModel = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Håndterer ændringer i inputfelterne
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Håndterer gem/submit af kodeordsændring
   const handleSave = async () => {
     setError("");
     setSuccess("");

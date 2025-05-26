@@ -5,10 +5,9 @@ import React from "react";
  *
  * @param {Array} data - Rækker (array af objekter)
  * @param {Array} columns - Kolonner [{ label, key }]
- * @param {String} title - Valgfri tabeloverskrift
+ * @param {String} title - tabeloverskrift
  */
 const DataTable = ({ data, columns = [], title }) => {
-  // console.log("DataTable props:", { data, columns, title }); // Debug kun ved behov
 
   // Fallback ved tomt data eller kolonner
   if (!data || data.length === 0 || columns.length === 0) {

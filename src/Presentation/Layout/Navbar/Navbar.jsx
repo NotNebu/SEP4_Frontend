@@ -24,8 +24,8 @@ const Navbar = () => {
     try {
       await logout();
       navigate("/login");
-    } catch (err) {
-      console.error("Fejl ved logout:", err);
+    } catch (_) {
+      alert("Fejl ved logout.");
     }
   };
 

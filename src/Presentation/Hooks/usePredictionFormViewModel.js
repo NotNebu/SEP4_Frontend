@@ -6,6 +6,8 @@ import {
 } from "@/Application/Services/PredictionService";
 import { useAuth } from "@/Shared/Context/AuthContext";
 
+// Hook til håndtering af forudsigelsesformular
+// Indeholder logik til valg af model, validering, indsendelse og lagring af forudsigelser
 const fieldConfigs = {
   logistic: [
     {
@@ -65,7 +67,9 @@ export const usePredictionFormViewModel = () => {
           setModelType(detectModelType(models[0]));
         }
       })
-      .catch((err) => console.error("Kunne ikke hente modeller:", err));
+      .catch(() => {
+        alert("Kunne ikke hente tilgængelige modeller. Prøv igen senere.");
+      });
   }, []);
 
   useEffect(() => {
@@ -83,6 +87,7 @@ export const usePredictionFormViewModel = () => {
     setResult(null);
   };
 
+  // Validerer inputfelter før forudsigelse sendes
   const validateInput = () => {
     const requiredFields = fieldConfigs[modelType];
     for (const field of requiredFields) {
@@ -105,6 +110,7 @@ export const usePredictionFormViewModel = () => {
     }
   };
 
+  // Håndterer indsendelse af forudsigelse
   const handleSubmit = async (e) => {
     e.preventDefault();
 

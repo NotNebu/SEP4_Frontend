@@ -1,5 +1,3 @@
-// src/Application/Services/AuthService.js
-
 import {
   loginAPI,
   registerAPI,
@@ -7,6 +5,9 @@ import {
   logoutAPI,
 } from "@/Infrastructure/API/AuthAPI";
 
+// Funktion til at logge en bruger ind
+// Tager email og kodeord som input
+// Kaster en fejl hvis login mislykkes, ellers returneres true
 export const loginUser = async ({ email, password }) => {
   const response = await loginAPI(email, password);
 
@@ -31,6 +32,9 @@ export const loginUser = async ({ email, password }) => {
   return true;
 };
 
+// Funktion til at registrere en ny bruger
+// Tager email, kodeord og brugernavn som input
+// Kaster en fejl hvis registreringen mislykkes, ellers returneres true
 export const registerUser = async ({ email, password, username }) => {
   const response = await registerAPI(email, password, username);
 
@@ -54,6 +58,8 @@ export const registerUser = async ({ email, password, username }) => {
   return true;
 };
 
+// Funktion til at hente information om den aktuelle bruger
+// Kaster en fejl hvis informationen ikke kan hentes, ellers returneres brugerdata
 export const getMe = async () => {
   const response = await getMeAPI();
 
@@ -65,6 +71,8 @@ export const getMe = async () => {
   return await response.json();
 };
 
+// Funktion til at logge brugeren ud
+// Kaster en fejl hvis logout mislykkes, ellers returneres svaret fra serveren
 export const logout = async () => {
   const response = await logoutAPI();
 

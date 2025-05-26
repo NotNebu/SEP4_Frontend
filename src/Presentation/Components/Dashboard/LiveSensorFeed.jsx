@@ -1,5 +1,7 @@
 import React from "react";
 
+// Komponent til visning af live sensormålinger i en tabel
+// Modtager et feed-array som prop og viser hver måling med farvekodning baseret på værdier
 export default function LiveSensorFeed({ feed = [] }) {
   return (
     <div className="p-6 w-full bg-white dark:bg-gray-800 rounded-xl shadow-md">
@@ -21,10 +23,12 @@ export default function LiveSensorFeed({ feed = [] }) {
               key={index}
               className="text-center border-t dark:border-gray-600"
             >
+              {/* Viser tidspunktet for målingen */}
               <td className="p-1">
                 {new Date(entry.timestamp).toLocaleTimeString()}
               </td>
 
+              {/* Farvekodning for temperatur */}
               <td
                 className={`p-1 ${
                   entry.temperatur > 28
@@ -37,6 +41,7 @@ export default function LiveSensorFeed({ feed = [] }) {
                 {entry.temperatur}
               </td>
 
+              {/* Farvekodning for luftfugtighed */}
               <td
                 className={`p-1 ${
                   entry.luftfugtighed < 50 ? "text-yellow-400 font-medium" : ""
@@ -45,6 +50,7 @@ export default function LiveSensorFeed({ feed = [] }) {
                 {entry.luftfugtighed}
               </td>
 
+              {/* Farvekodning for jordfugtighed */}
               <td
                 className={`p-1 ${
                   entry.jordfugtighed < 25 ? "text-yellow-400 font-medium" : ""
@@ -53,8 +59,10 @@ export default function LiveSensorFeed({ feed = [] }) {
                 {entry.jordfugtighed}
               </td>
 
+              {/* Lysværdi uden farvekodning */}
               <td className="p-1">{entry.lys}</td>
 
+              {/* Farvekodning for afstand */}
               <td
                 className={`p-1 ${
                   entry.afstand < 12

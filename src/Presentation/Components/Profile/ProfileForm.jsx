@@ -1,5 +1,7 @@
 import Form from "@/Presentation/Components/Shared/UI/Form";
 
+// Komponent til visning og redigering af brugerprofil
+// Viser en formular med felter for brugeroplysninger og validering på dansk
 export default function ProfileForm({ profile, onChange, error }) {
   const fields = [
     {

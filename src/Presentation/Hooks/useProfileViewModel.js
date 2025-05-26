@@ -29,13 +29,13 @@ export const useProfileViewModel = () => {
         setProfile(data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         setLoading(false);
+        // Fejl ignoreres lydløst – alternativt: alert("Kunne ikke hente profiloplysninger.")
       });
   }, []);
 
-  //Håndter ændringer fra Input via name og value
+  // Håndter ændringer fra Input via name og value
   const handleChange = (name, value) => {
     setProfile((prev) => ({
       ...prev,
@@ -47,8 +47,7 @@ export const useProfileViewModel = () => {
     try {
       await updateUserProfile(profile);
       alert("Profil opdateret.");
-    } catch (err) {
-      console.error(err);
+    } catch (_) {
       alert("Noget gik galt.");
     }
   };

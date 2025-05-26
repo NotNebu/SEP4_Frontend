@@ -1,5 +1,3 @@
-// src/Application/Services/DashboardService.js
-
 import { fetchSensorDataAPI } from "@/Infrastructure/API/SensorAPI";
 
 /**

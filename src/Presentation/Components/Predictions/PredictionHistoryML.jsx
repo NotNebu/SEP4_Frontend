@@ -33,7 +33,6 @@ const valueMap = {
   error: "Fejl",
 };
 
-// Visningsnavne for model-filer
 const modelNameMap = {
   "mylrmodel_v6_logistic_regression.joblib": "Logistisk Regression v6",
   "finalversion_logistic_regression.joblib": "Logistisk Regression v5",
@@ -44,18 +43,14 @@ const modelNameMap = {
   "randomforestregressor_20250511_210430.joblib": "Random Forest v3",
 };
 
-// Oversæt beskeder til dansk
 const translateMessage = (msg) => {
   if (!msg) return "";
-
   if (msg.includes("Logistic Regression prediction")) {
     return "Logistisk regression forudsigelse blev gennemført.";
   }
-
   if (msg.includes("Random Forest prediction")) {
     return "Random Forest forudsigelse blev gennemført.";
   }
-
   return msg;
 };
 
@@ -68,8 +63,8 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
     try {
       const data = await fetchPredictionHistory();
       setEntries(data);
-    } catch (err) {
-      console.error(err);
+    } catch (_) {
+      // Fejl ignoreres lydløst
     } finally {
       setLoading(false);
     }
@@ -83,7 +78,7 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
     try {
       await deletePrediction(id);
       await loadPredictions();
-    } catch (err) {
+    } catch (_) {
       alert("Fejl ved sletning af forudsigelse");
     }
   };
@@ -91,12 +86,9 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
   const translateKey = (key) => fieldMap[key] || key;
 
   const translateValue = (value, key) => {
-    // Vis kun % for confidence
     if (key === "confidence" && typeof value === "number" && value >= 0 && value <= 1) {
       return (value * 100).toFixed(2) + "%";
     }
-
-    // Almindelig oversættelse
     return valueMap[value] || value;
   };
 
@@ -118,7 +110,9 @@ const PredictionHistoryML = ({ refreshTrigger }) => {
                 parsedInput = JSON.parse(parsedInput);
               if (typeof parsedResult === "string")
                 parsedResult = JSON.parse(parsedResult);
-            } catch (_) {}
+            } catch (_) {
+              // Ignorer JSON parse fejl
+            }
 
             return (
               <li key={entry.id} className="p-4 bg-gray-700 rounded-md shadow">
