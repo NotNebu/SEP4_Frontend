@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Button from "@/Presentation/Components/Shared/UI/Button";
 
 /**
  * NavbarMobileMenu – Viser mobilvenlig menu under navbar.
@@ -56,15 +57,15 @@ export default function NavbarMobileMenu({ open, setOpen, onLogout }) {
       </Link>
 
       {/* Log ud-knap */}
-      <button
+      <Button
         onClick={() => {
           onLogout();
           setOpen(false);
         }}
-        className="block text-left w-full text-gray-300 hover:text-red-500 text-lg"
-      >
-        Log ud
-      </button>
+        label="Log ud"
+        variant="danger"
+        fullWidth
+      />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { useAuth } from "@Shared/Context/AuthContext";
+import Button from "@/Presentation/Components/Shared/UI/Button";
 
 /**
  * ProfileMenu – Dropdown-menu i navbar til brugerhandlinger:
@@ -13,7 +14,6 @@ export default function ProfileMenu() {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
-  // Logger brugeren ud og går til login
   const handleLogout = async () => {
     try {
       await logout();
@@ -23,7 +23,16 @@ export default function ProfileMenu() {
     }
   };
 
-  // Luk dropdown hvis der klikkes udenfor
+  const goToProfile = () => {
+    navigate("/profile");
+    setOpen(false);
+  };
+
+  const goToExperiments = () => {
+    navigate("/profile", { state: { showExperiments: true } });
+    setOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -47,40 +56,33 @@ export default function ProfileMenu() {
 
       {/* Dropdown-menuen */}
       {open && (
-        <div className="absolute right-0 mt-2 w-52 bg-gray-800 dark:bg-gray-900 rounded-md shadow-lg z-50 overflow-hidden">
-          {/* Viser brugerens email */}
+        <div className="absolute right-0 mt-2 w-52 bg-gray-800 dark:bg-gray-900 rounded-md shadow-lg z-100 overflow-hidden p-2 space-y-2">
           {user?.email && (
-            <div className="px-4 py-2 text-xs text-gray-400 border-b border-gray-700 truncate">
+            <div className="px-2 py-1 text-xs text-gray-400 border-b border-gray-700 truncate">
               {user.email}
             </div>
           )}
 
-          {/* Link til profil */}
-          <Link
-            to="/profile"
-            onClick={() => setOpen(false)}
-            className="block px-4 py-2 text-sm text-gray-300 hover:text-orange-500"
-          >
-            Min profil
-          </Link>
+          <Button
+            label="Min profil"
+            onClick={goToProfile}
+            variant="secondary"
+            fullWidth
+          />
 
-          {/* Link til eksperimenter */}
-          <Link
-            to="/profile"
-            state={{ showExperiments: true }}
-            onClick={() => setOpen(false)}
-            className="block px-4 py-2 text-sm text-gray-300 hover:text-orange-500"
-          >
-            Mine eksperimenter
-          </Link>
+          <Button
+            label="Mine eksperimenter"
+            onClick={goToExperiments}
+            variant="secondary"
+            fullWidth
+          />
 
-          {/* Log ud-knap */}
-          <button
+          <Button
             onClick={handleLogout}
-            className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:text-red-500"
-          >
-            Log ud
-          </button>
+            label="Log ud"
+            variant="danger"
+            fullWidth
+          />
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ChangePasswordModal from "@/Presentation/Components/Profile/ChangePasswordModal";
 import SidebarCard from "@/Presentation/Layout/Sidebar/SidebarCard";
+import Button from "@/Presentation/Components/Shared/UI/Button";
 
 // Sidebar-sektion til profilhåndtering uden billede-upload
 export default function ProfileSidebar({ onSave }) {
@@ -28,20 +29,20 @@ export default function ProfileSidebar({ onSave }) {
     >
       <div className="space-y-2">
         {/* Ændre adgangskode */}
-        <button
+        <Button
           onClick={() => setShowModal(true)}
-          className="w-full border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition"
-        >
-          Ændre kodeord
-        </button>
-
+          label="Ændre kodeord"
+          variant="outline"
+          fullWidth
+        />
+        
         {/* Gem ændringer */}
-        <button
+        <Button
           onClick={onSave}
-          className="w-full border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition"
-        >
-          Gem ændringer
-        </button>
+          label="Gem ændringer"
+          variant="primary"
+          fullWidth
+        />
       </div>
 
       {/* Modal til adgangskodeændring */}

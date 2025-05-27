@@ -1,46 +1,43 @@
 import Card from "@/Presentation/Components/Shared/UI/Card";
 import Form from "@/Presentation/Components/Shared/UI/Form";
+import Input from "@/Presentation/Components/Shared/UI/Input";
+import Button from "@/Presentation/Components/Shared/UI/Button";
 import { PredictionResult } from "@/Presentation/Components/Predictions/PredictionResult";
 
 // Visningsnavne for model-filer
 const modelNameMap = {
   "mylrmodel_v6_logistic_regression.joblib": "Logistisk Regression v6",
   "finalversion_logistic_regression.joblib": "Logistisk Regression v5",
-  "logistiskregression_logistic_regression.joblib": "Logistisk Regression (Eksperimentel)",
+  "logistiskregression_logistic_regression.joblib":
+    "Logistisk Regression (Eksperimentel)",
   "randomforestregressor.joblib": "Random Forest v1",
   "randomforestregressor_20250510_160735.joblib": "Random Forest v2",
   "randomforestregressor_20250511_210430.joblib": "Random Forest v3",
 };
 
-// Oversættelser af placeholder-felter
+// Oversættelser
 const fieldPlaceholderMap = {
   "Soil Type": "Jordtype",
   "Water Frequency": "Vandingsfrekvens",
   "Fertilizer Type": "Gødningstype",
   "Sunlight Hours": "Solskinstimer",
-  "Temperature": "Temperatur",
-  "Humidity": "Luftfugtighed",
+  Temperature: "Temperatur",
+  Humidity: "Luftfugtighed",
 };
 
-// Oversættelser af dropdown-option værdier
 const optionLabelMap = {
-  // Jordtyper
   loam: "Muldjord",
   sandy: "Sandjord",
   clay: "Lerjord",
-
-  // Vandingsfrekvens
   daily: "Dagligt",
   weekly: "Ugentligt",
   "bi-weekly": "Hver 14. dag",
-
-  // Gødningstype
   chemical: "Kemisk",
   organic: "Organisk",
   none: "Ingen",
 };
 
-const PredictionForm = ({
+export default function PredictionForm({
   modelName,
   fields,
   formData,
@@ -48,79 +45,77 @@ const PredictionForm = ({
   onChange,
   onSubmit,
   onClear,
-}) => {
-  const renderField = (field) => {
-    const value = formData[field.name] || "";
-    const handleChange = (e) => onChange(field.name, e.target.value);
-    const placeholder = fieldPlaceholderMap[field.placeholder] || field.placeholder;
+}) {
+  const formattedFields = fields
+    .filter((field) => !field.options)
+    .map((field) => ({
+      name: field.name,
+      type: field.type || "text",
+      label: fieldPlaceholderMap[field.placeholder] || field.placeholder,
+      placeholder: fieldPlaceholderMap[field.placeholder] || field.placeholder,
+    }));
 
-    if (field.options) {
-      return (
-        <select
-          key={field.name}
-          name={field.name}
-          value={value}
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
-        >
-          <option value="">Vælg {placeholder}</option>
-          {field.options.map((opt) => (
-            <option key={opt} value={opt}>
-              {optionLabelMap[opt] || opt}
-            </option>
-          ))}
-        </select>
-      );
-    }
+  const renderSelectFields = () =>
+    fields
+      .filter((field) => field.options)
+      .map((field) => {
+        const value = formData[field.name] || "";
+        const placeholder =
+          fieldPlaceholderMap[field.placeholder] || field.placeholder;
 
-    return (
-      <input
-        key={field.name}
-        type={field.type || "text"}
-        name={field.name}
-        placeholder={placeholder}
-        value={value}
-        onChange={handleChange}
-        className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
-      />
-    );
-  };
+        return (
+          <div key={field.name}>
+            <label className="block mb-1 text-sm text-white">
+              {placeholder}
+            </label>
+            <select
+              name={field.name}
+              value={value}
+              onChange={(e) => onChange(field.name, e.target.value)}
+              className="w-full p-2 rounded bg-gray-800 text-white border border-gray-600"
+            >
+              <option value="">Vælg {placeholder}</option>
+              {field.options.map((opt) => (
+                <option key={opt} value={opt}>
+                  {optionLabelMap[opt] || opt}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+      });
 
   return (
     <Card>
       <h2 className="text-2xl font-semibold mb-4 text-white">
-        {modelNameMap[modelName.toLowerCase()] || modelName.replace(".joblib", "")} Forudsigelse
+        {modelNameMap[modelName.toLowerCase()] ||
+          modelName.replace(".joblib", "")}{" "}
+        Forudsigelse
       </h2>
 
-      <form onSubmit={onSubmit} onReset={onClear} className="space-y-4">
-        {fields.map((field) => {
-          const placeholder = fieldPlaceholderMap[field.placeholder] || field.placeholder;
+      {/* Dropdowns */}
+      <div className="space-y-4">{renderSelectFields()}</div>
 
-          return (
-            <div key={field.name}>
-              <label className="block mb-1 text-sm text-white">{placeholder}</label>
-              {renderField(field)}
+      {/* Fælles form til tekstfelter */}
+      <Form
+        fields={formattedFields}
+        values={formData}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        onReset={onClear}
+        showButtons
+        submitLabel="Forudsig"
+        resetLabel="Ryd"
+        submitVariant="success"
+        resetVariant="danger"
+        childrenAfter={
+          result && (
+            <div className="mt-6">
+              <PredictionResult model={modelName} data={result} />
             </div>
-          );
-        })}
-
-        <div className="flex gap-4 mt-4">
-          <button type="submit" className="bg-green-600 px-4 py-2 rounded text-white">
-            Forudsig
-          </button>
-          <button type="reset" className="bg-red-600 px-4 py-2 rounded text-white">
-            Ryd
-          </button>
-        </div>
-
-        {result && (
-          <div className="mt-6">
-            <PredictionResult model={modelName} data={result} />
-          </div>
-        )}
-      </form>
+          )
+        }
+      />
     </Card>
   );
-};
-
-export default PredictionForm;
+}

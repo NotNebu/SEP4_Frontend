@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 /**
  * NavbarLinks – Navigationselementer til både desktop og mobil.
@@ -11,6 +11,12 @@ export default function NavbarLinks({
   isMobile = false,
   onCloseMobile,
 }) {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  // Deaktiver aktiv-styling på profilsider
+  const isProfilePage = pathname.startsWith("/profile");
+
   return (
     <>
       {/* Dashboard-link */}
@@ -24,7 +30,7 @@ export default function NavbarLinks({
           isMobile
             ? "text-gray-300 hover:text-orange-500"
             : `hover:text-orange-500 ${
-                selected === "dashboard"
+                !isProfilePage && selected === "dashboard"
                   ? "text-orange-500 font-medium"
                   : "text-gray-300"
               }`
@@ -44,7 +50,7 @@ export default function NavbarLinks({
           isMobile
             ? "text-gray-300 hover:text-orange-500"
             : `hover:text-orange-500 ${
-                selected === "prediction-form"
+                !isProfilePage && selected === "prediction-form"
                   ? "text-orange-500 font-medium"
                   : "text-gray-300"
               }`
@@ -64,7 +70,7 @@ export default function NavbarLinks({
           isMobile
             ? "text-gray-300 hover:text-orange-500"
             : `hover:text-orange-500 ${
-                selected === "create-experiment"
+                !isProfilePage && selected === "create-experiment"
                   ? "text-orange-500 font-medium"
                   : "text-gray-300"
               }`
